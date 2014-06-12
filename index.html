@@ -1,6 +1,24 @@
+<!DOCTYPE html>
+
 <html>
 <head>
+    <script src="jquery.min.js"></script>
+    <script src="pathlogic.js"></script>
+    <script src="towerattack.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="cssReset.css"/>
+
+    <title>Tower Attack HTML5</title>
 </head>
+
 <body>
+
+<div class="centeringElement mainGame">
+    <canvas id="backgroundCanvas" width="510" height="510" style="position: absolute; margin: 0;">
+    </canvas>
+    <textarea class="output" placeholder="Output" style="width:300px; height:300px; position: absolute; top: 30px; left: 550px;"></textarea>
+    <button class="exportMap" style="position: absolute; top: 300px; left: 550px;">Export</button>
+</div>
+
 </body>
 </html>
