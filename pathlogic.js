@@ -43,7 +43,7 @@ function drawTravelPath(context, coordinates){
     //coordinates are an array of arrays with [x,y] position in them.
     //looks like: [[0,2][3,6][45,157][310,10]]
     var array = [];
-    context.beginPath(); 
+    context.beginPath();
     context.lineWidth="4";
     context.strokeStyle="yellow"; // Yellow path
     context.moveTo(coordinates[0][0]*tileSize+(tileSize/2),coordinates[0][1]*tileSize+(tileSize/2));
@@ -67,15 +67,16 @@ var animationCanvas = $('<canvas class="animationCanvas" width=510 height=510 st
 
 function animateCreature(grid, coordinates){
     var animationContext = animationCanvas.getContext("2d");
+    var direction = 1;
     var i = 0;
     var array = [];
     coordinates = testCoordinates;
     var subIndex = 0;
-    
+
     setInterval(function(){
         clearRectForAnimation(animationContext);
         var maxSubIndex = 10;
-        var nextIndex = (i + 1) % coordinates.length;
+        var nextIndex = i + direction;
         var futureX = coordinates[nextIndex][0]*tileSize; //the next x coordinate. does not loop.
         var futureY = coordinates[nextIndex][1]*tileSize; //the next y coordinate. does not loop.
         var currentX = coordinates[i][0]*tileSize; //the first value in my inner array
@@ -103,54 +104,11 @@ function animateCreature(grid, coordinates){
         //drawImageTile(animationContext, x, y, creatureSprite, 0, 0);
         if (subIndex >= maxSubIndex){
             i = nextIndex;
+            if (i == coordinates.length - 1 || i == 0) {
+                direction = -direction;
+            }
             subIndex = 0;
         }
         subIndex++;
-        }
-    , animationTiming);
-}
-
-function animateObject (grid, coordinates, color) {
-    var animationContext = animationCanvas.getContext("2d");
-    var i = 0;
-    var array = [];
-    coordinates = testCoordinates;
-    var colorChoices = [
-        'red', 'orange', 'blue', 'yellow'
-        ];
-    var colorChoicesIndex = 0;
-    var subIndex = 0;
-    setInterval(function(color){
-        clearRectForAnimation(animationContext);
-        color = colorChoices[colorChoicesIndex];
-        if (i >= coordinates.length){
-            i = 0;
-            colorChoicesIndex = colorChoicesIndex+1;
-            console.log('The new color is ' + colorChoices[colorChoicesIndex]);
-        }
-        if (colorChoicesIndex >= colorChoices.length){
-            colorChoicesIndex = 0;
-            console.log('The new color is ' + colorChoices[colorChoicesIndex]);
-        }
-        var maxSubIndex = 10;
-        var futureX = coordinates[i+1][0]*tileSize; //the next x coordinate. does not loop.
-        var futureY = coordinates[i+1][1]*tileSize; //the next y coordinate. does not loop.
-        var currentX = coordinates[i][0]*tileSize; //the first value in my inner array
-        var currentY = coordinates[i][1]*tileSize; //the second value in my inner array
-        //formula for smooth movement between two points: currentX + (subIndex/maxSubIndex) * (futureX - currentX)
-        console.log('The current percent to move is ' + (subIndex/maxSubIndex));
-        console.log('The current amount to add to currentX is ' + (futureX-currentX));
-        console.log('future coordinates are ' + futureX + ', ' + futureY);
-        console.log('current coordinates are ' + currentX + ', ' + currentY)
-        var x = currentX + (subIndex/10)*(futureX-currentX);
-        var y = currentY + (subIndex/10)*(futureY-currentY);
-        array.push(coordinates[i]);
-        drawTestObject(animationContext, x, y, color);
-        if (subIndex >= maxSubIndex){
-            i++;
-            subIndex = 0;
-        }
-        subIndex++;
-        }
-    , animationTiming);
+    }, animationTiming);
 }
