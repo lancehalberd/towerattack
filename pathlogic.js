@@ -63,7 +63,7 @@ function clearRectForAnimation(context) {
     //console.log('clearRectForAnimation is running');
 }
 
-var animationCanvas = $('<canvas class="animationCanvas" width=510 height=510 style="position: absolute; margin: 0; top: 0, left: 0;"></canvas>')[0];
+var animationCanvas = $('<canvas class="animationCanvas" width=510 height=510 style="position: absolute; top: 0; left: 0;"></canvas>')[0];
 
 function animateCreature(grid, coordinates){
     var animationContext = animationCanvas.getContext("2d");

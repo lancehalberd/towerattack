@@ -1,0 +1,80 @@
+.body {
+    background-color: black;
+}
+.mainGame {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: 600px;
+    background-color: brown;
+    top: 50px;
+}
+.mapContainer {
+    position:absolute;
+    top: 40px;
+    left: 10px;
+    width: 450px;
+    height: 450px;
+    background-color: black;
+}
+.cardContainer {
+    position:absolute;
+    top: 40px;
+    left: 470px;
+    width: 320px;
+    height: 450px;
+    background-color: tan;
+}
+.timeline {
+    position:absolute;
+    top: 500px;
+    left: 10px;
+    width: 780px;
+    height: 90px;
+    background-color: white;
+}
+
+.card {
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.card.back {
+    background-color: blue;
+}
+.ability {
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    left: 15px;
+    background-color: gold;
+}
+/* hide abilities when cards are flipped */
+.card.back .ability {
+    display: none;
+}
+/* Cards with 1 ability */
+.card.a1 .ability {
+    top: 40px;
+}
+/* Cards with 2 abilities */
+.card.a2 .ability:nth-of-type(1) {
+    top: 25px;
+}
+.card.a2 .ability:nth-of-type(2) {
+    top: 55px;
+}
+/* Cards with 3 abilities */
+.card.a3 .ability:nth-of-type(1) {
+    top: 10px;
+}
+.card.a3 .ability:nth-of-type(2) {
+    top: 40px;
+}
+.card.a3 .ability:nth-of-type(3) {
+    top: 70px;
+}

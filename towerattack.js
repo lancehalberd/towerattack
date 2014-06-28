@@ -35,7 +35,7 @@ function drawAllRoads(context, grid) {
                 //reset to 0 every time we start checking
                 var srcX = 0;
                 var srcY = 0;
-                
+
                 //connection to the North?
                 if (y-1 >= 0 && grid[y-1][x] == 'R') {
                     srcY = srcY+2;
@@ -133,7 +133,7 @@ function loadImages(onComplete) {
                 //context = getContext('backgroundCanvas');
                 //context.drawImage(creatureSprite, 0, 0);
                 onComplete();
-                
+
             }
             //loadWaterImagesLikeRoads(onComplete);
             //onComplete();
@@ -222,9 +222,12 @@ function arrayToGrid(arrayOfStrings) {
 
 //this triggers when page has finished loading
 $(function () {
+    var state = new State();
+    state.deck = testDeck;
+    initializeCardArea(state);
     //$('body').append(roadCanvas);
     //$('body').append(patternCanvas);
-    $('body').append(animationCanvas);
+    $('.mapContainer').append(animationCanvas);
     loadImages(function(){
         context = getContext('backgroundCanvas');
         var grid = createGrid(17, 17);

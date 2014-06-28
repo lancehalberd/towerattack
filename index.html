@@ -1,24 +1,33 @@
-<!DOCTYPE html>
-
 <html>
 <head>
     <script src="jquery.min.js"></script>
+    <script src="state.js"></script>
     <script src="pathlogic.js"></script>
+    <script src="cards.js"></script>
+    <script src="testDeck.js"></script>
     <script src="towerattack.js"></script>
 
     <link rel="stylesheet" type="text/css" href="cssReset.css"/>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
 
     <title>Tower Attack HTML5</title>
 </head>
 
-<body>
+<body class="body">
+<div class="mainGame">
+    <div class="mapContainer">
+        <canvas id="backgroundCanvas" width="450" height="450">
+        </canvas>
+    </div>
+    <div class="cardContainer">
 
-<div class="centeringElement mainGame">
-    <canvas id="backgroundCanvas" width="510" height="510" style="position: absolute; margin: 0;">
-    </canvas>
-    <textarea class="output" placeholder="Output" style="width:300px; height:300px; position: absolute; top: 30px; left: 550px;"></textarea>
-    <button class="exportMap" style="position: absolute; top: 300px; left: 550px;">Export</button>
+    </div>
+    <div class="timeline">
+
+    </div>
 </div>
+    <textarea class="output" placeholder="Output" style="position:absolute; left: 0; top: 650px; width:300px; height:300px;"></textarea>
+    <button class="exportMap" style="position:absolute; left: 50; top: 1000px;">Export</button>
 
 </body>
 </html>
