@@ -24,6 +24,7 @@ function Ability(cost, effectFunction, data) {
     this.cost = cost;
     this.effectFunction = effectFunction;
     this.data = data;
+    this.element = null;
 }
 
 /**
@@ -109,7 +110,7 @@ function displayDeck(state) {
         $card.css('bottom', top + 'px');
         $card.css('right', '5px');
         $('.cardContainer').append($card);
-        top += 5;
+        top += 2;
     });
 }
 
