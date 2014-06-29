@@ -3,6 +3,9 @@
  */
 function State () {
     this.step = "cards";
+    //indicates whether the user is editing the map
+    this.editingMap = false;
+    this.brush = 'R';
     this.gold = 0;
     this.calories = 0;
     this.currentWave = [];
