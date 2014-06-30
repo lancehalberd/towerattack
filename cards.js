@@ -53,7 +53,10 @@ function useAbility(state, ability) {
  */
 function spawnAnimals(state, ability) {
     for (var i = 0; i < ability.data.amount; i++) {
-        state.currentWave.push(ability.data.animal);
+        var slotInfo = getNextTimelineSlot(state);
+        var path = slotInfo[0];
+        var slot = slotInfo[1];
+        state.paths[path].slots[slot] = ability.data.animal;
     }
     return state;
 }
@@ -187,7 +190,6 @@ function shuffleDeck(state) {
         state.deck[i] = state.deck[j];
         state.deck[j] = temp;
     }
-    console.log(state.deck);
     //clear the discard and deck elements
     $('.cardContainer .card.back').remove();
     $('.cardContainer .card.discarded').remove();
@@ -206,6 +208,7 @@ function makeCard(card) {
     $.each(card.slots, function (index, ability) {
         var $ability = $('<div class="ability"></div>');
         $ability.data('ability', ability);
+        $ability.text(ability.cost);
         $card.append($ability);
     })
     $card.data('card', card);

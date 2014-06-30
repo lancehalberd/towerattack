@@ -179,6 +179,7 @@ $(function () {
         $(this).text(state.editingMap ? 'Stop Editing' : 'Start Editing');
     });
     state.deck = testDeck;
+    state.paths[0].points = testCoordinates;
     initializeCardArea(state);
     //$('body').append(roadCanvas);
     //$('body').append(patternCanvas);
@@ -190,7 +191,7 @@ $(function () {
         //grid = arrayToGrid(getLevel2());
         //grid = arrayToGrid(getLevelWaterTest());
         drawGrid(context, grid);
-        drawTravelPath(context, testCoordinates);
+        drawTravelPath(context, state.paths[state.selectedPath].points);
         //animateObject(context);
         animateCreature(context);
         drawImageTile(context, 0, 0, creatureSprite, 30, 0);
@@ -206,7 +207,7 @@ $(function () {
                 var index = options.indexOf(grid[tileY][tileX]);
                 grid[tileY][tileX] = options[(index + 1) % options.length];//0 1 2 0 1 2...
                 drawGrid(context, grid);
-                drawTravelPath(context, testCoordinates);
+                drawTravelPath(context, state.paths[state.selectedPath].points);
             } else {
 
             }

@@ -8,7 +8,14 @@ function State () {
     this.brush = 'R';
     this.gold = 0;
     this.calories = 0;
-    this.currentWave = [];
+    //index of the currently selected path
+    this.selectedPath = 0;
+    //array of paths
+    this.paths = [
+        new Path(),
+        new Path(),
+        new Path()
+    ]
     this.levelModifiers = {
         //any
         'animal' : {'lifePlus' : 2}
@@ -23,6 +30,18 @@ function State () {
     this.discardedCards = [];
     //undealt cards in the users deck
     this.deck = [];
+}
+
+function Path() {
+    //timeline slots for this path. Each slot represents .2s interval
+    this.slots = [];
+    for (var i = 0; i < 25; i++) {
+        this.slots.push(null);
+    }
+    //whether or not this path is finished and useable
+    this.complete = false;
+    //the list of coordinates that comprise a path
+    this.points = [];
 }
 
 /**
