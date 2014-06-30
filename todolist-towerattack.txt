@@ -1,0 +1,33 @@
+To-Do for Tower Attack:
+
+CODE:
+    -draw path for creatures (interacting with game)
+        turn off road editing
+        use grid simplifaction ("tileSize") to turn mouse coordinates into grid coordinates
+        using onclick function...? to fill in path array of points that will then be used to guide creatures
+        "if" current tile is NOT a road, do nothing
+        "if" no path on map, then start path drawing at current tile
+        "if" current tile is same as previous tile, delete current (makes 2nd previous into previous automatically)
+            OR deletes path completely
+        "if" previous tile is previous path then add current tile as next path point
+
+    -"start" button for creatures to follow path (interacting with game)
+    -place cities, mines, etc. on roads (creating map)
+    -place decorative items off roads (creating map)
+    -code for each level map (lvl 1, lvl 2, lvl 3) to be selected using "world" map
+    -card area layout and card creation (divs, clickable, placing graphics on each card, animating cards, etc.)
+    -staging area for creatures (divs, clickable, choosing order and timing)
+    -"pause" button?
+
+ART:
+    -cities (healthy, 2/3, 1/3, dead)
+    -mines
+    -"igloos" starting/end points for creatures
+    -city weapons: fast turrets (laser?), high damage turrets (projectile?)
+    -animal sprites: penguin, snake, spider, sheep, cardinal
+    -card graphics:
+        animals (same as sprites),
+        buffs (speed, armor, health),
+        numerals (or maybe just use text...?),
+        "calories" (pizza?)
+    -"world" map to choose levels
