@@ -5,8 +5,8 @@
 function Animal() {
     /** @type AnimalType */
     this.type = null;
-    this.maxHealth = 10;
     this.health = 10;
+    this.currentHealth = 10;
     this.speed = 10;
     this.armor = 0;
     this.carry = 1;
@@ -42,13 +42,56 @@ function AnimalType() {
     this.tags = ['animal'];
 }
 
+var animalTypes = {
+    'cardinal': new AnimalType(),
+    'penguin': new AnimalType(),
+    'zebra': new AnimalType()
+}
+
+/**
+ * Creates an animal for the given type string.
+ *
+ * @param {State} state  state of the game
+ * @param {String} typeString  id of the type to use
+ * @return {Animal}  The instantiated animatl
+ */
+function createAnimal(state, typeString) {
+    var animal = new Animal();
+    animal.type = animalTypes[typeString];
+    updateAnimal(state, animal);
+    animal.currentHealth = animal.health;
+    return animal;
+}
+
 /**
  * Updates the stats of an animal based on the current state, applying growth
  * modifiers and ability modifiers to determine the actual stats.
  *
- * @param {Animal}
+ * @param {State} state  state of the game
+ * @param {Animal} animal  the animal to update
  */
-function updateAnimal(animal) {
+function updateAnimal(state, animal) {
     //This code should be like:
-    //floor(health + healthGrowth * wave + levelHealthPlus + waveHealthPlus) * levelHealthMultiplier * waveHealthMultiplier)
+    var modifiers = [];
+    $.each(animal.type.tags, function (index, tag) {
+        if (state.levelModifiers[tag]) {
+            modifiers = modifiers.concat(state.levelModifiers[tag]);
+        }
+        if (state.waveModifiers[tag]) {
+            modifiers = modifiers.concat(state.waveModifiers[tag]);
+        }
+    });
+    $.each(['health', 'speed', 'armor', 'carry', 'damage'], function (index, stat) {
+        var plusModifier = 0;
+        var multiplier = 1;
+        $.each(modifiers, function (index, modifier) {
+            if (modifier[stat + 'Plus']) {
+                plusModifier += modifier[stat + 'Plus'];
+            }
+            if (modifier[stat + 'Times']) {
+                multiplier *= modifier[stat + 'Times'];
+            }
+        });
+        animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
+    });
 }

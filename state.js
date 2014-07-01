@@ -18,11 +18,12 @@ function State () {
     ]
     this.levelModifiers = {
         //any
-        'animal' : {'lifePlus' : 2}
+        'animal' : {'healthPlus' : 2}
     };
     this.waveModifiers = {
 
     };
+    this.waveNumber = 1;
     this.abilitiesUsedThisTurn = 0;
     //cards the user has dealt and can use this wave
     this.dealtCards = [];

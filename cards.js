@@ -56,7 +56,7 @@ function spawnAnimals(state, ability) {
         var slotInfo = getNextTimelineSlot(state);
         var path = slotInfo[0];
         var slot = slotInfo[1];
-        state.paths[path].slots[slot] = ability.data.animal;
+        state.paths[path].slots[slot] = createAnimal(state, ability.data.animal);
     }
     return state;
 }

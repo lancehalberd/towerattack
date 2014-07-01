@@ -7,7 +7,7 @@ function powerUpAbility(cost, scope, name, value) {
 function calorieAbility(amount) {
     return copy(new Ability(amount, nullOp, {}));
 }
-var cardinalCard = copy(new Card([spawnAbility(-1, 'cardinal', 3), powerUpAbility(1, 'level', 'speedPlus', 1), powerUpAbility(2, 'level', 'lifePlus', 2)]));
+var cardinalCard = copy(new Card([spawnAbility(-1, 'cardinal', 3), powerUpAbility(1, 'level', 'speedPlus', 1), powerUpAbility(2, 'level', 'healthPlus', 2)]));
 var penguinCard = copy(new Card([spawnAbility(-1, 'penguin', 1), powerUpAbility(1, 'level', 'carryPlus', 1)]));
 var zebraCard = copy(new Card([spawnAbility(3, 'zebra', 1), spawnAbility(7, 'zebra', 3)]));
 var caloryCard = copy(new Card([calorieAbility(-3)]));
