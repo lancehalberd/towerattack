@@ -216,12 +216,17 @@ $(function () {
 
             }
         });
-        $('.exportMap').on('click', function exportButton(event) {
+        $('.exportMap').on('click', function (event) {
             var exportRows = [];
             $.each(grid, function (i, row) {
                 exportRows.push('"' + row.join('') + '"');
             });
             $('.output').val("[\n" + exportRows.join(",\n") + "]");
+        });
+        //clicking the timeline allows you to select a path
+        $('.js-timeline').on('click', function (event) {
+            var y = event.pageY - $(this).offset().top;
+            state.selectedPath = Math.floor( y / tileSize);
         });
     });
 });

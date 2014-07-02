@@ -37,6 +37,7 @@
     width: 780px;
     height: 90px;
     background-color: white;
+    cursor: pointer;
 }
 .timelineCanvas {
     position: absolute;

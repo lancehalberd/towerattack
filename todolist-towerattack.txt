@@ -34,23 +34,4 @@ ART:
 
 
 Add sprite info to 'animal' and "animalType" - set on 'animalType';
-
-drawing the Timeline
-    function drawTimeline (state) {
-        var context = //getTimelineContext;
-        $.each(state.paths, function (index, path){
-            var y = tileSize*index;
-            $.each(path.slots, function (slotIndex, slot){
-                var x = tileSize*slotIndex;
-                if (slot) {
-                    var image = slot.type.image;
-                    drawCreature(...);
-                }
-            });
-        });
-    }
-
 change the path color depending on state, path value (a, b, c, etc.);
-highlight selected path on timeline (path A -> path A, etc.);
-set the timeline to use 'pointer' cursor using css;
-add function to select a path when clicking on appropriate spot on timeline;
