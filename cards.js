@@ -53,12 +53,14 @@ function useAbility(state, ability) {
  */
 function spawnAnimals(state, ability) {
     for (var i = 0; i < ability.data.amount; i++) {
-        var slotInfo = getNextTimelineSlot(state);
-        var path = slotInfo[0];
-        var slot = slotInfo[1];
-        state.paths[path].slots[slot] = createAnimal(state, ability.data.animal);
+        var slotInfo = getNextTimelineSlot(state, state.selectedPath, 0);
+        var animal = createAnimal(state, ability.data.animal);
+        var pathIndex = slotInfo[0];
+        var pathSlot = slotInfo[1];
+        animal.timelineX = animal.pathSlot * tileSize;
+        animal.timelineY = animal.pathIndex * tileSize;
+        state.paths[pathIndex].slots[pathSlot] = animal;
     }
-    drawTimeline(state);
     return state;
 }
 

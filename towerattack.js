@@ -223,10 +223,6 @@ $(function () {
             });
             $('.output').val("[\n" + exportRows.join(",\n") + "]");
         });
-        //clicking the timeline allows you to select a path
-        $('.js-timeline').on('click', function (event) {
-            var y = event.pageY - $(this).offset().top;
-            state.selectedPath = Math.floor( y / tileSize);
-        });
+        addTimelineInteractions(state);
     });
 });

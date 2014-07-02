@@ -11,8 +11,6 @@ function Animal() {
     this.armor = 0;
     this.carry = 1;
     this.damage = 1;
-    this.pathIndex = 0;
-    this.pathSlot = 0;
     //Distance from start of path to current position. How far the animal has traveled.
     this.distance = 0;
     //actual coordinates on the map in pixels
@@ -21,6 +19,9 @@ function Animal() {
     //actualy coordinates on the timeline in pixels
     this.timelineX = 0;
     this.timelineY = 0;
+    //marks that the animal is being displaced in the timeline by the current
+    //drag operation
+    this.moved = false;
 }
 
 /**
