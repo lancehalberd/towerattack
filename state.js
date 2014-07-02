@@ -7,7 +7,7 @@ function State () {
     this.editingMap = false;
     this.brush = 'R';
     this.gold = 0;
-    this.calories = 0;
+    this.calories = 100;
     //index of the currently selected path
     this.selectedPath = 0;
     //array of paths

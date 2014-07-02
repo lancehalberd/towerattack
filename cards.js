@@ -32,16 +32,16 @@ function Ability(cost, effectFunction, data) {
  *
  * @param {State} state  The current state of the game.
  * @param {Ability} ability  The ability to use.
- * @return {State}  The state after using this ability.
+ * @return {String}  error message if the ability may not be used
  */
 function useAbility(state, ability) {
-    state.calories += ability.cost;
+    state.calories -= ability.cost;
     if (state.calories < 0) {
-        state.invalid = "You need " + (-state.calories) + " more calories to use this ability";
-        return state;
+        return "You need " + (-state.calories) + " more calories to use this ability";
     }
     //call the particular effect associated with this ability
-    return ability.effectFunction(state, ability);
+    ability.effectFunction(state, ability);
+    return null;
 }
 
 /**
@@ -162,7 +162,10 @@ function playCard(state, ability, card) {
         return;
     }
     state[state.dealtCards.indexOf(card)] = null;
-    useAbility(state, ability);
+    var error = useAbility(state, ability);
+    if (error) {
+        return;
+    }
     card.element.css('top', '');
     card.element.css('left', '');
     card.element.css('bottom', (5 + (state.discardedCards.length) * 5) + 'px');
