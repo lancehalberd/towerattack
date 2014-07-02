@@ -38,6 +38,22 @@
     height: 90px;
     background-color: white;
 }
+.timelineCanvas {
+    position: absolute;
+    left: 30px;
+    top: 0px;
+}
+.timeline .pathLabel {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    text-align: right;
+    font-family: sans-serif;
+    font-size: 25px;
+    border: 1px solid black;
+    padding-right: 5px;
+    box-sizing: border-box;
+}
 
 .card {
     position: absolute;

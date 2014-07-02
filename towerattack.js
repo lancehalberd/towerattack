@@ -169,11 +169,14 @@ function arrayToGrid(arrayOfStrings) {
     });
     return grid;
 }
+var state = new State();
 //context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+function mainLoop(args) {
+    drawTimeline(state);
+}
 
 //this triggers when page has finished loading
 $(function () {
-    var state = new State();
     $('.js-edit').on('click', function (event){
         state.editingMap = !state.editingMap;
         $(this).text(state.editingMap ? 'Stop Editing' : 'Start Editing');
@@ -195,6 +198,7 @@ $(function () {
         //animateObject(context);
         animateCreature(context);
         drawImageTile(context, 0, 0, creatureSprite, 30, 0);
+        setInterval(mainLoop, 30);
         $('.js-mapContainer').on('click', function (event) {
             event.preventDefault();
             event.stopPropagation();
