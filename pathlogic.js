@@ -40,6 +40,10 @@ function editPath(state, x, y) {
     }
     /** @type Path */
     var path = state.paths[state.selectedPath];
+    if (path.points.length == 0) {
+        editPathSimple(state, x, y);
+        return;
+    }
     var lastPoint = path.points[path.points.length - 1];
     var visited = {};
     visited[x + 'x' + y] = true;
@@ -115,21 +119,25 @@ function editPathSimple(state, x, y) {
  */
 function drawPaths(state, context) {
     context.clearRect(0, 0, 450, 450);
+    //draw selected path first since it is thicker and can be seen underneath
+    //the unselected paths
+    var path = state.paths[state.selectedPath];
+    context.lineWidth = 4;
+    if (path.complete) {
+        context.strokeStyle = '#FFF';
+    } else {
+        context.strokeStyle = '#F88';
+    }
+    drawTravelPath(context, path.points);
+    context.lineWidth = 2;
     $.each(state.paths, function (index, path) {
-        if (state.selectedPath == index) {
-            context.lineWidth = 4;
-            if (path.complete) {
-                context.strokeStyle = '#FFF';
-            } else {
-                context.strokeStyle = '#F88';
-            }
+        if (index == state.selectedPath) {
+            return;
+        }
+        if (path.complete) {
+            context.strokeStyle = '#DDD';
         } else {
-            context.lineWidth = 2;
-            if (path.complete) {
-                context.strokeStyle = '#DDD';
-            } else {
-                context.strokeStyle = '#800';
-            }
+            context.strokeStyle = '#800';
         }
         drawTravelPath(context, path.points);
     });
@@ -157,6 +165,12 @@ function drawTravelPath(context, points){
         context.lineTo(x,y);
     }
     context.stroke(); // Draw it
+    var lastPoint = points[points.length - 1];
+    context.fillStyle = context.strokeStyle;
+    context.fillRect(lastPoint[0] * tileSize + (tileSize/2) - 6,
+                     lastPoint[1] * tileSize + (tileSize/2) - 6, 12, 12);
+    context.fillRect(points[0][0] * tileSize + (tileSize/2) - 6,
+                     points[0][1] * tileSize + (tileSize/2) - 6, 12, 12);
 }
 
 function animateCreature(grid, coordinates){
