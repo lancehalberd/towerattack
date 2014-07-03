@@ -22,6 +22,11 @@
     height: 450px;
     background-color: black;
 }
+.mapCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
 .cardContainer {
     position:absolute;
     top: 40px;

@@ -1,9 +1,12 @@
 console.log('Javascript runs on this page!!!');
 
 function getContext(id) {
-    return document.getElementById(id).getContext("2d");
+    if (false)
+        return document.getElementById(id).getContext("2d");
+    document.getElementById(id).getContext()
 }
-
+/** @type {context} */
+var cont;
 //create a grid of 0's and 1's
 function createGrid(width, height) {
     var grid = [];
@@ -173,10 +176,12 @@ var state = new State();
 //context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
 function mainLoop(args) {
     drawTimeline(state);
+    drawPaths(state, game.pathContext);
 }
 
 //this triggers when page has finished loading
 $(function () {
+    initializeGame();
     $('.js-edit').on('click', function (event){
         state.editingMap = !state.editingMap;
         $(this).text(state.editingMap ? 'Stop Editing' : 'Start Editing');
@@ -186,20 +191,14 @@ $(function () {
     initializeCardArea(state);
     //$('body').append(roadCanvas);
     //$('body').append(patternCanvas);
-    $('.mapContainer').append(animationCanvas);
     loadImages(function(){
-        context = getContext('backgroundCanvas');
-        var grid =  arrayToGrid(level1);//createGrid(15, 15);
-        //grid = arrayToGrid(getLevel1());
-        //grid = arrayToGrid(getLevel2());
-        //grid = arrayToGrid(getLevelWaterTest());
-        drawGrid(context, grid);
-        drawTravelPath(context, state.paths[state.selectedPath].points);
-        //animateObject(context);
-        animateCreature(context);
-        drawImageTile(context, 0, 0, creatureSprite, 30, 0);
+        state.mapGrid =  arrayToGrid(level1);
+        drawGrid(game.backgroundContext, state.mapGrid);
+        drawPaths(state, game.pathContext);
+        animateCreature(game.animalContext);
         setInterval(mainLoop, 30);
-        $('.js-mapContainer').on('click', function (event) {
+        var drawingPath = false;
+        $('.js-mapContainer').on('mousedown', function (event) {
             event.preventDefault();
             event.stopPropagation();
             var x = event.pageX - $(this).offset().left;
@@ -208,13 +207,31 @@ $(function () {
             var tileY = Math.floor(y / tileSize);
             if (state.editingMap) {
                 var options = ['0', 'R'];
-                var index = options.indexOf(grid[tileY][tileX]);
-                grid[tileY][tileX] = options[(index + 1) % options.length];//0 1 2 0 1 2...
-                drawGrid(context, grid);
-                drawTravelPath(context, state.paths[state.selectedPath].points);
+                var index = options.indexOf(state.mapGrid[tileY][tileX]);
+                state.mapGrid[tileY][tileX] = options[(index + 1) % options.length];//0 1 2 0 1 2...
+                drawGrid(game.backgroundContext, state.mapGrid);
             } else {
-
+                drawingPath = true;
+                editPath(state, tileX, tileY);
             }
+        });
+        $(document).on('mousemove', function (event) {
+            if (!drawingPath) {
+                return;
+            }
+            var x = event.pageX - $('.js-mapContainer').offset().left;
+            var y = event.pageY - $('.js-mapContainer').offset().top - 2;
+            var tileX = Math.floor(x / tileSize);
+            var tileY = Math.floor(y / tileSize);
+            if (tileX < 0 || tileY < 0 || tileX >= 15 || tileY >= 15) {
+                return;
+            }
+            if (!state.editingMap) {
+                editPath(state, tileX, tileY);
+            }
+        });
+        $(document).on('mouseup', function (event) {
+            drawingPath = false;
         });
         $('.exportMap').on('click', function (event) {
             var exportRows = [];

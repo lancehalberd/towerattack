@@ -1,6 +1,7 @@
 <html>
 <head>
     <script src="jquery.min.js"></script>
+    <script src="game.js"></script>
     <script src="state.js"></script>
     <script src="animals.js"></script>
     <script src="timeline.js"></script>
@@ -18,13 +19,15 @@
 <body class="body">
 <div class="mainGame">
     <div class="js-mapContainer mapContainer">
-        <canvas id="backgroundCanvas" width="450" height="450"></canvas>
+        <canvas class="js-backgroundCanvas mapCanvas" width="450" height="450"></canvas>
+        <canvas class="js-pathCanvas mapCanvas" width="450" height="450"></canvas>
+        <canvas class="js-animalCanvas mapCanvas" width="450" height="450"></canvas>
     </div>
     <div class="cardContainer">
 
     </div>
     <div class="timeline js-timeline">
-        <canvas class="timelineCanvas js-timelineCanvas" width="750" height="90"></canvas>
+        <canvas class="js-timelineCanvas timelineCanvas" width="750" height="90"></canvas>
         <div class="pathLabel">A</div>
         <div class="pathLabel">B</div>
         <div class="pathLabel">C</div>

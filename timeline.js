@@ -28,7 +28,7 @@ function getNextTimelineSlot(state, firstIndex, firstSlot) {
  * @param {State} state  Current state
  */
 function drawTimeline(state) {
-    var context = $('.js-timelineCanvas')[0].getContext("2d");
+    var context = game.timelineContext;
     context.clearRect(0, 0, 750, 90);
     context.fillStyle = "#ccc";
     context.fillRect(0, state.selectedPath * tileSize, 750, 30);
@@ -50,7 +50,7 @@ function drawTimeline(state) {
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
                 }
                 var image = slot.type.image;
-                drawCreatureSprite(context, x, y, 0, 0);
+                drawAnimalSprite(context, x, y, 0, 0);
             }
             if (slotIndex < path.slots.length - 1) {
                 context.fillStyle = "#eee";
@@ -58,9 +58,6 @@ function drawTimeline(state) {
             }
         });
     });
-    /*if (state.draggingAnimal) {
-        drawCreatureSprite(context, state.draggingAnimal.timelineX, state.draggingAnimal.timelineY, 0, 0);
-    }*/
 }
 
 /**

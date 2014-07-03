@@ -96,3 +96,26 @@ function updateAnimal(state, animal) {
         animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
     });
 }
+
+/**
+ * Draw an animal sprite to a given context.
+ *
+ * @param {context} context  The context to draw to
+ * @param {Number} x  The x coordinate to draw to
+ * @param {Number} y  The y coordinate to draw to
+ * @param {Number} srcY  The y coordinate to grabe the sprite from the creatureSprite sheet
+ * @param {Number} rotation  The rotation to draw the sprite at
+ */
+function drawAnimalSprite(context, x, y, srcY, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
+    var date = new Date();
+    var milliseconds = date.getTime();
+    var frameDuration = 200;
+    var numberOfFrames = 6;
+    srcX = (Math.floor(milliseconds / frameDuration) % numberOfFrames) * tileSize;
+    //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
+    context.translate(x+15, y+15);
+    context.rotate(rotation);
+    context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
+    context.rotate(-rotation);
+    context.translate(-x-15, -y-15);
+}
