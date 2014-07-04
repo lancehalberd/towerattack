@@ -107,6 +107,7 @@ function updateAnimal(state, animal) {
  * @param {Number} rotation  The rotation to draw the sprite at
  */
 function drawAnimalSprite(context, x, y, srcY, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
+    var tileSize = defaultTileSize;
     var date = new Date();
     var milliseconds = date.getTime();
     var frameDuration = 200;
@@ -115,7 +116,7 @@ function drawAnimalSprite(context, x, y, srcY, rotation){ //temporarily just the
     //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
     context.translate(x+15, y+15);
     context.rotate(rotation);
-    context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
+    context.drawImage(game.images.animals, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
     context.rotate(-rotation);
     context.translate(-x-15, -y-15);
 }

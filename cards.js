@@ -115,7 +115,7 @@ function displayDeck(state) {
         card.element = $card;
         $card.css('bottom', top + 'px');
         $card.css('right', '5px');
-        $('.cardContainer').append($card);
+        $('.js-cardContainer').append($card);
         top += 2;
     });
 }
@@ -124,13 +124,13 @@ function displayDeck(state) {
  * @param {State} state
  */
 function addCardHandlers(state) {
-    $('.cardContainer').on('click', '.card.back', function () {
+    $('.js-cardContainer').on('click', '.card.back', function () {
         dealCard(state);
     });
-    $('.cardContainer').on('click', '.card.dealt .ability', function () {
+    $('.js-cardContainer').on('click', '.card.dealt .ability', function () {
         playCard(state, $(this).data('ability'), $(this).closest('.card').data('card'));
     });
-    $('.cardContainer').on('click', '.card.discarded', function () {
+    $('.js-cardContainer').on('click', '.card.discarded', function () {
         shuffleDeck(state);
     });
 }
@@ -176,7 +176,7 @@ function playCard(state, ability, card) {
     state.discardedCards.push(card);
     card.element.removeClass('dealt');
     card.element.addClass('discarded');
-    $('.cardContainer').append(card.element);
+    $('.js-cardContainer').append(card.element);
     state.abilitiesUsedThisTurn++;
 }
 
@@ -197,8 +197,8 @@ function shuffleDeck(state) {
         state.deck[j] = temp;
     }
     //clear the discard and deck elements
-    $('.cardContainer .card.back').remove();
-    $('.cardContainer .card.discarded').remove();
+    $('.js-cardContainer .card.back').remove();
+    $('.js-cardContainer .card.discarded').remove();
     //add the deck elements to the screen again
     displayDeck(state);
 }

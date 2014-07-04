@@ -27,7 +27,7 @@
     left: 0;
     top: 0;
 }
-.cardContainer {
+.cardContainer, .mapEditor {
     position:absolute;
     top: 40px;
     left: 470px;
@@ -35,6 +35,17 @@
     height: 450px;
     background-color: tan;
 }
+.mapEditor {
+    background-color: peach;
+}
+.paletteCanvas {
+    cursor: pointer;
+    border: 1px solid black;
+}
+.brushCanvas {
+    border: 1px solid black;
+}
+
 .timeline {
     position:absolute;
     top: 500px;

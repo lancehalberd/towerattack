@@ -28,6 +28,7 @@ function getNextTimelineSlot(state, firstIndex, firstSlot) {
  * @param {State} state  Current state
  */
 function drawTimeline(state) {
+    var tileSize = 30;
     var context = game.timelineContext;
     context.clearRect(0, 0, 750, 90);
     context.fillStyle = "#ccc";
@@ -66,6 +67,7 @@ function drawTimeline(state) {
  * @param {State} state  Current state
  */
 function addTimelineInteractions(state) {
+    var tileSize = 30;
     var currentPath = 0;
     var currentSlot = 0;
     //clicking the timeline allows you to select a path

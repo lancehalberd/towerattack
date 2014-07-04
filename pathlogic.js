@@ -14,15 +14,19 @@ function Path() {
 /**
  * Draws the paths defined in the current state to the given context.
  *
- * @param {State} state  state of the game
+ * @param {Array} grid  state of the game
  * @param {Number} x  The x tile coordinate
  * @param {Number} y  The y tile coordinate
  */
-function getGridValue(state, x, y) {
-    if (x < 0 || y < 0 || x >= state.mapGrid[0].length || y >= state.mapGrid.length) {
+function getGridValue(grid, x, y) {
+    if (!inGrid(grid, x, y)) {
         return null;
     }
-    return state.mapGrid[y][x];
+    return grid[y][x];
+}
+
+function inGrid(grid, x, y) {
+    return (x >= 0 && y >= 0 && x < grid[0].length && y < grid.length);
 }
 
 /**
@@ -35,7 +39,7 @@ function getGridValue(state, x, y) {
  */
 function editPath(state, x, y) {
     //don't do anything if this square isn't a road
-    if (getGridValue(state, x, y) != 'R') {
+    if (getGridValue(state.mapGrid, x, y) != 'R') {
         return;
     }
     /** @type Path */
@@ -50,7 +54,7 @@ function editPath(state, x, y) {
     var points = [{x: x, y: y, next: null}];
     var finalPoint = null;
     function addIfValid(newX, newY) {
-        if (getGridValue(state, newX, newY) != 'R') {
+        if (getGridValue(state.mapGrid, newX, newY) != 'R') {
             return;
         }
         if (visited[newX + 'x' + newY]) {
@@ -150,6 +154,7 @@ function drawPaths(state, context) {
  * @param {Array} points  The array of points for the path to draw
  */
 function drawTravelPath(context, points){
+    var tileSize = defaultTileSize;
     if (points.length < 1) {
         return;
     }
@@ -174,6 +179,7 @@ function drawTravelPath(context, points){
 }
 
 function animateCreature(grid, coordinates){
+    var tileSize = defaultTileSize;
     var direction = 1;
     var i = 0;
     var array = [];
@@ -219,7 +225,6 @@ function animateCreature(grid, coordinates){
             }
         }
         drawAnimalSprite(game.animalContext, x, y, 0, rotation);
-        //drawImageTile(animationContext, x, y, creatureSprite, 0, 0);
         if (subIndex >= maxSubIndex){
             i = nextIndex;
             if (i == coordinates.length - 1 || i == 0) {
