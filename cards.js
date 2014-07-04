@@ -57,8 +57,6 @@ function spawnAnimals(state, ability) {
         var animal = createAnimal(state, ability.data.animal);
         var pathIndex = slotInfo[0];
         var pathSlot = slotInfo[1];
-        animal.timelineX = animal.pathSlot * tileSize;
-        animal.timelineY = animal.pathIndex * tileSize;
         state.paths[pathIndex].slots[pathSlot] = animal;
     }
     return state;

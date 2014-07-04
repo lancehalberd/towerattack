@@ -88,10 +88,10 @@ function addTimelineInteractions(state) {
         }
         var y = event.pageY - $('.js-timeline').offset().top;
         var x = event.pageX - $('.js-timeline').offset().left - 30;
-        state.draggingAnimal.timelineX = Math.min(720, Math.max(0, x - tileSize / 2));
-        state.draggingAnimal.timelineY = Math.min(60, Math.max(0, y - tileSize / 2));
-        var slot = Math.round(state.draggingAnimal.timelineX / tileSize);
-        var path = Math.round(state.draggingAnimal.timelineY / tileSize);
+        var timelineX = Math.min(720, Math.max(0, x - tileSize / 2));
+        var timelineY = Math.min(60, Math.max(0, y - tileSize / 2));
+        var slot = Math.round(timelineX / tileSize);
+        var path = Math.round(timelineY / tileSize);
         var arr = [];
         if (currentPath != path || currentSlot != slot) {
             //combine all paths into a single array, since animals that overflow

@@ -16,9 +16,6 @@ function Animal() {
     //actual coordinates on the map in pixels
     this.mapX = 0;
     this.mapY = 0;
-    //actualy coordinates on the timeline in pixels
-    this.timelineX = 0;
-    this.timelineY = 0;
     //marks that the animal is being displaced in the timeline by the current
     //drag operation
     this.moved = false;
