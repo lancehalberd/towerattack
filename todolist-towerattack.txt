@@ -34,4 +34,3 @@ ART:
 
 
 Add sprite info to 'animal' and "animalType" - set on 'animalType';
-change the path color depending on state, path value (a, b, c, etc.);

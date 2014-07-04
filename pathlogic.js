@@ -39,13 +39,12 @@ function inGrid(grid, x, y) {
  */
 function editPath(state, x, y) {
     //don't do anything if this square isn't a road
-    if (getGridValue(state.mapGrid, x, y) != 'R') {
+    if (!isRoad(state.mapGrid, x, y)) {
         return;
     }
     /** @type Path */
     var path = state.paths[state.selectedPath];
     if (path.points.length == 0) {
-        editPathSimple(state, x, y);
         return;
     }
     var lastPoint = path.points[path.points.length - 1];
@@ -54,7 +53,7 @@ function editPath(state, x, y) {
     var points = [{x: x, y: y, next: null}];
     var finalPoint = null;
     function addIfValid(newX, newY) {
-        if (getGridValue(state.mapGrid, newX, newY) != 'R') {
+        if (!isRoad(state.mapGrid, newX, newY)) {
             return;
         }
         if (visited[newX + 'x' + newY]) {
@@ -81,6 +80,12 @@ function editPath(state, x, y) {
         editPathSimple(state, finalPoint.x, finalPoint.y);
         finalPoint = finalPoint.next;
     }
+    lastPoint = path.points[path.points.length - 1];
+    if (path.points.length > 1 && getGridValue(state.mapGrid, lastPoint[0], lastPoint[1]) == 'N') {
+        path.complete = true;
+    } else {
+        path.complete = false;
+    }
 }
 
 /**
@@ -92,15 +97,11 @@ function editPath(state, x, y) {
  * @param {Number} y  The y tile coordinate
  */
 function editPathSimple(state, x, y) {
-    if (state.mapGrid[y][x] != 'R') {
+    if (!isRoad(state.mapGrid, x, y)) {
         return;
     }
     /** @type Path */
     var path = state.paths[state.selectedPath];
-    if (path.points.length == 0) {
-        path.points.push([x, y]);
-        return;
-    }
     if (path.points.length > 1){
         var secondToLastPoint = path.points[path.points.length - 2];
         if (secondToLastPoint[0] == x && secondToLastPoint[1] == y) {
@@ -126,11 +127,11 @@ function drawPaths(state, context) {
     //draw selected path first since it is thicker and can be seen underneath
     //the unselected paths
     var path = state.paths[state.selectedPath];
-    context.lineWidth = 4;
+    context.lineWidth = 6;
     if (path.complete) {
-        context.strokeStyle = '#FFF';
+        context.strokeStyle = '#66F';
     } else {
-        context.strokeStyle = '#F88';
+        context.strokeStyle = '#F66';
     }
     drawTravelPath(context, path.points);
     context.lineWidth = 2;
@@ -139,9 +140,9 @@ function drawPaths(state, context) {
             return;
         }
         if (path.complete) {
-            context.strokeStyle = '#DDD';
+            context.strokeStyle = '#AAF';
         } else {
-            context.strokeStyle = '#800';
+            context.strokeStyle = '#FAA';
         }
         drawTravelPath(context, path.points);
     });
@@ -178,14 +179,13 @@ function drawTravelPath(context, points){
                      points[0][1] * tileSize + (tileSize/2) - 6, 12, 12);
 }
 
-function animateCreature(grid, coordinates){
+function animateCreature(grid){
     var tileSize = defaultTileSize;
-    var direction = 1;
     var i = 0;
     var array = [];
-    coordinates = testCoordinates;
     var subIndex = 0;
     setInterval(function(){
+        var coordinates = state.paths[state.selectedPath].points;
         game.animalContext.clearRect(0, 0, 510, 510);
         var maxSubIndex = 10;
         if (coordinates.length < 2) {
@@ -193,14 +193,10 @@ function animateCreature(grid, coordinates){
         }
         //added a couple of lines to fix the animation if the path gets
         //deleted underneath the animal
-        if (i >= coordinates.length) {
-            i = coordinates.length - 1
+        if (i >= coordinates.length - 1) {
+            i = 0;
         }
-        var nextIndex = i + direction;
-        if (nextIndex >= coordinates.length) {
-            direction = -1;
-            nextIndex = i + direction;
-        }
+        var nextIndex = i + 1;
         var futureX = coordinates[nextIndex][0]*tileSize; //the next x coordinate. does not loop.
         var futureY = coordinates[nextIndex][1]*tileSize; //the next y coordinate. does not loop.
         var currentX = coordinates[i][0]*tileSize; //the first value in my inner array
@@ -227,33 +223,11 @@ function animateCreature(grid, coordinates){
         drawAnimalSprite(game.animalContext, x, y, 0, rotation);
         if (subIndex >= maxSubIndex){
             i = nextIndex;
-            if (i == coordinates.length - 1 || i == 0) {
-                direction = -direction;
+            if (i == coordinates.length - 1) {
+                i = 0;
             }
             subIndex = 0;
         }
         subIndex++;
     }, 30);
 }
-
-var testCoordinates = [
-        [5, 0],
-        [4, 0],
-        [3, 0],
-        [2, 0],
-        [2, 1],
-        [2, 2],
-        [2, 3],
-        [2, 4],
-        [2, 5],
-        [1, 5],
-        [0, 5],
-        [0, 6],
-        [0, 7],
-        [0, 8],
-        [0, 9],
-        [0, 10],
-        [1, 10],
-        [2, 10],
-        [2, 11]
-    ];

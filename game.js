@@ -108,7 +108,6 @@ function drawPalette() {
             drawBrush(game.paletteContext, x, y, brush);
         });
     })
-    toggleEditing();
     startGame();
     $('.js-paletteCanvas').on('click', function (event) {
         var x = event.pageX - $('.js-paletteCanvas').offset().left;

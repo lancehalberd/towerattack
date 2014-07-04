@@ -3,15 +3,18 @@ var state = new State();
 //this triggers when page has finished loading
 $(function () {
     initializeGame();
+    state.mapGrid =  arrayToGrid(level1.grid);
+    for (var i = 0; i < level1.paths.length; i++) {
+        state.paths[i].points = level1.paths[i];
+        state.paths[i].complete = true;
+    }
     state.deck = testDeck;
-    state.paths[0].points = testCoordinates;
     initializeCardArea(state);
     $('.js-edit').on('click', toggleEditing);
     addTimelineInteractions(state);
 });
 
 function startGame() {
-    state.mapGrid =  arrayToGrid(level1);
     drawGrid(game.backgroundContext, state.mapGrid);
     drawPaths(state, game.pathContext);
     animateCreature(game.animalContext);
@@ -30,7 +33,13 @@ function startGame() {
             drawingTiles = true;
         } else {
             drawingPath = true;
-            editPath(state, tileX, tileY);
+            //clicking on a nest restarts the path
+            if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
+                state.paths[state.selectedPath].points = [[tileX, tileY]];
+                state.paths[state.selectedPath].complete = false;
+            } else {
+                editPath(state, tileX, tileY);
+            }
         }
     });
     $(document).on('mousemove', function (event) {
@@ -60,7 +69,11 @@ function startGame() {
         $.each(state.mapGrid, function (i, row) {
             exportRows.push('"' + row.join('') + '"');
         });
-        $('.output').val("[\n" + exportRows.join(",\n") + "]");
+        var result = "[\n" + exportRows.join(",\n") + "];\n";
+        $.each(state.paths, function (i, path) {
+            result += JSON.stringify(path.points) + ";\n";
+        });
+        $('.output').val(result);
     });
 }
 function drawTile(grid, x, y, brush) {
