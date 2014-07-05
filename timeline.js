@@ -59,6 +59,11 @@ function drawTimeline(state) {
             }
         });
     });
+    if (state.step == 'wave') {
+        var playHeadX = Math.min(749, Math.floor(tileSize * state.waveTime / 200));
+        context.fillStyle = "#F44";
+        context.fillRect(playHeadX - 1, 0, 2, 120);
+    }
 }
 
 /**
