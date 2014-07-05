@@ -35,6 +35,11 @@
     height: 450px;
     background-color: tan;
 }
+.controls {
+    position:absolute;
+    bottom: 5px;
+    left: 5px;
+}
 .mapEditor {
     background-color: peach;
 }

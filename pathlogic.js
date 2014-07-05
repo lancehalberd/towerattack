@@ -179,55 +179,41 @@ function drawTravelPath(context, points){
                      points[0][1] * tileSize + (tileSize/2) - 6, 12, 12);
 }
 
-function animateCreature(grid){
-    var tileSize = defaultTileSize;
-    var i = 0;
-    var array = [];
-    var subIndex = 0;
-    setInterval(function(){
-        var coordinates = state.paths[state.selectedPath].points;
-        game.animalContext.clearRect(0, 0, 510, 510);
-        var maxSubIndex = 10;
-        if (coordinates.length < 2) {
-            return;
+function animatePreviewCreature(){
+    var coordinates = state.paths[state.selectedPath].points;
+    game.animalContext.clearRect(0, 0, 510, 510);
+    if (coordinates.length < 2) {
+        return;
+    }
+    var distance = Math.floor(state.gameTime / 10) % ((coordinates.length - 1) * 30)
+    drawCreatureOnPath(coordinates, distance, state.gameTime);
+}
+function drawCreatureOnPath(points, distance, time) {
+    var tileSize = 30;
+    var index = Math.floor(distance / tileSize);
+    //has already finished or not yet started
+    if (index < 0 || index >= points.length - 1) {
+        return null;
+    }
+    var percent = (distance % tileSize) / tileSize;
+    var nextIndex = index + 1;
+    var futureX = points[nextIndex][0] * tileSize; //the next x coordinate. does not loop.
+    var futureY = points[nextIndex][1] * tileSize; //the next y coordinate. does not loop.
+    var currentX = points[index][0]*tileSize; //the first value in my inner array
+    var currentY = points[index][1]*tileSize; //the second value in my inner array
+    var x = currentX + percent * (futureX - currentX);
+    var y = currentY + percent * (futureY - currentY);
+    var rotation = 0;
+    if (futureX == currentX) {
+        //  condition ? trueValue : falseValue;
+        // facing down ? rotateDown : rotateUp
+        rotation = (futureY > currentY) ? Math.PI / 2 : -Math.PI / 2;
+    } else {
+        rotation = Math.atan( (futureY - currentY) / (futureX - currentX));
+        if (futureX < currentX) {
+            rotation = rotation + Math.PI;
         }
-        //added a couple of lines to fix the animation if the path gets
-        //deleted underneath the animal
-        if (i >= coordinates.length - 1) {
-            i = 0;
-        }
-        var nextIndex = i + 1;
-        var futureX = coordinates[nextIndex][0]*tileSize; //the next x coordinate. does not loop.
-        var futureY = coordinates[nextIndex][1]*tileSize; //the next y coordinate. does not loop.
-        var currentX = coordinates[i][0]*tileSize; //the first value in my inner array
-        var currentY = coordinates[i][1]*tileSize; //the second value in my inner array
-        //formula for smooth movement between two points: currentX + (subIndex/maxSubIndex) * (futureX - currentX)
-        //console.log('The current percent to move is ' + (subIndex/maxSubIndex));
-        //console.log('The current amount to add to currentX is ' + (futureX-currentX));
-        //console.log('future coordinates are ' + futureX + ', ' + futureY);
-        //console.log('current coordinates are ' + currentX + ', ' + currentY)
-        var x = currentX + (subIndex/10)*(futureX-currentX);
-        var y = currentY + (subIndex/10)*(futureY-currentY);
-        array.push(coordinates[i]);
-        var rotation = 0;
-        if (futureX == currentX) {
-            //  condition ? trueValue : falseValue;
-            // facing down ? rotateDown : rotateUp
-            rotation = (futureY > currentY) ? Math.PI / 2 : -Math.PI / 2;
-        } else {
-            rotation = Math.atan( (futureY - currentY) / (futureX - currentX));
-            if (futureX < currentX) {
-                rotation = rotation + Math.PI;
-            }
-        }
-        drawAnimalSprite(game.animalContext, x, y, 0, rotation);
-        if (subIndex >= maxSubIndex){
-            i = nextIndex;
-            if (i == coordinates.length - 1) {
-                i = 0;
-            }
-            subIndex = 0;
-        }
-        subIndex++;
-    }, 30);
+    }
+    drawAnimalSprite(game.animalContext, x, y, 0, time, rotation);
+    return [x, y];
 }

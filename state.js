@@ -31,6 +31,9 @@ function State () {
 
     };
     this.waveNumber = 1;
+    this.gameTime = 0;
+    this.waveTime = 0;
+    this.waveSpeed = 1;
     this.abilitiesUsedThisTurn = 0;
     //cards the user has dealt and can use this wave
     this.dealtCards = [];

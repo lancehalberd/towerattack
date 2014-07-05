@@ -123,13 +123,19 @@ function displayDeck(state) {
  */
 function addCardHandlers(state) {
     $('.js-cardContainer').on('click', '.card.back', function () {
-        dealCard(state);
+        if (state.step == 'cards') {
+            dealCard(state);
+        }
     });
     $('.js-cardContainer').on('click', '.card.dealt .ability', function () {
-        playCard(state, $(this).data('ability'), $(this).closest('.card').data('card'));
+        if (state.step == 'cards') {
+            playCard(state, $(this).data('ability'), $(this).closest('.card').data('card'));
+        }
     });
     $('.js-cardContainer').on('click', '.card.discarded', function () {
-        shuffleDeck(state);
+        if (state.step == 'cards') {
+            shuffleDeck(state);
+        }
     });
 }
 
@@ -162,11 +168,20 @@ function playCard(state, ability, card) {
     if (state.abilitiesUsedThisTurn > 2) {
         return;
     }
-    state[state.dealtCards.indexOf(card)] = null;
+    state.dealtCards[state.dealtCards.indexOf(card)] = null;
     var error = useAbility(state, ability);
     if (error) {
         return;
     }
+    discardCard(state, card);
+    state.abilitiesUsedThisTurn++;
+}
+
+/**
+ * @param {State} state
+ * @param {Card} card
+ */
+function discardCard(state, card) {
     card.element.css('top', '');
     card.element.css('left', '');
     card.element.css('bottom', (5 + (state.discardedCards.length) * 5) + 'px');
@@ -175,7 +190,6 @@ function playCard(state, ability, card) {
     card.element.removeClass('dealt');
     card.element.addClass('discarded');
     $('.js-cardContainer').append(card.element);
-    state.abilitiesUsedThisTurn++;
 }
 
 /**

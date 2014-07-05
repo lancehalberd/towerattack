@@ -51,7 +51,7 @@ function drawTimeline(state) {
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
                 }
                 var image = slot.type.image;
-                drawAnimalSprite(context, x, y, 0, 0);
+                drawAnimalSprite(context, x, y, 0, state.gameTime, 0);
             }
             if (slotIndex < path.slots.length - 1) {
                 context.fillStyle = "#eee";
