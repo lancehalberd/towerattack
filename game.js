@@ -23,7 +23,6 @@ function Game() {
     this.images = {};
 }
 
-
 function Level(name, gridData, structures) {
     this.name = name;
     this.grid = arrayToGrid(gridData);
@@ -40,7 +39,7 @@ function initializeGame() {
     game.paletteContext = $('.js-paletteCanvas')[0].getContext('2d');
     game.brushContext = $('.js-brushCanvas')[0].getContext('2d');
     game.paletteGrid = [['0', 'R', 'W', 'N'],
-                        ['C', '0', '0', '0'],
+                        ['C', 'M', 'F', 'T'],
                         ['0', '0', '0', '0']];
     game.mapSources = {
         'R' : new TileSource(game.paletteCanvas)

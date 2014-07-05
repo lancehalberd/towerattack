@@ -17,6 +17,8 @@ function State () {
         new Path(),
         new Path()
     ];
+    //array of all animals, gets set when the wave step starts
+    this.animals = [];
     /** @type {Animal}  The animal currently being moved in the timeline */
     this.draggingAnimal = null;
     /** @type {Animal}  The animal selected in the timeline */

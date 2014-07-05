@@ -13,9 +13,14 @@ function Animal() {
     this.damage = 1;
     //Distance from start of path to current position. How far the animal has traveled.
     this.distance = 0;
+    this.angle = 0;
+    this.finished = false;
     //actual coordinates on the map in pixels
     this.mapX = 0;
     this.mapY = 0;
+    this.spawnTime = 0;
+    /** @type Path */
+    this.path = null;
     //marks that the animal is being displaced in the timeline by the current
     //drag operation
     this.moved = false;
@@ -115,4 +120,36 @@ function drawAnimalSprite(context, x, y, srcY, time, rotation){ //temporarily ju
     context.drawImage(game.images.animals, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
     context.rotate(-rotation);
     context.translate(-x-15, -y-15);
+}
+
+/**
+ * @param {Animal} animal
+ */
+function updateAnimalPosition(animal) {
+    var tileSize = 30;
+    var points = animal.path.points;
+    var index = Math.floor(animal.distance / tileSize);
+    //has already finished or not yet started
+    if (index < 0) {
+        return;
+    }
+    if (index >= points.length - 1) {
+        animal.finished = true;
+        return;
+    }
+    var percent = (animal.distance % tileSize) / tileSize;
+    var x2 = points[index + 1][0];
+    var y2 = points[index + 1][1];
+    var x1 = points[index][0];
+    var y1 = points[index][1];
+    animal.mapX = (x1 + percent * (x2 - x1)) * tileSize;
+    animal.mapY = (y1 + percent * (y2 - y1)) * tileSize;
+    if (x1 == x2) {
+        animal.angle = (y2 > y1) ? Math.PI / 2 : -Math.PI / 2;
+    } else {
+        animal.angle = Math.atan((y2 - y1) / (x2 - x1));
+        if (x2 < x1) {
+            animal.angle += Math.PI;
+        }
+    }
 }

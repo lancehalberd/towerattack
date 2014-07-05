@@ -40,6 +40,9 @@ function drawImageTile(context, x, y, tileSource) {
  */
 function drawBrush(context, x, y, brush) {
     switch (brush) {
+        case '0':
+        case 'B':
+            break;
         case 'R':
             drawImageTile(context, x, y, new TileSource(game.roadCanvas, 3, 3));
             break;
@@ -53,6 +56,9 @@ function drawBrush(context, x, y, brush) {
             drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
             break;
         default:
-            //context.clearRect(x * defaultTileSize, y * defaultTileSize, defaultTileSize, defaultTileSize);
+            //temporary code for drawing letters for graphics we don't have
+            context.fillStyle = "black";
+            context.font = "29pt Arial";
+            context.fillText(brush, x * 30, y * 30 + 29, 30);
     }
 }
