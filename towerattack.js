@@ -119,6 +119,14 @@ function mainLoop() {
                 //move the animal each frame after it spawns
                 if (state.waveTime > animal.spawnTime) {
                     animal.distance += 10 * animal.speed * frameLength / 1000;
+                    if (Math.random() < .02) {
+                        animal.currentHealth -= 1;
+                    }
+                }
+                if (animal.currentHealth <= 0) {
+                    animal.currentHealth = 0;
+                    animal.finished = true;
+                    animal.dead = true;
                 }
                 updateAnimalPosition(animal);
             }
@@ -137,6 +145,7 @@ function mainLoop() {
                 continue;
             }
             drawAnimalSprite(game.animalContext, animal.mapX, animal.mapY, 0, state.waveTime, animal.angle);
+            drawAnimalHealth(game.animalContext, animal, animal.mapX, animal.mapY);
         }
     }
     drawTimeline(state);
@@ -185,6 +194,15 @@ function endWave() {
     state.waveNumber++;
     state.step = 'cards';
     state.abilitiesUsedThisTurn = 0;
+    for (var i = 0; i < state.paths.length; i++) {
+        for (var j = 0; j < state.paths[i].slots.length; j++) {
+            /** @type Animal */
+            var animal = state.paths[i].slots[j];
+            if (animal && animal.dead) {
+                state.paths[i].slots[j] = null;
+            }
+        }
+    }
     dealCard(state);
 }
 

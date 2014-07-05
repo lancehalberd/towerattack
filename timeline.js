@@ -40,18 +40,19 @@ function drawTimeline(state) {
         context.fillStyle = "black";
         context.fillRect(0, y, 750, 1);
         context.fillRect(0, y + tileSize - 1, 750, 1);
-        $.each(path.slots, function (slotIndex, slot){
+        $.each(path.slots, function (slotIndex, animal){
             var x = tileSize * slotIndex;
-            if (slot) {
-                if (slot == state.selectedAnimal) {
+            if (animal) {
+                if (animal == state.selectedAnimal) {
                     context.fillStyle = "#aaa";
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
-                } else if (slot.moved) {
+                } else if (animal.moved) {
                     context.fillStyle = "#faa";
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
                 }
-                var image = slot.type.image;
+                var image = animal.type.image;
                 drawAnimalSprite(context, x, y, 0, state.gameTime, 0);
+                drawAnimalHealth(context, animal, x, y);
             }
             if (slotIndex < path.slots.length - 1) {
                 context.fillStyle = "#eee";

@@ -15,6 +15,7 @@ function Animal() {
     this.distance = 0;
     this.angle = 0;
     this.finished = false;
+    this.dead = false;
     //actual coordinates on the map in pixels
     this.mapX = 0;
     this.mapY = 0;
@@ -120,6 +121,28 @@ function drawAnimalSprite(context, x, y, srcY, time, rotation){ //temporarily ju
     context.drawImage(game.images.animals, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
     context.rotate(-rotation);
     context.translate(-x-15, -y-15);
+
+}
+
+/**
+ *
+ * @param {context} context  The context to draw to
+ * @param {Animal} animal
+ * @param {Number} x  The x coordinate to draw to
+ * @param {Number} y  The y coordinate to draw to
+ */
+function drawAnimalHealth(context, animal, x, y) {
+    var percent = animal.currentHealth / animal.health;
+    context.fillStyle = "black";
+    context.fillRect(x + 2, y + 2, 26, 2);
+    if (percent > .6) {
+        context.fillStyle = "green";
+    } else if (percent > .3) {
+        context.fillStyle = "yellow";
+    } else {
+        context.fillStyle = "red";
+    }
+    context.fillRect(x + 2, y + 2, Math.ceil(percent * 26), 2);
 }
 
 /**
