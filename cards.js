@@ -84,12 +84,12 @@ function powerUp(state, ability) {
     var modifiers = state.waveModifiers;
     if (ability.data.scope == 'level') {
         modifiers = state.levelModifiers;
+}
+    if (!modifiers[ability.data.tag]) {
+        modifiers[ability.data.tag] = [];
     }
     $.each(ability.data.effects, function (index, effect) {
-        if (!modifiers[effect.tag]) {
-            modifiers[effect.tag] = [];
-        }
-        modifiers[effect.tag].push(new Modifier(effect.name, effect.value));
+        modifiers[ability.data.tag].push(new Modifier(effect.name, effect.value));
     })
     return state;
 }
