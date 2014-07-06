@@ -2,7 +2,7 @@ function spawnAbility(cost, type, amount) {
     return copy(new Ability(cost, spawnAnimals, {animal: type, amount: amount}));
 }
 function powerUpAbility(cost, scope, tag, name, value) {
-    return copy(new Ability(cost, powerUp, {scope: scope, effects: [{tag: tag, name: name, value: value}]}));
+    return copy(new Ability(cost, powerUp, {scope: scope, tag: tag, effects: [{name: name, value: value}]}));
 }
 function calorieAbility(calories) {
     return copy(new Ability(0, gainCalories, {calories: calories}));

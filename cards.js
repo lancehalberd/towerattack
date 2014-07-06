@@ -84,7 +84,7 @@ function powerUp(state, ability) {
     var modifiers = state.waveModifiers;
     if (ability.data.scope == 'level') {
         modifiers = state.levelModifiers;
-}
+    }
     if (!modifiers[ability.data.tag]) {
         modifiers[ability.data.tag] = [];
     }
@@ -185,6 +185,10 @@ function playCard(state, ability, card) {
     }
     discardCard(state, card);
     state.abilitiesUsedThisTurn++;
+    //update animals now that wave # has changed and wave modifiers are gone
+    $.each(getAnimals(state), function (i, animal) {
+        updateAnimal(state, animal);
+    });
     updateInformation();
 }
 

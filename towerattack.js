@@ -186,25 +186,27 @@ function startWave() {
     if (state.step == 'wave') {
         return;
     }
-    state.animals = [];
-    for (var i = 0; i < state.paths.length; i++) {
-        for (var j = 0; j < state.paths[i].slots.length; j++) {
-            /** @type Animal */
-            var animal = state.paths[i].slots[j];
-            if (animal) {
-                animal.spawnTime = j * 200;
-                animal.path = state.paths[i];
-                animal.finished = false;
-                animal.distance = 0;
-                animal.lastTile = null;
-                animal.burden = 0;
-                state.animals.push(animal);
-                if (!state.paths[i].complete) {
-                    state.selectedPath = i;
-                    return;
-                }
-            }
+    state.animals = getAnimals(state);
+    var invalidPath = false;
+    $.each(state.animals, function (index, element) {
+        /** @type Animal */
+        var animal = element;
+        animal.finished = false;
+        animal.distance = 0;
+        animal.lastTile = null;
+        animal.burden = 0;
+        state.animals.push(animal);
+        if (!animal.path.complete) {
+            state.selectedPath = state.paths.indexOf(animal.path);
+            invalidPath = true;
+            return false;
         }
+        return true;
+    });
+    if (invalidPath) {
+        return;
+    }
+    for (var i = 0; i < state.paths.length; i++) {
         //if this path is incomplete but also empty, just erase it at the start of the wave
         if (!state.paths[i].complete) {
             state.paths[i].points = [];

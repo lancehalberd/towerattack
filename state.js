@@ -31,7 +31,7 @@ function State () {
     this.lastAnimalMoved = null;
     this.levelModifiers = {
         //any
-        'animal' : new Modifier('healthPlus', 2)
+        'animal' : [new Modifier('healthPlus', 2)]
     };
     this.waveModifiers = {};
     this.waveNumber = 1;

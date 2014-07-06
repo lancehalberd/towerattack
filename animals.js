@@ -208,3 +208,23 @@ function updateAnimalPosition(animal) {
         }
     }
 }
+
+/**
+ * @param {State} state
+ * @return {Array}
+ */
+function getAnimals(state) {
+    var animals = [];
+    for (var i = 0; i < state.paths.length; i++) {
+        for (var j = 0; j < state.paths[i].slots.length; j++) {
+            /** @type Animal */
+            var animal = state.paths[i].slots[j];
+            if (animal) {
+                animal.path = state.paths[i];
+                animal.spawnTime = j * 200;
+                animals.push(animal);
+            }
+        }
+    }
+    return animals;
+}
