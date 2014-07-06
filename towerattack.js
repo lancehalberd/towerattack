@@ -127,17 +127,19 @@ function mainLoop() {
                         if (tileValue.brush == 'M') {
                             /** @type Mine */
                             var mine = tileValue;
-                            if (mine.waveGold > 0) {
+                            if (animal.burden < animal.carry && mine.waveGold > 0) {
                                 mine.waveGold--;
                                 state.gold++;
+                                animal.burden++;
                             }
                         }
                         if (tileValue.brush == 'F') {
                             /** @type Farm */
                             var farm = tileValue;
-                            if (farm.waveCalories > 0) {
+                            if (animal.burden < animal.carry && farm.waveCalories > 0) {
                                 farm.waveCalories--;
                                 state.calories++;
+                                animal.burden++;
                             }
                         }
                         animal.lastTile = tileValue;
