@@ -45,7 +45,7 @@ function initializeGame() {
         'R' : new TileSource(game.paletteCanvas)
     }
     game.images = {
-        'animals' : 'graphics/creatureSpritesSnake.png',
+        'animals' : 'graphics/creatureSprites.png',
         'water' : 'graphics/water.png',
         'roadMask' : 'graphics/roadSpriteSheet.png',
         'background' : 'graphics/meadowsBackgroundSprites.png'

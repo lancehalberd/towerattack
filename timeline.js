@@ -51,7 +51,7 @@ function drawTimeline(state) {
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
                 }
                 var image = animal.type.image;
-                drawAnimalSprite(context, x, y, 0, state.gameTime, 0);
+                drawAnimalSprite(context, x, y, animal.type.spriteIndex, state.gameTime, 0);
                 drawAnimalHealth(context, animal, x, y);
             }
             if (slotIndex < path.slots.length - 1) {

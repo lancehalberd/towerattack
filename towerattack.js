@@ -120,9 +120,13 @@ function mainLoop() {
                         if (tileValue.brush == 'C') {
                             /** @type City */
                             var city = tileValue;
-                            var damage = Math.min(city.population, animal.damage);
-                            city.population -= damage;
-                            state.population -= damage;
+                            if (city.population < animal.damage) {
+                                state.population -= city.population;
+                                city.population = 0;
+                            } else {
+                                city.population -= animal.damage;
+                                state.population -= animal.damage;
+                            }
                         }
                         if (tileValue.brush == 'M') {
                             /** @type Mine */
@@ -169,7 +173,7 @@ function mainLoop() {
             if (animal.finished || state.waveTime < animal.spawnTime) {
                 continue;
             }
-            drawAnimalSprite(game.animalContext, animal.mapX, animal.mapY, 0, state.waveTime, animal.angle);
+            drawAnimalSprite(game.animalContext, animal.mapX, animal.mapY, animal.type.spriteIndex, state.waveTime, animal.angle);
             drawAnimalHealth(game.animalContext, animal, animal.mapX, animal.mapY);
         }
     }
@@ -234,7 +238,9 @@ function endWave() {
             /** @type City */
             var city = structure;
             state.humanGold += Math.floor(city.productivity * city.population);
-            cities.push(city);
+            if (city.population > 0) {
+                cities.push(city);
+            }
         }
         //humans get gold from mines that the animals failed to steal
         if (structure.brush == 'M') {

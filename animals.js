@@ -39,7 +39,7 @@ function Animal() {
  */
 function AnimalType() {
     this.health = 10;
-    this.healthGrowth = 0;
+    this.healthGrowth = 1;
     this.speed = 10;
     this.speedGrowth = 0;
     this.armor = 0;
@@ -51,12 +51,35 @@ function AnimalType() {
     //these tags are used for matching modifier abilities like
     //"increase the armor of all 'birds'"
     this.tags = ['animal'];
+    this.spriteIndex = 0;
+}
+/**
+ * @param {Object} data
+ */
+function createAnimalType(data) {
+    var type = new AnimalType();
+    for (var i in data) {
+        if (data.hasOwnProperty(i)) {
+            type[i] = data[i];
+        }
+    }
+    type.tags.push('animal');
+    return type;
 }
 
 var animalTypes = {
-    'cardinal': new AnimalType(),
-    'penguin': new AnimalType(),
-    'zebra': new AnimalType()
+    'cardinal': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 20, 'speedGrowth': 1,
+                                    'armor': 0, 'armorGrowth': 0, 'carry': 1, 'carryGrowth': 0,
+                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'air'], 'spriteIndex': 0}),
+    'snake': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 15, 'speedGrowth': 0,
+                                    'armor': 0, 'armorGrowth': .2, 'carry': 1, 'carryGrowth': 0,
+                                    'damage': 2, 'damageGrowth': .5, tags: ['reptile', 'ground'], 'spriteIndex': 1}),
+    'penguin': createAnimalType({'health': 20, 'healthGrowth': 2, 'speed': 10, 'speedGrowth': 0,
+                                    'armor': 0, 'armorGrowth': .2, 'carry': 2, 'carryGrowth': 0,
+                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'ground'], 'spriteIndex': 0}),
+    'zebra': createAnimalType({'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
+                                    'armor': 1, 'armorGrowth': .1, 'carry': 1, 'carryGrowth': 0,
+                                    'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'], 'spriteIndex': 0}),
 }
 
 /**
@@ -113,11 +136,11 @@ function updateAnimal(state, animal) {
  * @param {context} context  The context to draw to
  * @param {Number} x  The x coordinate to draw to
  * @param {Number} y  The y coordinate to draw to
- * @param {Number} srcY  The y coordinate to grabe the sprite from the creatureSprite sheet
+ * @param {Number} sourceIndex  The row to grab the sprite from the creatureSprite sheet
  * @param {Number} time  The time in milliseconds
  * @param {Number} rotation  The rotation to draw the sprite at
  */
-function drawAnimalSprite(context, x, y, srcY, time, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
+function drawAnimalSprite(context, x, y, sourceIndex, time, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
     var tileSize = defaultTileSize;
     var frameDuration = 200;
     var numberOfFrames = 6;
@@ -125,7 +148,7 @@ function drawAnimalSprite(context, x, y, srcY, time, rotation){ //temporarily ju
     //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
     context.translate(x+15, y+15);
     context.rotate(rotation);
-    context.drawImage(game.images.animals, srcX, srcY, tileSize, tileSize, -15, -15, tileSize, tileSize);
+    context.drawImage(game.images.animals, srcX, sourceIndex * tileSize, tileSize, tileSize, -15, -15, tileSize, tileSize);
     context.rotate(-rotation);
     context.translate(-x-15, -y-15);
 
