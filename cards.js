@@ -28,6 +28,15 @@ function Ability(cost, effectFunction, data) {
 }
 
 /**
+ * @param {String} name  functional name like healthPlus or healthTimes
+ * @param {Number} value  Value to change stat by
+ */
+function Modifier(name, value) {
+    this.name = name;
+    this.value = value;
+}
+
+/**
  * Apply the given ability to the given state.
  *
  * @param {State} state  The current state of the game.
@@ -35,12 +44,13 @@ function Ability(cost, effectFunction, data) {
  * @return {String}  error message if the ability may not be used
  */
 function useAbility(state, ability) {
-    state.calories -= ability.cost;
-    if (state.calories < 0) {
-        return "You need " + (-state.calories) + " more calories to use this ability";
+    if (state.calories < ability.cost) {
+        return "You need " + (state.calories - ability.cost) + " more calories to use this ability";
     }
+    state.calories -= ability.cost;
     //call the particular effect associated with this ability
     ability.effectFunction(state, ability);
+    updateInformation();
     return null;
 }
 
@@ -76,10 +86,10 @@ function powerUp(state, ability) {
         modifiers = state.levelModifiers;
     }
     $.each(ability.data.effects, function (index, effect) {
-        if (!modifiers[effect.name]) {
-            modifiers[effect.name] = [];
+        if (!modifiers[effect.tag]) {
+            modifiers[effect.tag] = [];
         }
-        modifiers[effect.name].push(effect.value);
+        modifiers[effect.tag].push(new Modifier(effect.name, effect.value));
     })
     return state;
 }
@@ -91,8 +101,8 @@ function powerUp(state, ability) {
  * @param {Ability} ability  The ability triggering this effect.
  * @return {State}  The state with the animals added to the current wave.
  */
-function nullOp(state, ability) {
-    return state;
+function gainCalories(state, ability) {
+    return state.calories += ability.data.calories;
 }
 
 /**
@@ -175,6 +185,7 @@ function playCard(state, ability, card) {
     }
     discardCard(state, card);
     state.abilitiesUsedThisTurn++;
+    updateInformation();
 }
 
 /**
@@ -226,7 +237,14 @@ function makeCard(card) {
     $.each(card.slots, function (index, ability) {
         var $ability = $('<div class="ability"></div>');
         $ability.data('ability', ability);
-        $ability.text(ability.cost);
+        if (ability.data.animal) {
+            $ability.text(ability.cost + ":" + ability.data.animal);
+        } else if (ability.data.effects) {
+            var effect = ability.data.effects[0];
+            $ability.text(ability.cost + ":"+ effect.name + ' ' + effect.value);
+        } else if (ability.data.calories) {
+            $ability.text('+' + ability.data.calories + ' Cal');
+        }
         $card.append($ability);
     })
     $card.data('card', card);

@@ -1,3 +1,26 @@
+function City() {
+    this.maxPopulation = 100;
+    this.population = 100;
+    this.productivity = .1;
+    this.brush = 'C';
+}
+function Mine() {
+    this.gold = 10;
+    this.waveGold = 10;
+    this.brush = 'M';
+}
+function Farm() {
+    this.calories = 10;
+    this.waveCalories = 10;
+    this.brush = 'F';
+}
+function Tower() {
+    this.baseDamage = 5;
+    this.damageRange = 5;
+    this.range = 60;
+    this.attacksPerSecond = 1;
+    this.brush = 'T';
+}
 
 /**
  * Draws the map grid to the given context.
@@ -13,10 +36,38 @@ function drawGrid(context, grid) {
     for (var y = 0; y < grid.length; y++){
         for (var x = 0; x < grid[y].length; x++){
             if (grid[y][x] != 'W' && grid[y][x] != 'R') {
-                drawBrush(context, x, y, grid[y][x]);
+                drawBrush(context, x, y, grid[y][x].brush ? grid[y][x].brush : grid[y][x]);
             }
         }
     }
+}
+
+
+/**
+ * Draws the paths defined in the current state to the given context.
+ *
+ * @param {Array} grid  state of the game
+ * @param {Number} x  The x tile coordinate
+ * @param {Number} y  The y tile coordinate
+ * @return {String}
+ */
+function getGridValue(grid, x, y) {
+    if (!inGrid(grid, x, y)) {
+        return null;
+    }
+    return grid[y][x].brush ? grid[y][x].brush : grid[y][x];
+}
+
+/**
+ * Returns true if the coordinates are on the given grid
+ *
+ * @param {Array} grid  state of the game
+ * @param {Number} x  The x tile coordinate
+ * @param {Number} y  The y tile coordinate
+ * @return {Boolean}
+ */
+function inGrid(grid, x, y) {
+    return (x >= 0 && y >= 0 && x < grid[0].length && y < grid.length);
 }
 
 /**
@@ -164,31 +215,22 @@ function arrayToGrid(arrayOfStrings) {
     //    [code]
     //}
     $.each(arrayOfStrings, function (i, string) {
-        grid.push(string.split(''));
+        var row = string.split('');
+        grid.push(row);
+        $.each(row, function (j, string) {
+            if (string == 'C') {
+                row[j] = new City();
+            }
+            if (string == 'F') {
+                row[j] = new Farm();
+            }
+            if (string == 'M') {
+                row[j] = new Mine();
+            }
+            if (string == 'T') {
+                row[j] = new Tower();
+            }
+        });
     });
     return grid;
 }
-
-var level1 = {
-    grid: [
-"00BBRRR0000RRR0",
-"00BWWWR0RRRR0R0",
-"00RWWWR0R00R0R0",
-"00R0WWB0R00R0R0",
-"00R00WBBCRRR0R0",
-"RRRRR0BWWWR00R0",
-"R000CRBWWWBW0R0",
-"R000R000WWBBBRN",
-"R000R00000RWWWR",
-"R00RRR0000RWWWB",
-"RRRR0R0000R0BBB",
-"00R00RRRRRRRRWW",
-"0RR0000R0000RRW",
-"0R00000R00000R0",
-"0NRRRRRRRRRRRR0"],
-    paths:[
-        [[1,14],[1,13],[1,12],[2,12],[2,11],[2,10],[1,10],[0,10],[0,9],[0,8],[0,7],[0,6],[0,5],[1,5],[2,5],[2,4],[2,3],[2,2],[2,1],[2,0],[3,0],[4,0],[5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[7,4],[8,4],[8,3],[8,2],[8,1],[9,1],[10,1],[11,1],[11,0],[12,0],[13,0],[13,1],[13,2],[13,3],[13,4],[13,5],[13,6],[13,7],[14,7]],
-        [[1,14],[2,14],[3,14],[4,14],[5,14],[6,14],[7,14],[8,14],[9,14],[10,14],[11,14],[12,14],[13,14],[13,13],[13,12],[12,12],[12,11],[12,10],[13,10],[14,10],[14,9],[14,8],[14,7]],
-        [[14,7],[13,7],[12,7],[11,7],[10,7],[10,6],[10,5],[10,4],[9,4],[8,4],[7,4],[6,4],[6,5],[6,6],[5,6],[4,6],[4,7],[4,8],[4,9],[5,9],[5,10],[5,11],[6,11],[7,11],[8,11],[9,11],[10,11],[11,11],[12,11],[12,10],[13,10],[14,10],[14,9],[14,8],[14,7]]
-    ]
-};

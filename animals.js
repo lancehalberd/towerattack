@@ -10,7 +10,11 @@ function Animal() {
     this.speed = 10;
     this.armor = 0;
     this.carry = 1;
+    this.burden = 0;
     this.damage = 1;
+    //last structure the animal damaged. Used to figure out if they have
+    //attacked the structure they are passing through yet
+    this.lastTile = null;
     //Distance from start of path to current position. How far the animal has traveled.
     this.distance = 0;
     this.angle = 0;
@@ -19,6 +23,9 @@ function Animal() {
     //actual coordinates on the map in pixels
     this.mapX = 0;
     this.mapY = 0;
+    //coordinates of the tile most recently reached
+    this.tileX = 0;
+    this.tileY = 0;
     this.spawnTime = 0;
     /** @type Path */
     this.path = null;
@@ -89,11 +96,11 @@ function updateAnimal(state, animal) {
         var plusModifier = 0;
         var multiplier = 1;
         $.each(modifiers, function (index, modifier) {
-            if (modifier[stat + 'Plus']) {
-                plusModifier += modifier[stat + 'Plus'];
+            if (modifier.name == stat + 'Plus') {
+                plusModifier += modifier.value;
             }
-            if (modifier[stat + 'Times']) {
-                multiplier *= modifier[stat + 'Times'];
+            if (modifier.name == stat + 'Times') {
+                multiplier *= modifier.value;
             }
         });
         animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
@@ -136,7 +143,7 @@ function drawAnimalHealth(context, animal, x, y) {
     context.fillStyle = "black";
     context.fillRect(x + 2, y + 2, 26, 2);
     if (percent > .6) {
-        context.fillStyle = "green";
+        context.fillStyle = "#0C0";
     } else if (percent > .3) {
         context.fillStyle = "yellow";
     } else {
@@ -165,6 +172,8 @@ function updateAnimalPosition(animal) {
     var y2 = points[index + 1][1];
     var x1 = points[index][0];
     var y1 = points[index][1];
+    animal.tileX = x1;
+    animal.tileY = y1;
     animal.mapX = (x1 + percent * (x2 - x1)) * tileSize;
     animal.mapY = (y1 + percent * (y2 - y1)) * tileSize;
     if (x1 == x2) {

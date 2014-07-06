@@ -3,17 +3,13 @@ var state = new State();
 //this triggers when page has finished loading
 $(function () {
     initializeGame();
-    state.mapGrid =  arrayToGrid(level1.grid);
-    for (var i = 0; i < level1.paths.length; i++) {
-        state.paths[i].points = level1.paths[i];
-        state.paths[i].complete = true;
-    }
+    startLevel(level1);
+    updateInformation();
     state.deck = testDeck;
     initializeCardArea(state);
     $('.js-edit').on('click', toggleEditing);
     $('.js-play').on('click', startWave);
     $('.js-fastForward').on('click', changeSpeed);
-
     addTimelineInteractions(state);
 });
 
@@ -119,6 +115,33 @@ function mainLoop() {
                 //move the animal each frame after it spawns
                 if (state.waveTime > animal.spawnTime) {
                     animal.distance += 10 * animal.speed * frameLength / 1000;
+                    var tileValue = state.mapGrid[animal.tileY][animal.tileX];
+                    if (tileValue != animal.lastTile) {
+                        if (tileValue.brush == 'C') {
+                            /** @type City */
+                            var city = tileValue;
+                            var damage = Math.min(city.population, animal.damage);
+                            city.population -= damage;
+                            state.currentPopulation -= damage;
+                        }
+                        if (tileValue.brush == 'M') {
+                            /** @type Mine */
+                            var mine = tileValue;
+                            if (mine.waveGold > 0) {
+                                mine.waveGold--;
+                                state.gold++;
+                            }
+                        }
+                        if (tileValue.brush == 'F') {
+                            /** @type Farm */
+                            var farm = tileValue;
+                            if (farm.waveCalories > 0) {
+                                farm.waveCalories--;
+                                state.calories++;
+                            }
+                        }
+                        animal.lastTile = tileValue;
+                    }
                     if (Math.random() < .02) {
                         animal.currentHealth -= 1;
                     }
@@ -150,6 +173,7 @@ function mainLoop() {
     }
     drawTimeline(state);
     drawPaths(state, game.pathContext);
+    updateInformation();
 }
 
 function startWave() {
@@ -166,6 +190,8 @@ function startWave() {
                 animal.path = state.paths[i];
                 animal.finished = false;
                 animal.distance = 0;
+                animal.lastTile = null;
+                animal.burden = 0;
                 state.animals.push(animal);
                 if (!state.paths[i].complete) {
                     state.selectedPath = i;
@@ -191,7 +217,13 @@ function startWave() {
 }
 
 function endWave() {
+    //clear all wave modifiers at the end of the wave
+    state.waveModifiers = {};
     state.waveNumber++;
+    //update animals now that wave # has changed and wave modifiers are gone
+    $.each(state.animals, function (i, animal) {
+        updateAnimal(state, animal);
+    })
     state.step = 'cards';
     state.abilitiesUsedThisTurn = 0;
     for (var i = 0; i < state.paths.length; i++) {
@@ -203,13 +235,23 @@ function endWave() {
             }
         }
     }
+    state.calories += state.currentLevel.caloriesPerWave;
     dealCard(state);
+    updateInformation();
 }
 
 function changeSpeed() {
-    state.waveSpeed*=2;
+    state.waveSpeed *= 2;
     if (state.waveSpeed > 8) {
         state.waveSpeed = 1;
     }
     $('.js-fastForward').text('x ' + state.waveSpeed);
+}
+
+function updateInformation() {
+    $('.js-levelName').text(state.currentLevel.name);
+    $('.js-population').text('Population: ' + state.currentPopulation + '/' + state.totalPopulation);
+    $('.js-humanGold').text('Gold: ' + state.humanGold);
+    $('.js-myCalories').text('Calories: ' + state.calories);
+    $('.js-myGold').text('Gold: ' + state.gold);
 }

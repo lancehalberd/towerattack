@@ -12,24 +12,6 @@ function Path() {
 }
 
 /**
- * Draws the paths defined in the current state to the given context.
- *
- * @param {Array} grid  state of the game
- * @param {Number} x  The x tile coordinate
- * @param {Number} y  The y tile coordinate
- */
-function getGridValue(grid, x, y) {
-    if (!inGrid(grid, x, y)) {
-        return null;
-    }
-    return grid[y][x];
-}
-
-function inGrid(grid, x, y) {
-    return (x >= 0 && y >= 0 && x < grid[0].length && y < grid.length);
-}
-
-/**
  * Edits the selected path, determining the shortest route (if any) between
  * the given coordinate, and the end of the current path.
  *

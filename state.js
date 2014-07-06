@@ -2,6 +2,8 @@
  * Stores the current state of the game
  */
 function State () {
+    /** @type Level */
+    this.currentLevel = null;
     this.step = "cards";
     //indicates whether the user is editing the map
     this.editingMap = false;
@@ -19,6 +21,8 @@ function State () {
     ];
     //array of all animals, gets set when the wave step starts
     this.animals = [];
+    //array of all structures, gets set when the level starts
+    this.structures = [];
     /** @type {Animal}  The animal currently being moved in the timeline */
     this.draggingAnimal = null;
     /** @type {Animal}  The animal selected in the timeline */
@@ -27,11 +31,9 @@ function State () {
     this.lastAnimalMoved = null;
     this.levelModifiers = {
         //any
-        'animal' : {'healthPlus' : 2}
+        'animal' : new Modifier('healthPlus', 2)
     };
-    this.waveModifiers = {
-
-    };
+    this.waveModifiers = {};
     this.waveNumber = 1;
     this.gameTime = 0;
     this.waveTime = 0;
@@ -43,6 +45,10 @@ function State () {
     this.discardedCards = [];
     //undealt cards in the users deck
     this.deck = [];
+    this.humanGold = 0;
+    this.humanCalories = 0;
+    this.currentPopulation = 0;
+    this.totalPopulation = 0;
 }
 
 
