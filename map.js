@@ -1,5 +1,4 @@
 function City() {
-    this.maxPopulation = 100;
     this.population = 100;
     this.productivity = .1;
     this.brush = 'C';

@@ -122,7 +122,7 @@ function mainLoop() {
                             var city = tileValue;
                             var damage = Math.min(city.population, animal.damage);
                             city.population -= damage;
-                            state.currentPopulation -= damage;
+                            state.population -= damage;
                         }
                         if (tileValue.brush == 'M') {
                             /** @type Mine */
@@ -223,7 +223,39 @@ function endWave() {
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(state.animals, function (i, animal) {
         updateAnimal(state, animal);
-    })
+    });
+    var cities = [];
+    //calculate assets humans gain from structures
+    $.each(state.structures, function (i, structure) {
+        //humans get gold from each city based on population left
+        if (structure.brush == 'C') {
+            /** @type City */
+            var city = structure;
+            state.humanGold += Math.floor(city.productivity * city.population);
+            cities.push(city);
+        }
+        //humans get gold from mines that the animals failed to steal
+        if (structure.brush == 'M') {
+            /** @type Mine */
+            var mine = structure;
+            state.humanGold += mine.waveGold;
+            mine.waveGold = mine.gold;
+        }
+        //humans get calories from mines that the animals failed to steal
+        if (structure.brush == 'F') {
+            /** @type Farm */
+            var farm = structure;
+            state.humanCalories += farm.waveCalories;
+            farm.waveCalories = farm.calories;
+        }
+    });
+    state.population = 0;
+    $.each(cities, function (index, city) {
+        city.population += .1 * state.humanCalories / cities.length;
+        state.population += city.population;
+    });
+    state.population = state.population.toFixed(1);
+    state.humanCalories = 0;
     state.step = 'cards';
     state.abilitiesUsedThisTurn = 0;
     for (var i = 0; i < state.paths.length; i++) {
@@ -250,7 +282,7 @@ function changeSpeed() {
 
 function updateInformation() {
     $('.js-levelName').text(state.currentLevel.name);
-    $('.js-population').text('Population: ' + state.currentPopulation + '/' + state.totalPopulation);
+    $('.js-population').text('Population: ' + state.population + 'K');
     $('.js-humanGold').text('Gold: ' + state.humanGold);
     $('.js-myCalories').text('Calories: ' + state.calories);
     $('.js-myGold').text('Gold: ' + state.gold);

@@ -26,8 +26,7 @@ function startLevel(level) {
     state.mapGrid = arrayToGrid(level.grid);
     state.calories = level.startingCalories;
     state.gold = 0;
-    state.totalPopulation = 0;
-    state.currentPopulation = 0;
+    state.population = 0;
     //discard remainign dealt cards at start of wave
     while (state.dealtCards.length) {
         /** @type Card */
@@ -41,8 +40,7 @@ function startLevel(level) {
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
             if (state.mapGrid[i][j].population > 0) {
-                state.totalPopulation += state.mapGrid[i][j].maxPopulation;
-                state.currentPopulation += state.mapGrid[i][j].population;
+                state.population += state.mapGrid[i][j].population;
             }
             if (state.mapGrid[i][j].brush) {
                 state.structures.push(state.mapGrid[i][j]);

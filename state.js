@@ -47,8 +47,7 @@ function State () {
     this.deck = [];
     this.humanGold = 0;
     this.humanCalories = 0;
-    this.currentPopulation = 0;
-    this.totalPopulation = 0;
+    this.population = 0;
 }
 
 
