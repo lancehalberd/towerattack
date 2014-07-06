@@ -7,14 +7,18 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="90"
-   height="60"
+   height="90"
    id="svg2"
    version="1.1"
    inkscape:version="0.48+devel r10192"
-   sodipodi:docname="turretSprites.svg">
+   sodipodi:docname="turretSprites.svg"
+   inkscape:export-filename="/Users/Hillary/games/towerattack/graphics/turretSprites.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,17 +28,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="23.735809"
-     inkscape:cy="14.408508"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="-43.035172"
+     inkscape:cy="71.813819"
      inkscape:document-units="px"
-     inkscape:current-layer="svg2"
+     inkscape:current-layer="g1869"
      showgrid="true"
      inkscape:window-width="1280"
      inkscape:window-height="701"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
        id="grid852"
@@ -63,7 +68,8 @@
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="background"
-     style="display:none">
+     style="display:none"
+     transform="translate(0,30)">
     <rect
        style="fill:#87de87;fill-opacity:1;fill-rule:nonzero;stroke:#008000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect1773"
@@ -76,63 +82,71 @@
      inkscape:label="projectile"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-992.36218)"
+     transform="translate(0,-962.36218)"
      style="display:inline">
     <g
        inkscape:groupmode="layer"
        id="layer3"
-       inkscape:label="projectileBase">
+       inkscape:label="projectileBase"
+       style="display:inline">
       <g
-         id="g1681">
-        <path
-           transform="translate(0,992.36218)"
-           d="m 21,15 c 0,3.313708 -2.686292,6 -6,6 -3.313708,0 -6,-2.686292 -6,-6 0,-3.313708 2.686292,-6 6,-6 3.313708,0 6,2.686292 6,6 z"
-           sodipodi:ry="6"
-           sodipodi:rx="6"
-           sodipodi:cy="15"
-           sodipodi:cx="15"
-           id="path891"
-           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           sodipodi:type="arc" />
-        <rect
-           rx="3"
-           y="1007.3622"
-           x="0"
-           height="8.9999924"
-           width="30"
-           id="rect856"
-           style="fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        <rect
-           y="992.36218"
-           x="12"
-           height="20.999994"
-           width="6"
-           id="rect858"
-           style="fill:#b3b3b3;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        <rect
-           rx="2"
-           y="1008.3622"
-           x="2"
-           height="1"
-           width="9"
-           id="rect883"
-           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        <rect
-           rx="2"
-           y="1008.3622"
-           x="19"
-           height="1"
-           width="9"
-           id="rect885"
-           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none" />
-        <rect
-           rx="1.5"
-           y="995.36218"
-           x="13"
-           height="14.999982"
-           width="1"
-           id="rect887"
-           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+         id="g1681"
+         transform="translate(1.880249e-5,2.119751e-5)">
+        <g
+           id="g1815"
+           transform="matrix(1,-7.9387446e-6,7.9387446e-6,1,-0.00799249,1.1911276e-4)"
+           inkscape:transform-center-x="-3.0553434e-05"
+           inkscape:transform-center-y="-2.9999729">
+          <path
+             sodipodi:type="arc"
+             style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path891"
+             sodipodi:cx="15"
+             sodipodi:cy="15"
+             sodipodi:rx="6"
+             sodipodi:ry="6"
+             d="m 21,15 c 0,3.313708 -2.686292,6 -6,6 -3.313708,0 -6,-2.686292 -6,-6 0,-3.313708 2.686292,-6 6,-6 3.313708,0 6,2.686292 6,6 z"
+             transform="translate(0,992.36218)" />
+          <rect
+             style="fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="rect856"
+             width="30"
+             height="8.9999924"
+             x="0"
+             y="1007.3622"
+             rx="3" />
+          <rect
+             style="fill:#b3b3b3;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="rect858"
+             width="6"
+             height="20.999994"
+             x="12"
+             y="992.36218" />
+          <rect
+             style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="rect883"
+             width="9"
+             height="1"
+             x="2"
+             y="1008.3622"
+             rx="2" />
+          <rect
+             style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="rect885"
+             width="9"
+             height="1"
+             x="19"
+             y="1008.3622"
+             rx="2" />
+          <rect
+             style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="rect887"
+             width="1"
+             height="14.999982"
+             x="13"
+             y="995.36218"
+             rx="1.5" />
+        </g>
       </g>
       <g
          id="g1689"
@@ -191,7 +205,8 @@
     <g
        inkscape:groupmode="layer"
        id="layer4"
-       inkscape:label="projectileRed">
+       inkscape:label="projectileRed"
+       style="display:inline">
       <g
          id="g1666"
          style="fill:#800000;stroke:#ff0000">
@@ -214,7 +229,8 @@
     <g
        inkscape:groupmode="layer"
        id="layer5"
-       inkscape:label="projectileGreen">
+       inkscape:label="projectileGreen"
+       style="display:inline">
       <rect
          y="1011.2511"
          x="31.037001"
@@ -238,13 +254,13 @@
          id="g1799"
          transform="matrix(1,0,0,0.66666667,0,331.78739)">
         <path
-           style="fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none"
-           d="m 75,1002.8622 c -1.656854,0 -3,5.2721 -3,9 l 0,9 6,0 0,-9 c 0,-3.7279 -1.343146,-9 -3,-9 z"
+           style="fill:#b3b3b3;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           d="m 75,1004.3622 c -1.656854,0 -3,3.7721 -3,7.5 l 0,9 6,0 0,-9 c 0,-3.7279 -1.343146,-7.5 -3,-7.5 z"
            id="rect1795"
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="ssccss" />
         <rect
-           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
            id="rect1811"
            width="1"
            height="9"
@@ -253,7 +269,7 @@
            rx="2" />
         <path
            sodipodi:type="arc"
-           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           style="fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none"
            id="path1813"
            sodipodi:cx="75"
            sodipodi:cy="19.5"
@@ -267,7 +283,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="laser">
+     inkscape:label="laser"
+     transform="translate(0,30)">
     <path
        inkscape:connector-curvature="0"
        id="path1732"
@@ -448,6 +465,142 @@
            id="path1790"
            d="M 75.833333,38.5 72.5,44.166666 75.833333,49.833333 72.5,55.5 l 5,-5.666667 -3.333333,-5.666667 z"
            style="fill:#ffff00;stroke:#ffffff;stroke-width:0.52134782;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer11"
+     inkscape:label="projectileLvl2"
+     transform="translate(0,30)">
+    <g
+       inkscape:groupmode="layer"
+       id="layer13"
+       inkscape:label="ProjectileLvl2Base">
+      <g
+         id="g1840">
+        <path
+           transform="translate(0,3)"
+           d="m 21,-18 c 0,3.313708 -2.686292,6 -6,6 -3.313708,0 -6,-2.686292 -6,-6 0,-3.313708 2.686292,-6 6,-6 3.313708,0 6,2.686292 6,6 z"
+           sodipodi:ry="6"
+           sodipodi:rx="6"
+           sodipodi:cy="-18"
+           sodipodi:cx="15"
+           id="path1838"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           sodipodi:type="arc" />
+        <rect
+           rx="3"
+           y="-15"
+           x="0"
+           height="9"
+           width="30"
+           id="rect1826"
+           style="fill:#333333;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <rect
+           y="-30"
+           x="11"
+           height="21"
+           width="8"
+           id="rect1828"
+           style="fill:#cccccc;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <rect
+           rx="2"
+           y="-16"
+           x="6"
+           height="12"
+           width="18"
+           id="rect1830"
+           style="fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <rect
+           rx="0.66666669"
+           y="-15"
+           x="7"
+           height="10"
+           width="1"
+           id="rect1832"
+           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <rect
+           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect1834"
+           width="1"
+           height="6"
+           x="1"
+           y="-13.5"
+           rx="0.66666669" />
+        <rect
+           style="fill:#f9f9f9;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           id="rect1836"
+           width="1.5"
+           height="11"
+           x="12"
+           y="-28"
+           rx="1" />
+      </g>
+      <use
+         x="0"
+         y="0"
+         xlink:href="#g1840"
+         id="use1849"
+         transform="translate(30,0)"
+         width="90"
+         height="60" />
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer14"
+       inkscape:label="projectileLvl2Red">
+      <rect
+         style="fill:#800000;fill-opacity:1;fill-rule:nonzero;stroke:#ff0000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1852"
+         width="12"
+         height="8"
+         x="9.25"
+         y="-14.25" />
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer15"
+       inkscape:label="projectileLvl2Green">
+      <rect
+         style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:#008000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1855"
+         width="12"
+         height="8"
+         x="39.25"
+         y="-14.25" />
+    </g>
+    <g
+       inkscape:groupmode="layer"
+       id="layer16"
+       inkscape:label="boom">
+      <g
+         id="g1869"
+         transform="translate(0,1.5000001)">
+        <path
+           sodipodi:nodetypes="zzcczz"
+           inkscape:connector-curvature="0"
+           id="rect1858"
+           d="m 75,-24 c -2.833333,0 -4,3.75 -4,7.5 l 0,6 8,0 0,-6 c 0,-3.75 -1.166667,-7.5 -4,-7.5 z"
+           style="fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <path
+           transform="matrix(0.88888889,0,0,1.1666667,7,4.9999999)"
+           d="m 81,-13.5 c 0,0.828427 -2.014719,1.5 -4.5,1.5 -2.485281,0 -4.5,-0.671573 -4.5,-1.5 0,-0.828427 2.014719,-1.5 4.5,-1.5 2.485281,0 4.5,0.671573 4.5,1.5 z"
+           sodipodi:ry="1.5"
+           sodipodi:rx="4.5"
+           sodipodi:cy="-13.5"
+           sodipodi:cx="76.5"
+           id="path1865"
+           style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           sodipodi:type="arc" />
+        <rect
+           rx="1"
+           y="-19.5"
+           x="72"
+           height="6.5"
+           width="1"
+           id="rect1867"
+           style="fill:#f2f2f2;fill-opacity:1;fill-rule:nonzero;stroke:none" />
       </g>
     </g>
   </g>
