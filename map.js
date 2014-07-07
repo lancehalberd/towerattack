@@ -37,6 +37,12 @@ function drawTowers(context) {
     $.each(state.towers, function (index, tower) {
         drawTileRotated(context, tower.mapX, tower.mapY,
                 new TileSource(game.images.towers, 0, tower.spriteIndex), tower.angle);
+        if (tower == state.selectedElement) {
+            context.strokeStyle = "#FFF";
+            context.beginPath();
+            context.arc(tower.mapX + 15, tower.mapY + 15, tower.range, 0, 2*Math.PI);
+            context.stroke();
+        }
     });
 }
 

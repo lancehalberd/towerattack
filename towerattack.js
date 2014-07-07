@@ -36,7 +36,10 @@ function startGame() {
             if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
                 state.paths[state.selectedPath].points = [[tileX, tileY]];
                 state.paths[state.selectedPath].complete = false;
+            } else if (state.mapGrid[tileY][tileX].brush) {
+                state.selectedElement = state.mapGrid[tileY][tileX];
             } else {
+                state.selectedElement = null;
                 editPath(state, tileX, tileY);
             }
         }

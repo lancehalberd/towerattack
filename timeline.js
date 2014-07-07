@@ -43,7 +43,7 @@ function drawTimeline(state) {
         $.each(path.slots, function (slotIndex, animal){
             var x = tileSize * slotIndex;
             if (animal) {
-                if (animal == state.selectedAnimal) {
+                if (animal == state.selectedElement) {
                     context.fillStyle = "#aaa";
                     context.fillRect(x, y + 1, tileSize - 1, tileSize - 2);
                 } else if (animal.moved) {
@@ -84,7 +84,7 @@ function addTimelineInteractions(state) {
 
         state.selectedPath = currentPath;
         currentSlot = Math.floor(x / tileSize) - 1;
-        state.selectedAnimal = state.draggingAnimal = state.paths[currentPath].slots[currentSlot];
+        state.selectedElement = state.draggingAnimal = state.paths[currentPath].slots[currentSlot];
         state.lastAnimalMoved = null;
     });
     //clicking on an animal and dragging allows you to move it on the timeline
