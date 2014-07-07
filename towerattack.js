@@ -211,7 +211,7 @@ function mainLoop() {
             if (animal.finished || state.waveTime < animal.spawnTime) {
                 continue;
             }
-            drawAnimalSprite(game.animalContext, animal.mapX, animal.mapY, animal.type.spriteIndex, state.waveTime, animal.angle);
+            drawAnimalSprite(game.animalContext, animal.mapX, animal.mapY, animal, state.waveTime, animal.angle);
             drawAnimalHealth(game.animalContext, animal, animal.mapX, animal.mapY);
         }
     }
@@ -313,7 +313,6 @@ function endWave() {
         city.population += .1 * state.humanCalories / cities.length;
         state.population += city.population;
     });
-    state.population = state.population.toFixed(1);
     state.humanCalories = 0;
     state.step = 'cards';
     state.abilitiesUsedThisTurn = 0;

@@ -52,6 +52,7 @@ function AnimalType() {
     //"increase the armor of all 'birds'"
     this.tags = ['animal'];
     this.spriteIndex = 0;
+    this.numberOfFrames = 6;
 }
 /**
  * @param {Object} data
@@ -70,13 +71,14 @@ function createAnimalType(data) {
 var animalTypes = {
     'cardinal': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 20, 'speedGrowth': 1,
                                     'armor': 0, 'armorGrowth': 0, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'air'], 'spriteIndex': 0}),
+                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'air'],
+                                    'spriteIndex': 0, 'numberOfFrames': 5}),
     'snake': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 15, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 2, 'damageGrowth': .5, tags: ['reptile', 'ground'], 'spriteIndex': 1}),
+                                    'damage': 2, 'damageGrowth': .5, tags: ['reptile', 'ground'], 'spriteIndex': 2}),
     'penguin': createAnimalType({'health': 20, 'healthGrowth': 2, 'speed': 10, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 2, 'carryGrowth': 0,
-                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'ground'], 'spriteIndex': 0}),
+                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'ground'], 'spriteIndex': 1}),
     'zebra': createAnimalType({'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
                                     'armor': 1, 'armorGrowth': .1, 'carry': 1, 'carryGrowth': 0,
                                     'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'], 'spriteIndex': 0}),
@@ -136,15 +138,15 @@ function updateAnimal(state, animal) {
  * @param {context} context  The context to draw to
  * @param {Number} x  The x coordinate to draw to
  * @param {Number} y  The y coordinate to draw to
- * @param {Number} sourceIndex  The row to grab the sprite from the creatureSprite sheet
+ * @param {Animal} animal  The animal to draw
  * @param {Number} time  The time in milliseconds
  * @param {Number} rotation  The rotation to draw the sprite at
  */
-function drawAnimalSprite(context, x, y, sourceIndex, time, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
+function drawAnimalSprite(context, x, y, animal, time, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
     var frameDuration = 200;
-    var numberOfFrames = 6;
+    var numberOfFrames = animal.type.numberOfFrames;
     var sourceX = (Math.floor(time / frameDuration) % numberOfFrames);
-    drawTileRotated(context, x, y, new TileSource(game.images.animals, sourceX, sourceIndex, defaultTileSize), rotation);
+    drawTileRotated(context, x, y, new TileSource(game.images.animals, sourceX, animal.type.spriteIndex, defaultTileSize), rotation);
 }
 
 /**
