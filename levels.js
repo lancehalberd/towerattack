@@ -37,6 +37,7 @@ function startLevel(level) {
     }
     shuffleDeck(state);
     state.structures = [];
+    state.towers = [];
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
             if (state.mapGrid[i][j].population > 0) {
@@ -44,6 +45,13 @@ function startLevel(level) {
             }
             if (state.mapGrid[i][j].brush) {
                 state.structures.push(state.mapGrid[i][j]);
+            }
+            if (state.mapGrid[i][j].brush == 'T') {
+                /** @type Tower */
+                var tower = state.mapGrid[i][j]
+                tower.mapX = j * defaultTileSize;
+                tower.mapY = i * defaultTileSize;
+                state.towers.push(tower);
             }
         }
     }
@@ -64,16 +72,16 @@ var level1 = new Level('Onette', 5, 2,
         "00BBRRR0000RRR0",
         "00BWWWR0RRRR0R0",
         "00FWWWR0R00R0R0",
-        "00R0WWB0R00R0R0",
+        "00RTWWB0R0TR0R0",
         "00R00WBBCRRR0R0",
         "RRRRR0BWWWR00R0",
         "R000CRBWWWBW0R0",
-        "R000R000WWBBBRN",
+        "R000R00TWWBBBRN",
         "R000R00000RWWWR",
         "R00RRR0000RWWWB",
         "RRRR0R0000R0BBB",
         "00R00RRRRRRRRWW",
-        "0RR0000R0000RRW",
+        "0RR0000R000TRRW",
         "0R00000R00000R0",
         "0NRRRRRRRRRRRM0"
     ],[

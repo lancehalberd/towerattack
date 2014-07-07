@@ -141,17 +141,10 @@ function updateAnimal(state, animal) {
  * @param {Number} rotation  The rotation to draw the sprite at
  */
 function drawAnimalSprite(context, x, y, sourceIndex, time, rotation){ //temporarily just the penguin. srcY determines what row (0 is penguin)
-    var tileSize = defaultTileSize;
     var frameDuration = 200;
     var numberOfFrames = 6;
-    srcX = (Math.floor(time / frameDuration) % numberOfFrames) * tileSize;
-    //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
-    context.translate(x+15, y+15);
-    context.rotate(rotation);
-    context.drawImage(game.images.animals, srcX, sourceIndex * tileSize, tileSize, tileSize, -15, -15, tileSize, tileSize);
-    context.rotate(-rotation);
-    context.translate(-x-15, -y-15);
-
+    var sourceX = (Math.floor(time / frameDuration) % numberOfFrames);
+    drawTileRotated(context, x, y, new TileSource(game.images.animals, sourceX, sourceIndex, defaultTileSize), rotation);
 }
 
 /**
@@ -199,14 +192,7 @@ function updateAnimalPosition(animal) {
     animal.tileY = y1;
     animal.mapX = (x1 + percent * (x2 - x1)) * tileSize;
     animal.mapY = (y1 + percent * (y2 - y1)) * tileSize;
-    if (x1 == x2) {
-        animal.angle = (y2 > y1) ? Math.PI / 2 : -Math.PI / 2;
-    } else {
-        animal.angle = Math.atan((y2 - y1) / (x2 - x1));
-        if (x2 < x1) {
-            animal.angle += Math.PI;
-        }
-    }
+    animal.angle = atan2(x1, y1, x2, y2);
 }
 
 /**

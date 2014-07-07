@@ -19,6 +19,25 @@ function Tower() {
     this.range = 60;
     this.attacksPerSecond = 1;
     this.brush = 'T';
+    this.mapX = 0;
+    this.mapY = 0;
+    this.angle = Math.random() * 2 * Math.PI;
+    this.targetAngle = Math.random() * 2 * Math.PI;
+    this.spriteIndex = Math.floor(Math.random() * 3);
+    /** @type Animal */
+    this.currentTarget = null;
+}
+
+/**
+ * Draws the towers to the context
+ *
+ * @param {context} context
+ */
+function drawTowers(context) {
+    $.each(state.towers, function (index, tower) {
+        drawTileRotated(context, tower.mapX, tower.mapY,
+                new TileSource(game.images.towers, 0, tower.spriteIndex), tower.angle);
+    });
 }
 
 /**
@@ -35,7 +54,7 @@ function drawGrid(context, grid) {
     for (var y = 0; y < grid.length; y++){
         for (var x = 0; x < grid[y].length; x++){
             if (grid[y][x] != 'W' && grid[y][x] != 'R') {
-                drawBrush(context, x, y, grid[y][x].brush ? grid[y][x].brush : grid[y][x]);
+                drawBrush(context, x, y, grid[y][x]);
             }
         }
     }

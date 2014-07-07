@@ -15,6 +15,62 @@ function TileSource(image, tileX, tileY, tileSize) {
 }
 
 /**
+ * Returns the angle from (x1, y1) to (x2,y2) which when given an image facing
+ * right at angle 0, will point the image from x1,y1 towards x2,y2 when
+ * context.rotate(angle) is used.
+ *
+ * @param {Number} x1
+ * @param {Number} y1
+ * @param {Number} x2
+ * @param {Number} y2
+ * @return {Number}
+ */
+function atan2(x1, y1, x2, y2) {
+    if (x1 == x2) {
+        return(y2 > y1) ? Math.PI / 2 : -Math.PI / 2;
+    }
+    return Math.atan((y2 - y1) / (x2 - x1)) + (x2 < x1 ? Math.PI : 0);
+}
+
+/**
+ * Returns the distance squared between two points.
+ *
+ * @param {Number} x1
+ * @param {Number} y1
+ * @param {Number} x2
+ * @param {Number} y2
+ * @return {Number}
+ */
+function distanceSquared(x1,y1,x2,y2) {
+    return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+}
+
+function absoluteAngleSize(angle) {
+    while (angle < -Math.PI) angle += Math.PI * 2;
+    while (angle >= Math.PI) angle -= Math.PI * 2;
+    return Math.abs(angle);
+}
+
+/**
+ * Draw an animal sprite to a given context.
+ *
+ * @param {context} context  The context to draw to
+ * @param {Number} x  The x coordinate to draw to
+ * @param {Number} y  The y coordinate to draw to
+ * @param {TileSource} tileSource  The row to grab the sprite from the creatureSprite sheet
+ * @param {Number} rotation  The rotation to draw the sprite at
+ */
+function drawTileRotated(context, x, y, tileSource, rotation) {
+    var tileSize = tileSource.tileSize;
+    //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
+    context.translate(x + tileSize / 2, y + tileSize / 2);
+    context.rotate(rotation);
+    context.drawImage(tileSource.image, tileSource.tileX * tileSize, tileSource.tileY * tileSize, tileSize, tileSize, -15, -15, tileSize, tileSize);
+    context.rotate(-rotation);
+    context.translate(-x - tileSize / 2, -y - tileSize / 2);
+}
+
+/**
  * Draws a tile to a context
  *
  * @param {context} context
@@ -36,10 +92,10 @@ function drawImageTile(context, x, y, tileSource) {
  * @param {context} context
  * @param {Number} x
  * @param {Number} y
- * @param {String} brush
+ * @param {String} tile
  */
-function drawBrush(context, x, y, brush) {
-    switch (brush) {
+function drawBrush(context, x, y, tile) {
+    switch (tile.brush ? tile.brush : tile) {
         case '0':
         case 'B':
             break;
@@ -55,10 +111,15 @@ function drawBrush(context, x, y, brush) {
         case 'N':
             drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
             break;
+        case 'T':
+            if (typeof(tile) == 'string') {
+                drawImageTile(context, x, y, new TileSource(game.images.towers, 0, 0));
+            }
+            break;
         default:
             //temporary code for drawing letters for graphics we don't have
             context.fillStyle = "black";
             context.font = "29pt Arial";
-            context.fillText(brush, x * 30, y * 30 + 29, 30);
+            context.fillText(tile.brush ? tile.brush : tile, x * 30, y * 30 + 29, 30);
     }
 }

@@ -76,10 +76,19 @@ function startGame() {
     });
 }
 function drawTile(grid, x, y, brush) {
+
     if (brush == 'W' && (grid[y][x] == 'R' || grid[y][x] == 'B')) {
         grid[y][x] = 'B'
     } else if (brush == 'R' && (grid[y][x] == 'W' || grid[y][x] == 'B')) {
         grid[y][x] = 'B'
+    } else if (brush == 'C') {
+        grid[y][x] = new City();
+    } else if (brush == 'M') {
+        grid[y][x] = new Mine();
+    } else if (brush == 'F') {
+        grid[y][x] = new Farm();
+    } else if (brush == 'T') {
+        grid[y][x] = new Tower();
     } else {
         grid[y][x] = brush;
     }
@@ -95,6 +104,7 @@ function toggleEditing() {
 
 var frameLength = 40;
 function mainLoop() {
+    var tileSize = defaultTileSize;
     //update the model for N frames
     for (var frame = 0; frame < state.waveSpeed; frame++) {
         state.gameTime += frameLength;
@@ -156,6 +166,7 @@ function mainLoop() {
                     animal.currentHealth = 0;
                     animal.finished = true;
                     animal.dead = true;
+                    continue;
                 }
                 updateAnimalPosition(animal);
             }
@@ -179,7 +190,38 @@ function mainLoop() {
     }
     drawTimeline(state);
     drawPaths(state, game.pathContext);
+    $.each(state.towers, function (towerIndex, tower) {
+        if (!tower.currentTarget || !inTowerRange(tower, tower.currentTarget)) {
+            tower.currentTarget = null;
+            for (var i = 0; i < state.animals.length; i++) {
+                /** @type Animal */
+                var animal = state.animals[i];
+                if (animal.finished || animal.dead) {
+                    continue;
+                }
+                if (inTowerRange(tower, animal)) {
+                    tower.currentTarget = animal;
+                    break;
+                }
+            }
+        }
+        if (tower.currentTarget) {
+            /** @type Animal */
+            var animal = tower.currentTarget;
+            tower.targetAngle = atan2(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
+        }
+        var newAngle = (tower.targetAngle + tower.angle) / 2;
+        if (absoluteAngleSize(tower.angle - newAngle) > absoluteAngleSize(tower.angle - (newAngle + Math.PI))) {
+            newAngle += Math.PI;
+        }
+        tower.angle = newAngle;
+    });
+    drawTowers(game.animalContext);
     updateInformation();
+}
+
+function inTowerRange(tower, animal) {
+    return tower.range * tower.range >= distanceSquared(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
 }
 
 function startWave() {

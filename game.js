@@ -25,7 +25,7 @@ function Game() {
 
 function Level(name, gridData, structures) {
     this.name = name;
-    this.grid = arrayToGrid(gridData);
+    this.grid = gridData;
     this.structures = structures;
 }
 
@@ -48,7 +48,8 @@ function initializeGame() {
         'animals' : 'graphics/creatureSprites.png',
         'water' : 'graphics/water.png',
         'roadMask' : 'graphics/roadSpriteSheet.png',
-        'background' : 'graphics/meadowsBackgroundSprites.png'
+        'background' : 'graphics/meadowsBackgroundSprites.png',
+        'towers' : 'graphics/turretSprites.png'
     };
     loadImages();
 }

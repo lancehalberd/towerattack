@@ -23,6 +23,8 @@ function State () {
     this.animals = [];
     //array of all structures, gets set when the level starts
     this.structures = [];
+    //array of all towers, set at start of level and appended to as towers are created
+    this.towers = [];
     /** @type {Animal}  The animal currently being moved in the timeline */
     this.draggingAnimal = null;
     /** @type {Animal}  The animal selected in the timeline */
