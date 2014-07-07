@@ -28,7 +28,7 @@ function startGame() {
         var tileX = Math.floor(x / 30);
         var tileY = Math.floor(y / 30);
         if (state.editingMap) {
-            drawTile(state.mapGrid, tileX, tileY, state.brush);
+            setTile(state.mapGrid, tileX, tileY, state.brush);
             drawingTiles = true;
         } else if (state.step == 'cards') {
             drawingPath = true;
@@ -50,7 +50,7 @@ function startGame() {
         var tileX = Math.floor(x / 30);
         var tileY = Math.floor(y / 30);
         if (drawingTiles && inGrid(state.mapGrid, tileX, tileY)) {
-            drawTile(state.mapGrid, tileX, tileY, state.brush);
+            setTile(state.mapGrid, tileX, tileY, state.brush);
         }
         if (!drawingPath) {
             return;
@@ -78,7 +78,7 @@ function startGame() {
         $('.output').val(result);
     });
 }
-function drawTile(grid, x, y, brush) {
+function setTile(grid, x, y, brush) {
 
     if (brush == 'W' && (grid[y][x] == 'R' || grid[y][x] == 'B')) {
         grid[y][x] = 'B'
@@ -105,7 +105,7 @@ function toggleEditing() {
     $('.js-cardContainer').toggle(!state.editingMap);
 }
 
-var frameLength = 40;
+var frameLength = 20;
 function mainLoop() {
     var tileSize = defaultTileSize;
     //update the model for N frames
@@ -161,15 +161,6 @@ function mainLoop() {
                         }
                         animal.lastTile = tileValue;
                     }
-                    if (Math.random() < .02) {
-                        animal.currentHealth -= 1;
-                    }
-                }
-                if (animal.currentHealth <= 0) {
-                    animal.currentHealth = 0;
-                    animal.finished = true;
-                    animal.dead = true;
-                    continue;
                 }
                 updateAnimalPosition(animal);
             }
@@ -177,6 +168,39 @@ function mainLoop() {
                 endWave();
             }
         }
+        for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
+            /** @type Tower */
+            var tower = state.towers[towerIndex];
+            if (!tower.currentTarget || !inTowerRange(tower, tower.currentTarget) || tower.currentTarget.dead || tower.currentTarget.finished) {
+                tower.currentTarget = null;
+                for (var animalIndex = 0; animalIndex < state.animals.length; animalIndex++) {
+                    /** @type Animal */
+                    var animal = state.animals[animalIndex];
+                    if (animal.finished || animal.dead) {
+                        continue;
+                    }
+                    if (inTowerRange(tower, animal)) {
+                        tower.currentTarget = animal;
+                        break;
+                    }
+                }
+            }
+            if (tower.currentTarget) {
+                /** @type Animal */
+                var animal = tower.currentTarget;
+                tower.targetAngle = atan2(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
+                //console.log([state.waveTime,tower.lastTimeFired + 1000 / tower.attacksPerSecond]);
+                if (state.waveTime >= tower.lastTimeFired + 1000 / tower.attacksPerSecond) {
+                    shootProjectile(tower, animal);
+                }
+            }
+            var newAngle = (tower.targetAngle + tower.angle) / 2;
+            if (absoluteAngleSize(tower.angle - newAngle) > absoluteAngleSize(tower.angle - (newAngle + Math.PI))) {
+                newAngle += Math.PI;
+            }
+            tower.angle = newAngle;
+        }
+        updateAllProjectiles();
     }
     //draw the current state
     game.animalContext.clearRect(0, 0, 510, 510);
@@ -193,33 +217,8 @@ function mainLoop() {
     }
     drawTimeline(state);
     drawPaths(state, game.pathContext);
-    $.each(state.towers, function (towerIndex, tower) {
-        if (!tower.currentTarget || !inTowerRange(tower, tower.currentTarget)) {
-            tower.currentTarget = null;
-            for (var i = 0; i < state.animals.length; i++) {
-                /** @type Animal */
-                var animal = state.animals[i];
-                if (animal.finished || animal.dead) {
-                    continue;
-                }
-                if (inTowerRange(tower, animal)) {
-                    tower.currentTarget = animal;
-                    break;
-                }
-            }
-        }
-        if (tower.currentTarget) {
-            /** @type Animal */
-            var animal = tower.currentTarget;
-            tower.targetAngle = atan2(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
-        }
-        var newAngle = (tower.targetAngle + tower.angle) / 2;
-        if (absoluteAngleSize(tower.angle - newAngle) > absoluteAngleSize(tower.angle - (newAngle + Math.PI))) {
-            newAngle += Math.PI;
-        }
-        tower.angle = newAngle;
-    });
     drawTowers(game.animalContext);
+    drawProjectiles(game.animalContext);
     updateInformation();
 }
 
@@ -236,11 +235,11 @@ function startWave() {
     $.each(state.animals, function (index, element) {
         /** @type Animal */
         var animal = element;
+        animal.dead = false;
         animal.finished = false;
         animal.distance = 0;
         animal.lastTile = null;
         animal.burden = 0;
-        state.animals.push(animal);
         if (!animal.path.complete) {
             state.selectedPath = state.paths.indexOf(animal.path);
             invalidPath = true;
@@ -256,6 +255,11 @@ function startWave() {
         if (!state.paths[i].complete) {
             state.paths[i].points = [];
         }
+    }
+    for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
+        /** @type Tower */
+        var tower = state.towers[towerIndex];
+        tower.lastTimeFired = 0;
     }
     state.step = 'wave';
     state.waveTime = 0;
@@ -337,7 +341,7 @@ function changeSpeed() {
 
 function updateInformation() {
     $('.js-levelName').text(state.currentLevel.name);
-    $('.js-population').text('Population: ' + state.population + 'K');
+    $('.js-population').text('Population: ' + state.population.toFixed(1) + 'K');
     $('.js-humanGold').text('Gold: ' + state.humanGold);
     $('.js-myCalories').text('Calories: ' + state.calories);
     $('.js-myGold').text('Gold: ' + state.gold);

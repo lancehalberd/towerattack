@@ -76,7 +76,7 @@ function createCanvas(width, height) {
     return $('<canvas width="' + width + '" height="' + height + '"></canvas>')[0];
 }
 function processImages() {
-    var roadPattern = new TileSource(game.images.background, 1, 0);
+    var roadPattern = new TileSource(game.images.background, 3, 3);
     game.roadCanvas = createMaskedPattern(game.images.roadMask, roadPattern, 4, 4);
     var waterPattern = new TileSource(game.images.water, 2, 3, 10);
     game.waterCanvas = createMaskedPattern(game.images.water, waterPattern, 4, 4);

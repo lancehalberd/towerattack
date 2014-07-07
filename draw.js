@@ -65,7 +65,7 @@ function drawTileRotated(context, x, y, tileSource, rotation) {
     //context.drawImage(creatureSprite, srcX, srcY, tileSize, tileSize, x, y, tileSize, tileSize);
     context.translate(x + tileSize / 2, y + tileSize / 2);
     context.rotate(rotation);
-    context.drawImage(tileSource.image, tileSource.tileX * tileSize, tileSource.tileY * tileSize, tileSize, tileSize, -15, -15, tileSize, tileSize);
+    context.drawImage(tileSource.image, tileSource.tileX * tileSize, tileSource.tileY * tileSize, tileSize, tileSize, -tileSize / 2, -tileSize / 2, tileSize, tileSize);
     context.rotate(-rotation);
     context.translate(-x - tileSize / 2, -y - tileSize / 2);
 }
@@ -103,13 +103,27 @@ function drawBrush(context, x, y, tile) {
             drawImageTile(context, x, y, new TileSource(game.roadCanvas, 3, 3));
             break;
         case 'W':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 2, 0));
+            drawTileRotated(context, x * 30, y * 30, new TileSource(game.waterCanvas, 3, 3, 10), 0);
+            drawTileRotated(context, x * 30 + 10, y * 30, new TileSource(game.waterCanvas, 0, 1, 10), 0);
+            drawTileRotated(context, x * 30 + 20, y * 30, new TileSource(game.waterCanvas, 0, 3, 10), 0);
+            drawTileRotated(context, x * 30, y * 30 + 10, new TileSource(game.waterCanvas, 1, 0, 10), 0);
+            drawTileRotated(context, x * 30 + 10, y * 30 + 10, new TileSource(game.waterCanvas, 2, 3, 10), 0);
+            drawTileRotated(context, x * 30 + 20, y * 30 + 10, new TileSource(game.waterCanvas, 2, 0, 10), 0);
+            drawTileRotated(context, x * 30, y * 30 + 20, new TileSource(game.waterCanvas, 3, 0, 10), 0);
+            drawTileRotated(context, x * 30 + 10, y * 30 + 20, new TileSource(game.waterCanvas, 0, 2, 10), 0);
+            drawTileRotated(context, x * 30 + 20, y * 30 + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
             break;
         case 'C':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 1));
+            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
             break;
         case 'N':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
+            drawImageTile(context, x, y, new TileSource(game.images.background, 1, 3));
+            break;
+        case 'M':
+            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 3));
+            break;
+        case 'F':
+            drawImageTile(context, x, y, new TileSource(game.images.background, 2, 3));
             break;
         case 'T':
             if (typeof(tile) == 'string') {

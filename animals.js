@@ -214,3 +214,13 @@ function getAnimals(state) {
     }
     return animals;
 }
+
+
+function damageAnimal(animal, damage) {
+    animal.currentHealth -= damage;
+    if (animal.currentHealth <= 0) {
+        animal.currentHealth = 0;
+        animal.finished = true;
+        animal.dead = true;
+    }
+}
