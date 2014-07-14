@@ -184,6 +184,9 @@ function playCard(state, ability, card) {
     }
     card.element.addClass('back');
     state.abilitiesUsedThisTurn++;
+    if (state.abilitiesUsedThisTurn >= 3) {
+        startNextStep();
+    }
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(getAnimals(state), function (i, animal) {
         updateAnimal(state, animal);
