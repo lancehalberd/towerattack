@@ -36,7 +36,8 @@ function startLevel(level) {
         }
     }
     shuffleDeck(state);
-    state.structures = [];
+    state.farms = [];
+    state.mines = [];
     state.towers = [];
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
@@ -55,8 +56,19 @@ function startLevel(level) {
                 tower.mapY = i * defaultTileSize;
                 state.towers.push(tower);
             }
-            if (state.mapGrid[i][j].brush) {
-                state.structures.push(state.mapGrid[i][j]);
+            if (state.mapGrid[i][j].brush == 'F') {
+                /** @type Farm */
+                var farm = state.mapGrid[i][j];
+                farm.mapX = j * defaultTileSize;
+                farm.mapY = i * defaultTileSize;
+                state.farms.push(farm);
+            }
+            if (state.mapGrid[i][j].brush == 'M') {
+                /** @type Mine */
+                var mine = state.mapGrid[i][j];
+                mine.mapX = j * defaultTileSize;
+                mine.mapY = i * defaultTileSize;
+                state.mines.push(mine);
             }
         }
     }

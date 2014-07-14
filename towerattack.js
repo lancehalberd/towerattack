@@ -205,9 +205,20 @@ function mainLoop() {
     game.animalContext.clearRect(0, 0, 510, 510);
     drawTimeline(state);
     drawPaths(state, game.pathContext);
-    //towers and cities are drawn underneath the animals, but on the same layer
-    drawTowers(game.animalContext);
+    //structures are drawn underneath the animals, but on the same layer
     drawCities(game.animalContext);
+    drawTowers(game.animalContext);
+    for (var i = 0; i < state.mines.length; i++) {
+        /** @type Mine */
+        var mine = state.mines[i];
+        drawBrush(game.animalContext, mine.mapX, mine.mapY, 'M');
+    }
+    //humans get calories from mines that the animals failed to steal
+    for (var i = 0; i < state.farms.length; i++) {
+        /** @type Farm */
+        var farm = state.farms[i];
+        drawBrush(game.animalContext, farm.mapX, farm.mapY, 'F');
+    }
     if (state.step == 'wave') {
         for (var i = 0; i < state.animals.length; i++) {
             /** @type Animal */
@@ -280,23 +291,21 @@ function endWave() {
     $.each(state.animals, function (i, animal) {
         updateAnimal(state, animal);
     });
-    //calculate assets humans gain from structures
-    $.each(state.structures, function (i, structure) {
-        //humans get gold from mines that the animals failed to steal
-        if (structure.brush == 'M') {
-            /** @type Mine */
-            var mine = structure;
-            state.humanGold += mine.waveGold;
-            mine.waveGold = mine.gold;
-        }
-        //humans get calories from mines that the animals failed to steal
-        if (structure.brush == 'F') {
-            /** @type Farm */
-            var farm = structure;
-            state.humanCalories += farm.waveCalories;
-            farm.waveCalories = farm.calories;
-        }
-    });
+    //humans get gold from mines that the animals failed to steal
+    for (var i = 0; i < state.mines.length; i++) {
+        /** @type Mine */
+        var mine = state.mines[i];
+        state.humanGold += mine.waveGold;
+        mine.waveGold = mine.gold;
+
+    }
+    //humans get calories from mines that the animals failed to steal
+    for (var i = 0; i < state.farms.length; i++) {
+        /** @type Farm */
+        var farm = state.farms[i];
+        state.humanCalories += farm.waveCalories;
+        farm.waveCalories = farm.calories;
+    }
     var survivingCities = [];
     for (var i = 0; i < state.cities.length; i++) {
         /** @type City */
@@ -348,4 +357,46 @@ function updateInformation() {
     $('.js-humanGold').text('Gold: ' + state.humanGold);
     $('.js-myCalories').text('Calories: ' + state.calories);
     $('.js-myGold').text('Gold: ' + state.gold);
+    if (state.selectedElement) {
+        /** @type context */
+        var context = $('.js-details .js-cardCanvas')[0].getContext('2d');
+        context.clearRect(0, 0, 30, 30);
+        $('.js-details').show();
+        switch (state.selectedElement.brush) {
+            case 'C':
+                /** @type City */
+                var city = state.selectedElement;
+                drawCity(context, 0, 0, city);
+                $('.js-details .js-title').html('City');
+                $('.js-details .js-description').html('Pop. ' + city.population.toFixed(1) + 'K <br /> Prod. ' + city.productivity);
+                break;
+            case 'T':
+                /** @type Tower */
+                var tower = state.selectedElement;
+                drawTower(context, 0, 0, tower);
+                $('.js-details .js-title').html('Tower');
+                var details = [
+                    'Attack ' + tower.baseDamage + '-' + (tower.baseDamage +  tower.damageRange),
+                    'Speed ' + tower.attacksPerSecond.toFixed(1)
+                ]
+                $('.js-details .js-description').html(details.join('<br />'));
+                break;
+            case 'F':
+                /** @type Farm */
+                var farm = state.selectedElement;
+                drawBrush(context, 0, 0, 'F');
+                $('.js-details .js-title').html('Calorie Farm');
+                $('.js-details .js-description').html('Cal. ' + farm.waveCalories + ' / ' + farm.calories);
+                break;
+            case 'M':
+                /** @type Mine */
+                var mine = state.selectedElement;
+                drawBrush(context, 0, 0, 'M');
+                $('.js-details .js-title').html('Gold Mine');
+                $('.js-details .js-description').html('Gold ' + mine.waveGold + ' / ' + mine.gold);
+                break;
+        }
+    } else {
+        $('.js-details').hide();
+    }
 }

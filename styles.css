@@ -57,6 +57,13 @@
     bottom: 5px;
     left: 5px;
 }
+.details {
+    font-family: sans-serif;
+    font-size: 12px;
+    position:absolute;
+    bottom: 140px;
+    left: 5px;
+}
 .mapEditor {
     background-color: peach;
 }
@@ -95,12 +102,18 @@
 }
 
 .card {
+    box-sizing: border-box;
     position: absolute;
     width: 80px;
     height: 100px;
     background-color: white;
     border: 1px solid black;
     cursor: pointer;
+    padding: 2px;
+}
+.cardCanvas{
+    margin: 3px 22px;
+    background-color: white;
 }
 .card.back {
     background-color: blue;

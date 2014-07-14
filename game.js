@@ -105,7 +105,7 @@ function createMaskedPattern(maskImage, patternSource, rows, columns) {
 function drawPalette() {
     $.each(game.paletteGrid, function (y, row) {
         $.each(row, function (x, brush) {
-            drawBrush(game.paletteContext, x, y, brush);
+            drawBrush(game.paletteContext, x * defaultTileSize, y * defaultTileSize, brush);
         });
     })
     startGame();

@@ -111,9 +111,7 @@ function drawProjectiles(context) {
  */
 function drawTowers(context) {
     $.each(state.towers, function (index, tower) {
-        var frame = readyToFire(tower) ? 1 : 0;
-        drawTileRotated(context, tower.mapX, tower.mapY,
-                new TileSource(game.images.towers, frame, tower.spriteIndex), tower.angle);
+        drawTower(context, tower.mapX, tower.mapY, tower);
         if (tower == state.selectedElement) {
             context.strokeStyle = "#FFF";
             context.beginPath();
@@ -124,22 +122,47 @@ function drawTowers(context) {
 }
 
 /**
+ * Draws the coty to the given context
+ *
+ * @param {context} context
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Tower} tower
+ */
+function drawTower(context, x, y, tower) {
+    var frame = readyToFire(tower) ? 1 : 0;
+    drawTileRotated(context, x, y, new TileSource(game.images.towers, frame, tower.spriteIndex), tower.angle);
+}
+
+/**
  * Draws the cities to the context
  *
  * @param {context} context
  */
 function drawCities(context) {
     $.each(state.cities, function (index, city) {
-        var frame = 0;
-        if (city.population == 0) {
-            frame = 3;
-        } else if (city.population <= 30) {
-            frame = 2;
-        } else if (city.population <= 60) {
-            frame = 1;
-        }
-        drawTileRotated(context, city.mapX, city.mapY, new TileSource(game.images.background, frame, 2), 0);
+        drawCity(context, city.mapX, city.mapY, city);
     });
+}
+
+/**
+ * Draws the coty to the given context
+ *
+ * @param {context} context
+ * @param {Number} x
+ * @param {Number} y
+ * @param {City} city
+ */
+function drawCity(context, x, y, city) {
+    var frame = 0;
+    if (city.population == 0) {
+        frame = 3;
+    } else if (city.population <= 30) {
+        frame = 2;
+    } else if (city.population <= 60) {
+        frame = 1;
+    }
+    drawTileRotated(context, x, y, new TileSource(game.images.background, frame, 2), 0);
 }
 
 /**
@@ -156,7 +179,7 @@ function drawGrid(context, grid) {
     for (var y = 0; y < grid.length; y++){
         for (var x = 0; x < grid[y].length; x++){
             if (grid[y][x] != 'W' && grid[y][x] != 'R') {
-                drawBrush(context, x, y, grid[y][x]);
+                drawBrush(context, x * defaultTileSize, y * defaultTileSize, grid[y][x]);
             }
         }
     }

@@ -100,36 +100,36 @@ function drawBrush(context, x, y, tile) {
         case 'B':
             break;
         case 'R':
-            drawImageTile(context, x, y, new TileSource(game.roadCanvas, 3, 3));
+            drawTileRotated(context, x, y, new TileSource(game.roadCanvas, 3, 3));
             break;
         case 'W':
-            drawTileRotated(context, x * 30, y * 30, new TileSource(game.waterCanvas, 3, 3, 10), 0);
-            drawTileRotated(context, x * 30 + 10, y * 30, new TileSource(game.waterCanvas, 0, 1, 10), 0);
-            drawTileRotated(context, x * 30 + 20, y * 30, new TileSource(game.waterCanvas, 0, 3, 10), 0);
-            drawTileRotated(context, x * 30, y * 30 + 10, new TileSource(game.waterCanvas, 1, 0, 10), 0);
-            drawTileRotated(context, x * 30 + 10, y * 30 + 10, new TileSource(game.waterCanvas, 2, 3, 10), 0);
-            drawTileRotated(context, x * 30 + 20, y * 30 + 10, new TileSource(game.waterCanvas, 2, 0, 10), 0);
-            drawTileRotated(context, x * 30, y * 30 + 20, new TileSource(game.waterCanvas, 3, 0, 10), 0);
-            drawTileRotated(context, x * 30 + 10, y * 30 + 20, new TileSource(game.waterCanvas, 0, 2, 10), 0);
-            drawTileRotated(context, x * 30 + 20, y * 30 + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
+            drawTileRotated(context, x, y, new TileSource(game.waterCanvas, 3, 3, 10), 0);
+            drawTileRotated(context, x + 10, y, new TileSource(game.waterCanvas, 0, 1, 10), 0);
+            drawTileRotated(context, x + 20, y, new TileSource(game.waterCanvas, 0, 3, 10), 0);
+            drawTileRotated(context, x, y + 10, new TileSource(game.waterCanvas, 1, 0, 10), 0);
+            drawTileRotated(context, x + 10, y + 10, new TileSource(game.waterCanvas, 2, 3, 10), 0);
+            drawTileRotated(context, x + 20, y + 10, new TileSource(game.waterCanvas, 2, 0, 10), 0);
+            drawTileRotated(context, x, y + 20, new TileSource(game.waterCanvas, 3, 0, 10), 0);
+            drawTileRotated(context, x + 10, y + 20, new TileSource(game.waterCanvas, 0, 2, 10), 0);
+            drawTileRotated(context, x + 20, y + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
             break;
         case 'C':
             if (typeof(tile) == 'string') {
-                drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
+                drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 2));
             }
             break;
         case 'N':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 1, 3));
+            drawTileRotated(context, x, y, new TileSource(game.images.background, 1, 3));
             break;
         case 'M':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 3));
+            drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 3));
             break;
         case 'F':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 2, 3));
+            drawTileRotated(context, x, y, new TileSource(game.images.background, 2, 3));
             break;
         case 'T':
             if (typeof(tile) == 'string') {
-                drawImageTile(context, x, y, new TileSource(game.images.towers, 0, 0));
+                drawTileRotated(context, x, y, new TileSource(game.images.towers, 0, 0));
             }
             break;
         default:

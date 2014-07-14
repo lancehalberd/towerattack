@@ -31,6 +31,3 @@ ART:
         numerals (or maybe just use text...?),
         "calories" (pizza?)
     -"world" map to choose levels
-
-
-Add sprite info to 'animal' and "animalType" - set on 'animalType';

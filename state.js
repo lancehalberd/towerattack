@@ -21,8 +21,10 @@ function State () {
     ];
     //array of all animals, gets set when the wave step starts
     this.animals = [];
-    //array of all structures, gets set when the level starts
-    this.structures = [];
+    //array of all farms
+    this.farms = [];
+    //array of all mines
+    this.mines = [];
     //array of all towers, set at start of level and appended to as towers are created
     this.towers = [];
     //array of all cities, set at start of level
