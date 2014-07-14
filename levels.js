@@ -41,17 +41,22 @@ function startLevel(level) {
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
             if (state.mapGrid[i][j].population > 0) {
-                state.population += state.mapGrid[i][j].population;
-            }
-            if (state.mapGrid[i][j].brush) {
-                state.structures.push(state.mapGrid[i][j]);
+                /** @type City */
+                var city = state.mapGrid[i][j];
+                state.population += city.population;
+                city.mapX = j * defaultTileSize;
+                city.mapY = i * defaultTileSize;
+                state.cities.push(city);
             }
             if (state.mapGrid[i][j].brush == 'T') {
                 /** @type Tower */
-                var tower = state.mapGrid[i][j]
+                var tower = state.mapGrid[i][j];
                 tower.mapX = j * defaultTileSize;
                 tower.mapY = i * defaultTileSize;
                 state.towers.push(tower);
+            }
+            if (state.mapGrid[i][j].brush) {
+                state.structures.push(state.mapGrid[i][j]);
             }
         }
     }

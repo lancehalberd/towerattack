@@ -79,7 +79,6 @@ function startGame() {
     });
 }
 function setTile(grid, x, y, brush) {
-
     if (brush == 'W' && (grid[y][x] == 'R' || grid[y][x] == 'B')) {
         grid[y][x] = 'B'
     } else if (brush == 'R' && (grid[y][x] == 'W' || grid[y][x] == 'B')) {
@@ -190,7 +189,7 @@ function mainLoop() {
                 var animal = tower.currentTarget;
                 tower.targetAngle = atan2(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
                 //console.log([state.waveTime,tower.lastTimeFired + 1000 / tower.attacksPerSecond]);
-                if (state.waveTime >= tower.lastTimeFired + 1000 / tower.attacksPerSecond) {
+                if (readyToFire(tower)) {
                     shootProjectile(tower, animal);
                 }
             }
@@ -204,6 +203,11 @@ function mainLoop() {
     }
     //draw the current state
     game.animalContext.clearRect(0, 0, 510, 510);
+    drawTimeline(state);
+    drawPaths(state, game.pathContext);
+    //towers and cities are drawn underneath the animals, but on the same layer
+    drawTowers(game.animalContext);
+    drawCities(game.animalContext);
     if (state.step == 'wave') {
         for (var i = 0; i < state.animals.length; i++) {
             /** @type Animal */
@@ -215,11 +219,12 @@ function mainLoop() {
             drawAnimalHealth(game.animalContext, animal, animal.mapX, animal.mapY);
         }
     }
-    drawTimeline(state);
-    drawPaths(state, game.pathContext);
-    drawTowers(game.animalContext);
     drawProjectiles(game.animalContext);
     updateInformation();
+}
+
+function readyToFire(tower) {
+    return state.waveTime >= tower.lastTimeFired + 1000 / tower.attacksPerSecond;
 }
 
 function inTowerRange(tower, animal) {
@@ -256,13 +261,7 @@ function startWave() {
             state.paths[i].points = [];
         }
     }
-    for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
-        /** @type Tower */
-        var tower = state.towers[towerIndex];
-        tower.lastTimeFired = 0;
-    }
     state.step = 'wave';
-    state.waveTime = 0;
     //discard remainign dealt cards at start of wave
     while (state.dealtCards.length) {
         /** @type Card */
@@ -281,18 +280,8 @@ function endWave() {
     $.each(state.animals, function (i, animal) {
         updateAnimal(state, animal);
     });
-    var cities = [];
     //calculate assets humans gain from structures
     $.each(state.structures, function (i, structure) {
-        //humans get gold from each city based on population left
-        if (structure.brush == 'C') {
-            /** @type City */
-            var city = structure;
-            state.humanGold += Math.floor(city.productivity * city.population);
-            if (city.population > 0) {
-                cities.push(city);
-            }
-        }
         //humans get gold from mines that the animals failed to steal
         if (structure.brush == 'M') {
             /** @type Mine */
@@ -308,8 +297,17 @@ function endWave() {
             farm.waveCalories = farm.calories;
         }
     });
+    var survivingCities = [];
+    for (var i = 0; i < state.cities.length; i++) {
+        /** @type City */
+        var city = state.cities[i];
+        state.humanGold += Math.floor(city.productivity * city.population);
+        if (city.population > 0) {
+            survivingCities.push(city);
+        }
+    }
     state.population = 0;
-    $.each(cities, function (index, city) {
+    $.each(survivingCities, function (index, city) {
         city.population += .1 * state.humanCalories / cities.length;
         state.population += city.population;
     });
@@ -326,6 +324,12 @@ function endWave() {
         }
     }
     state.calories += state.currentLevel.caloriesPerWave;
+    state.waveTime = 0;
+    for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
+        /** @type Tower */
+        var tower = state.towers[towerIndex];
+        tower.lastTimeFired = -2000;
+    }
     dealCard(state);
     updateInformation();
 }

@@ -114,7 +114,9 @@ function drawBrush(context, x, y, tile) {
             drawTileRotated(context, x * 30 + 20, y * 30 + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
             break;
         case 'C':
-            drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
+            if (typeof(tile) == 'string') {
+                drawImageTile(context, x, y, new TileSource(game.images.background, 0, 2));
+            }
             break;
         case 'N':
             drawImageTile(context, x, y, new TileSource(game.images.background, 1, 3));

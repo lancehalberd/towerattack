@@ -25,6 +25,8 @@ function State () {
     this.structures = [];
     //array of all towers, set at start of level and appended to as towers are created
     this.towers = [];
+    //array of all cities, set at start of level
+    this.cities = [];
     //array of projectiles
     this.projectiles = [];
     /** @type {Animal}  The animal currently being moved in the timeline */

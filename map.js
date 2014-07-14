@@ -2,16 +2,22 @@ function City() {
     this.population = 100;
     this.productivity = .1;
     this.brush = 'C';
+    this.mapX = 0;
+    this.mapY = 0;
 }
 function Mine() {
     this.gold = 10;
     this.waveGold = 10;
     this.brush = 'M';
+    this.mapX = 0;
+    this.mapY = 0;
 }
 function Farm() {
     this.calories = 10;
     this.waveCalories = 10;
     this.brush = 'F';
+    this.mapX = 0;
+    this.mapY = 0;
 }
 function Tower() {
     this.baseDamage = 5;
@@ -26,7 +32,7 @@ function Tower() {
     this.spriteIndex = Math.floor(Math.random() * 3);
     /** @type Animal */
     this.currentTarget = null;
-    this.lastTimeFired = 0;
+    this.lastTimeFired = -2000;
 }
 
 function Projectile() {
@@ -105,14 +111,34 @@ function drawProjectiles(context) {
  */
 function drawTowers(context) {
     $.each(state.towers, function (index, tower) {
+        var frame = readyToFire(tower) ? 1 : 0;
         drawTileRotated(context, tower.mapX, tower.mapY,
-                new TileSource(game.images.towers, 0, tower.spriteIndex), tower.angle);
+                new TileSource(game.images.towers, frame, tower.spriteIndex), tower.angle);
         if (tower == state.selectedElement) {
             context.strokeStyle = "#FFF";
             context.beginPath();
-            context.arc(tower.mapX + 15, tower.mapY + 15, tower.range, 0, 2*Math.PI);
+            context.arc(tower.mapX + 15, tower.mapY + 15, tower.range - 7, 0, 2*Math.PI);
             context.stroke();
         }
+    });
+}
+
+/**
+ * Draws the cities to the context
+ *
+ * @param {context} context
+ */
+function drawCities(context) {
+    $.each(state.cities, function (index, city) {
+        var frame = 0;
+        if (city.population == 0) {
+            frame = 3;
+        } else if (city.population <= 30) {
+            frame = 2;
+        } else if (city.population <= 60) {
+            frame = 1;
+        }
+        drawTileRotated(context, city.mapX, city.mapY, new TileSource(game.images.background, frame, 2), 0);
     });
 }
 
