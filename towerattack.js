@@ -8,7 +8,7 @@ $(function () {
     state.deck = testDeck;
     initializeCardArea(state);
     $('.js-edit').on('click', toggleEditing);
-    $('.js-play').on('click', startWave);
+    $('.js-play').on('click', startNextStep);
     $('.js-fastForward').on('click', changeSpeed);
     addTimelineInteractions(state);
 });
@@ -128,6 +128,7 @@ function mainLoop() {
                 if (state.waveTime < animal.spawnTime) {
                     continue;
                 }
+                animal.spawned = true;
                 //move the animal each frame after it spawns
                 if (state.waveTime > animal.spawnTime) {
                     animal.distance += 10 * animal.speed * frameLength / 1000;
@@ -179,7 +180,7 @@ function mainLoop() {
                 for (var animalIndex = 0; animalIndex < state.animals.length; animalIndex++) {
                     /** @type Animal */
                     var animal = state.animals[animalIndex];
-                    if (animal.finished || animal.dead) {
+                    if (!animal.spawned || animal.finished || animal.dead) {
                         continue;
                     }
                     if (inTowerRange(tower, animal)) {
@@ -245,9 +246,37 @@ function readyToFire(tower) {
 function inTowerRange(tower, animal) {
     return tower.range * tower.range >= distanceSquared(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
 }
-
+function startNextStep() {
+    if (state.step == 'cards') {
+        state.step = 'build';
+        //discard remaining dealt cards at start of build step
+        while (state.dealtCards.length) {
+            /** @type Card */
+            var card = state.dealtCards.pop();
+            if (card) {
+                discardCard(state, card);
+            }
+        }
+        //humans build towers for 20 gold in random locations
+        while (state.humanGold > 20) {
+            var x = Random.range(0, state.mapGrid[0].length - 1);
+            var y = Random.range(0, state.mapGrid.length - 1);
+            if (['0', '1', '2', '3'].indexOf(state.mapGrid[y][x]) >= 0) {
+                /** @type Tower */
+                var tower = getRandomTower();
+                state.mapGrid[y][x] = tower;
+                tower.mapX = x * defaultTileSize;
+                tower.mapY = y * defaultTileSize;
+                state.towers.push(tower);
+                state.humanGold -= 20;
+            }
+        }
+    } else if (state.step == 'build') {
+        startWave();
+    }
+}
 function startWave() {
-    if (state.step == 'wave') {
+    if (state.step != 'build') {
         return;
     }
     state.animals = getAnimals(state);
@@ -255,6 +284,7 @@ function startWave() {
     $.each(state.animals, function (index, element) {
         /** @type Animal */
         var animal = element;
+        animal.spawned = false;
         animal.dead = false;
         animal.finished = false;
         animal.distance = 0;
@@ -277,14 +307,6 @@ function startWave() {
         }
     }
     state.step = 'wave';
-    //discard remainign dealt cards at start of wave
-    while (state.dealtCards.length) {
-        /** @type Card */
-        var card = state.dealtCards.pop();
-        if (card) {
-            discardCard(state, card);
-        }
-    }
 }
 
 function endWave() {
@@ -416,6 +438,13 @@ function updateInformation() {
         }
     } else {
         $('.js-details').hide();
+    }
+    if (state.step == 'wave') {
+        $('.js-play').text('Running...').prop('disabled', true);
+    } else if (state.step == 'cards') {
+        $('.js-play').text('End Turn').prop('disabled', false);
+    } else if (state.step == 'build') {
+        $('.js-play').text('Start Wave!').prop('disabled', false);
     }
 }
 

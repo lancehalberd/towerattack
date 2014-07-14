@@ -178,12 +178,11 @@ function playCard(state, ability, card) {
     if (state.abilitiesUsedThisTurn > 2) {
         return;
     }
-    state.dealtCards[state.dealtCards.indexOf(card)] = null;
     var error = useAbility(state, ability);
     if (error) {
         return;
     }
-    discardCard(state, card);
+    card.element.addClass('back');
     state.abilitiesUsedThisTurn++;
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(getAnimals(state), function (i, animal) {
@@ -203,6 +202,7 @@ function discardCard(state, card) {
     card.element.css('right', '105px');
     state.discardedCards.push(card);
     card.element.removeClass('dealt');
+    card.element.removeClass('back');
     card.element.addClass('discarded');
     $('.js-cardContainer').append(card.element);
 }
