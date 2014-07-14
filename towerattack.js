@@ -90,7 +90,7 @@ function setTile(grid, x, y, brush) {
     } else if (brush == 'F') {
         grid[y][x] = new Farm();
     } else if (brush == 'T') {
-        grid[y][x] = new Tower();
+        grid[y][x] = getRandomTower();
     } else {
         grid[y][x] = brush;
     }
@@ -374,7 +374,7 @@ function updateInformation() {
                 /** @type Tower */
                 var tower = state.selectedElement;
                 drawTower(context, 0, 0, 0, tower);
-                $('.js-details .js-title').html('Tower');
+                $('.js-details .js-title').html(tower.type.name);
                 var details = [
                     'Attack ' + tower.baseDamage + '-' + (tower.baseDamage +  tower.damageRange),
                     'Speed ' + tower.attacksPerSecond.toFixed(1)
