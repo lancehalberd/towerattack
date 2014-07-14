@@ -373,7 +373,7 @@ function updateInformation() {
             case 'T':
                 /** @type Tower */
                 var tower = state.selectedElement;
-                drawTower(context, 0, 0, tower);
+                drawTower(context, 0, 0, 0, tower);
                 $('.js-details .js-title').html('Tower');
                 var details = [
                     'Attack ' + tower.baseDamage + '-' + (tower.baseDamage +  tower.damageRange),

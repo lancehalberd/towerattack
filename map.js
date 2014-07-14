@@ -111,7 +111,7 @@ function drawProjectiles(context) {
  */
 function drawTowers(context) {
     $.each(state.towers, function (index, tower) {
-        drawTower(context, tower.mapX, tower.mapY, tower);
+        drawTower(context, tower.mapX, tower.mapY, tower.angle, tower);
         if (tower == state.selectedElement) {
             context.strokeStyle = "#FFF";
             context.beginPath();
@@ -127,11 +127,12 @@ function drawTowers(context) {
  * @param {context} context
  * @param {Number} x
  * @param {Number} y
+ * @param {Number} angle
  * @param {Tower} tower
  */
-function drawTower(context, x, y, tower) {
+function drawTower(context, x, y, angle, tower) {
     var frame = readyToFire(tower) ? 1 : 0;
-    drawTileRotated(context, x, y, new TileSource(game.images.towers, frame, tower.spriteIndex), tower.angle);
+    drawTileRotated(context, x, y, new TileSource(game.images.towers, frame, tower.spriteIndex), angle);
 }
 
 /**
