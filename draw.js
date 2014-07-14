@@ -96,6 +96,16 @@ function drawImageTile(context, x, y, tileSource) {
  */
 function drawBrush(context, x, y, tile) {
     switch (tile.brush ? tile.brush : tile) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+            var num = parseInt(tile) - 1;
+            drawTileRotated(context, x, y, new TileSource(game.images.background, num % 4, Math.floor(num / 4)));
         case '0':
         case 'B':
             break;

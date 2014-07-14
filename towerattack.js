@@ -69,7 +69,11 @@ function startGame() {
     $('.exportMap').on('click', function (event) {
         var exportRows = [];
         $.each(state.mapGrid, function (i, row) {
-            exportRows.push('"' + row.join('') + '"');
+            var exportRow = [];
+            $.each(row, function (j, tile) {
+                exportRow.push(tile.brush ? tile.brush : tile);
+            });
+            exportRows.push('"' + exportRow.join('') + '"');
         });
         var result = "[\n" + exportRows.join(",\n") + "];\n";
         $.each(state.paths, function (i, path) {
