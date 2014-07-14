@@ -395,8 +395,26 @@ function updateInformation() {
                 $('.js-details .js-title').html('Gold Mine');
                 $('.js-details .js-description').html('Gold ' + mine.waveGold + ' / ' + mine.gold);
                 break;
+            case 'A':
+                /** @type Animal */
+                var animal = state.selectedElement;
+                if (animal.dead && state.step != 'wave') {
+                    state.selectedElement = null;
+                }
+                drawAnimalSprite(context, 0, 0, animal, 0, 0);
+                $('.js-details .js-title').html(properCase(animal.type.single));
+                var details = [
+                    'H: ' + animal.currentHealth + '/' + animal.health,
+                    'S: ' + animal.speed + ' C: ' + animal.carry,
+                    'D: ' + animal.damage + ' A: ' + animal.armor,
+                ]
+                $('.js-details .js-description').html(details.join('<br />'));
         }
     } else {
         $('.js-details').hide();
     }
+}
+
+function properCase(string) {
+    return string.charAt(0).toUpperCase() + string.substring(1);
 }

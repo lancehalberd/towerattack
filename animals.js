@@ -32,12 +32,15 @@ function Animal() {
     //marks that the animal is being displaced in the timeline by the current
     //drag operation
     this.moved = false;
+    this.brush = 'A';
 }
 
 /**
  * Definition of an animal type
  */
 function AnimalType() {
+    this.single = '';
+    this.plural = '';
     this.health = 10;
     this.healthGrowth = 1;
     this.speed = 10;
@@ -69,17 +72,21 @@ function createAnimalType(data) {
 }
 
 var animalTypes = {
-    'cardinal': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 20, 'speedGrowth': 1,
+    'cardinal': createAnimalType({'single': 'cardinal', 'plural': 'cardinals',
+                                    'health': 10, 'healthGrowth': 1, 'speed': 20, 'speedGrowth': 1,
                                     'armor': 0, 'armorGrowth': 0, 'carry': 1, 'carryGrowth': 0,
                                     'damage': 1, 'damageGrowth': .1, tags: ['bird', 'air'],
                                     'spriteIndex': 0, 'numberOfFrames': 5}),
-    'snake': createAnimalType({'health': 10, 'healthGrowth': 1, 'speed': 15, 'speedGrowth': 0,
+    'snake': createAnimalType({'single': 'snake', 'plural': 'snakes',
+                                    'health': 10, 'healthGrowth': 1, 'speed': 15, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 1, 'carryGrowth': 0,
                                     'damage': 2, 'damageGrowth': .5, tags: ['reptile', 'ground'], 'spriteIndex': 2}),
-    'penguin': createAnimalType({'health': 20, 'healthGrowth': 2, 'speed': 10, 'speedGrowth': 0,
+    'penguin': createAnimalType({'single': 'penguin', 'plural': 'penguins',
+                                    'health': 20, 'healthGrowth': 2, 'speed': 10, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 2, 'carryGrowth': 0,
                                     'damage': 1, 'damageGrowth': .1, tags: ['bird', 'ground'], 'spriteIndex': 1}),
-    'zebra': createAnimalType({'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
+    'zebra': createAnimalType({'single': 'zebra', 'plural': 'zebras',
+                                    'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
                                     'armor': 1, 'armorGrowth': .1, 'carry': 1, 'carryGrowth': 0,
                                     'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'], 'spriteIndex': 0}),
 }
