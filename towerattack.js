@@ -308,7 +308,7 @@ function endWave() {
     }
     state.population = 0;
     $.each(survivingCities, function (index, city) {
-        city.population += .1 * state.humanCalories / cities.length;
+        city.population += .1 * state.humanCalories / survivingCities.length;
         state.population += city.population;
     });
     state.humanCalories = 0;
