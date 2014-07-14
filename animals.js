@@ -88,7 +88,8 @@ var animalTypes = {
     'zebra': createAnimalType({'single': 'zebra', 'plural': 'zebras',
                                     'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
                                     'armor': 1, 'armorGrowth': .1, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'], 'spriteIndex': 0}),
+                                    'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'],
+                                    'spriteIndex': 3, 'numberOfFrames': 4}),
 }
 
 /**
