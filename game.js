@@ -40,7 +40,8 @@ function initializeGame() {
     game.brushContext = $('.js-brushCanvas')[0].getContext('2d');
     game.paletteGrid = [['0', 'R', 'W', 'N'],
                         ['C', 'M', 'F', 'T'],
-                        ['1', '2', '3', '0']];
+                        ['1', '2', '3', '4'],
+                        ['5', '0', '0', '0']];
     game.mapSources = {
         'R' : new TileSource(game.paletteCanvas)
     }
@@ -49,7 +50,8 @@ function initializeGame() {
         'water' : 'graphics/water.png',
         'roadMask' : 'graphics/roadSpriteSheet.png',
         'background' : 'graphics/meadowsBackgroundSprites.png',
-        'towers' : 'graphics/turretSprites.png'
+        'towers' : 'graphics/turretSprites.png',
+        'cards' : 'graphics/cardGraphics.png'
     };
     loadImages();
 }

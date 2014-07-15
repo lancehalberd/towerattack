@@ -160,8 +160,8 @@ function dealCard(state) {
     }
     var dealtCard = state.deck.pop();
     state.dealtCards[nextSpace] = dealtCard;
-    var top = 10 + Math.floor(nextSpace / 3) * 120;
-    var left = 10 + (nextSpace % 3) * 90;
+    var top = 10 + Math.floor(nextSpace / 3) * 130;
+    var left = 10 + (nextSpace % 3) * 100;
     dealtCard.element.css('top', top + 'px');
     dealtCard.element.css('left', left + 'px');
     dealtCard.element.removeClass('back');
