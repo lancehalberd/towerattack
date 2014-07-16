@@ -301,6 +301,8 @@ function startNextStep() {
                 tower.mapY = y * defaultTileSize;
                 state.towers.push(tower);
                 state.humanGold -= 20;
+            } else {
+                break;
             }
         }
     } else if (state.step == 'build') {
