@@ -108,7 +108,7 @@
     height: 120px;
     cursor: pointer;
     padding: 8px;
-    background-image: url(graphics/cardGraphics.png);
+    background-image: url("graphics/cardGraphics.png");
     background-position: 0 0;
 }
 .cardCanvas{
