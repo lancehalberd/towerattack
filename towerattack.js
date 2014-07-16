@@ -1,5 +1,21 @@
 var state = new State();
 
+var helpFlags = [];
+function showHelp($element, flag, text) {
+    if (helpFlags[flag]) {
+        return $();
+    }
+    var $help = $('<div class="js-popupHelp popupHelp js-help-' + flag +'"></div>').html(text);
+    $element.append($help);
+    return $help;
+}
+function hideHelp(flag, forever) {
+    $('.js-help-' + flag).remove();
+    if (forever) {
+        helpFlags[flag] = true;
+    }
+}
+
 //this triggers when page has finished loading
 $(function () {
     initializeGame();
@@ -11,10 +27,12 @@ $(function () {
     $('.js-play').on('click', startNextStep);
     $('.js-fastForward').on('click', changeSpeed);
     addTimelineInteractions(state);
+    $('body').on('click', '.js-popupHelp', function () {
+        $(this).remove();
+    });
 });
 
 function startGame() {
-    dealCard(state);
     drawGrid(game.backgroundContext, state.mapGrid);
     drawPaths(state, game.pathContext);
     setInterval(mainLoop, frameLength);
@@ -81,6 +99,20 @@ function startGame() {
         });
         $('.output').val(result);
     });
+    startCardStep();
+}
+function startCardStep() {
+    showHelp($('.js-cardContainer'), 'deal', 'Click this deck to deal up to 6 cards.').css('bottom', '40px').css('right', '0px');
+    state.step = 'cards';
+    state.calories += state.currentLevel.caloriesPerWave;
+    state.step = 'cards';
+    if (state.deck.length <= 0) {
+        shuffleDeck();
+    }
+    dealCard(state);
+    showHelp($('.js-cardContainer'), 'ability', 'Click an ability on a card to use it.<br/> You can use 3 abilities a turn.').css('top', '100px').css('left', '0px');
+    updateInformation();
+    $('.js-play').text('End Turn').prop('disabled', false);
 }
 function setTile(grid, x, y, brush) {
     if (brush == 'W' && (grid[y][x] == 'R' || grid[y][x] == 'B')) {
@@ -239,16 +271,11 @@ function mainLoop() {
     updateInformation();
 }
 
-function readyToFire(tower) {
-    return state.waveTime >= tower.lastTimeFired + 1000 / tower.attacksPerSecond;
-}
-
-function inTowerRange(tower, animal) {
-    return tower.range * tower.range >= distanceSquared(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
-}
 function startNextStep() {
     if (state.step == 'cards') {
         state.step = 'build';
+        hideHelp('deal');
+        hideHelp('ability');
         $('.js-play').text('Start Wave!').prop('disabled', false);
         //discard remaining dealt cards at start of build step
         while (state.dealtCards.length) {
@@ -312,7 +339,6 @@ function startWave() {
 }
 
 function endWave() {
-    $('.js-play').text('End Turn').prop('disabled', false);
     //clear all wave modifiers at the end of the wave
     state.waveModifiers = {};
     state.waveNumber++;
@@ -350,7 +376,6 @@ function endWave() {
         state.population += city.population;
     });
     state.humanCalories = 0;
-    state.step = 'cards';
     state.abilitiesUsedThisTurn = 0;
     for (var i = 0; i < state.paths.length; i++) {
         for (var j = 0; j < state.paths[i].slots.length; j++) {
@@ -361,18 +386,13 @@ function endWave() {
             }
         }
     }
-    state.calories += state.currentLevel.caloriesPerWave;
-    state.waveTime = 0;
     for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
         /** @type Tower */
         var tower = state.towers[towerIndex];
         tower.lastTimeFired = -2000;
     }
-    if (state.deck.length <= 0) {
-        shuffleDeck();
-    }
-    dealCard(state);
-    updateInformation();
+    state.waveTime = 0;
+    startCardStep();
 }
 
 function changeSpeed() {
@@ -443,6 +463,21 @@ function updateInformation() {
                 $('.js-details .js-description').html(details.join('<br />'));
         }
     } else {
+        /**if (state.step == 'cards') {
+            $('.js-details .js-title').html('Card Phase');
+            var details = [];
+            if (state.dealtCards.length < 6) {
+                details.push('Click deck to deal cards.');
+            }
+            details.push((3 - state.abilitiesUsedThisTurn) + ' plays left.');
+            $('.js-details .js-description').html(details.join('<br />'));
+        } else if (state.step == 'build') {
+            $('.js-details .js-title').html('City Building Phase');
+            $('.js-details .js-description').html('Click start wave once you have finalized your path');
+        } else {
+            $('.js-details .js-title').html('Wave Phase');
+            $('.js-details .js-description').html('Waiting for the wave to complete.');
+        }*/
         $('.js-details').hide();
     }
 }

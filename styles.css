@@ -155,3 +155,16 @@
 .card.a3 .ability:nth-of-type(3) {
     top: 70px;
 }
+
+.popupHelp {
+    padding: 5px;
+    font-size: 12px;
+    font-family: sans-serif;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}

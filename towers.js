@@ -52,6 +52,14 @@ var towerTypes = {
     'artillery': createTowerType({'name': 'Artillery', 'baseDamage': 12, 'damageRange': 6, 'range': 150, 'attacksPerSecond': .5, 'spriteIndex': 0}),
 };
 
+function readyToFire(tower) {
+    return state.waveTime >= tower.lastTimeFired + 1000 / tower.attacksPerSecond;
+}
+
+function inTowerRange(tower, animal) {
+    return tower.range * tower.range >= distanceSquared(tower.mapX, tower.mapY, animal.mapX, animal.mapY);
+}
+
 function Projectile() {
     /** @type TileSource */
     this.tileSource = null;

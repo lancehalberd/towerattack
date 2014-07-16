@@ -135,11 +135,13 @@ function addCardHandlers(state) {
     $('.js-cardContainer').on('click', '.card.back', function () {
         if (state.step == 'cards') {
             dealCard(state);
+            hideHelp('deal', true);
         }
     });
     $('.js-cardContainer').on('click', '.card.dealt .ability', function () {
         if (state.step == 'cards') {
             playCard(state, $(this).data('ability'), $(this).closest('.card').data('card'));
+            hideHelp('ability', true);
         }
     });
     $('.js-cardContainer').on('click', '.card.discarded', function () {
@@ -201,7 +203,7 @@ function playCard(state, ability, card) {
 function discardCard(state, card) {
     card.element.css('top', '');
     card.element.css('left', '');
-    card.element.css('bottom', (5 + (state.discardedCards.length) * 5) + 'px');
+    card.element.css('bottom', (5 + (state.discardedCards.length) * 2) + 'px');
     card.element.css('right', '105px');
     state.discardedCards.push(card);
     card.element.removeClass('dealt');
