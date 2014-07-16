@@ -109,14 +109,14 @@ function gainCalories(state, ability) {
  * @param {State} state
  */
 function initializeCardArea(state) {
-    displayDeck(state);
+    displayDeck();
     addCardHandlers(state);
 }
 
 /**
  * @param {State} state
  */
-function displayDeck(state) {
+function displayDeck() {
     var top = 5;
     $.each(state.deck, function (index, card) {
         var $card = makeCard(card);
@@ -144,7 +144,7 @@ function addCardHandlers(state) {
     });
     $('.js-cardContainer').on('click', '.card.discarded', function () {
         if (state.step == 'cards') {
-            shuffleDeck(state);
+            shuffleDeck();
         }
     });
 }
@@ -210,10 +210,7 @@ function discardCard(state, card) {
     $('.js-cardContainer').append(card.element);
 }
 
-/**
- * @param {State} state
- */
-function shuffleDeck(state) {
+function shuffleDeck() {
     //move discarded cards back into deck
     while (state.discardedCards.length) {
         state.deck.push(state.discardedCards.pop());
@@ -230,7 +227,7 @@ function shuffleDeck(state) {
     $('.js-cardContainer .card.back').remove();
     $('.js-cardContainer .card.discarded').remove();
     //add the deck elements to the screen again
-    displayDeck(state);
+    displayDeck();
 }
 
 /**

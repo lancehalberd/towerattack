@@ -30,7 +30,7 @@ function startGame() {
         if (state.editingMap) {
             setTile(state.mapGrid, tileX, tileY, state.brush);
             drawingTiles = true;
-        } else if (state.step == 'cards') {
+        } else if (state.step != 'wave') {
             drawingPath = true;
             //clicking on a nest restarts the path
             if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
@@ -249,6 +249,7 @@ function inTowerRange(tower, animal) {
 function startNextStep() {
     if (state.step == 'cards') {
         state.step = 'build';
+        $('.js-play').text('Start Wave!').prop('disabled', false);
         //discard remaining dealt cards at start of build step
         while (state.dealtCards.length) {
             /** @type Card */
@@ -307,9 +308,11 @@ function startWave() {
         }
     }
     state.step = 'wave';
+    $('.js-play').text('Running...').prop('disabled', true);
 }
 
 function endWave() {
+    $('.js-play').text('End Turn').prop('disabled', false);
     //clear all wave modifiers at the end of the wave
     state.waveModifiers = {};
     state.waveNumber++;
@@ -364,6 +367,9 @@ function endWave() {
         /** @type Tower */
         var tower = state.towers[towerIndex];
         tower.lastTimeFired = -2000;
+    }
+    if (state.deck.length <= 0) {
+        shuffleDeck();
     }
     dealCard(state);
     updateInformation();
@@ -438,13 +444,6 @@ function updateInformation() {
         }
     } else {
         $('.js-details').hide();
-    }
-    if (state.step == 'wave') {
-        $('.js-play').text('Running...').prop('disabled', true);
-    } else if (state.step == 'cards') {
-        $('.js-play').text('End Turn').prop('disabled', false);
-    } else if (state.step == 'build') {
-        $('.js-play').text('Start Wave!').prop('disabled', false);
     }
 }
 

@@ -35,7 +35,7 @@ function startLevel(level) {
             discardCard(state, card);
         }
     }
-    shuffleDeck(state);
+    shuffleDeck();
     state.farms = [];
     state.mines = [];
     state.towers = [];
