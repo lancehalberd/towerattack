@@ -51,13 +51,17 @@ function startGame() {
         } else if (state.step != 'wave') {
             drawingPath = true;
             //clicking on a nest restarts the path
-            if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
+        }
+        state.selectedElement = null;
+        if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
+            if (state.step != 'wave') {
                 state.paths[state.selectedPath].points = [[tileX, tileY]];
                 state.paths[state.selectedPath].complete = false;
-            } else if (state.mapGrid[tileY][tileX].brush) {
-                state.selectedElement = state.mapGrid[tileY][tileX];
-            } else {
-                state.selectedElement = null;
+            }
+        } else if (state.mapGrid[tileY][tileX].brush) {
+            state.selectedElement = state.mapGrid[tileY][tileX];
+        } else {
+            if (state.step != 'wave') {
                 editPath(state, tileX, tileY);
             }
         }

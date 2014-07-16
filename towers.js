@@ -100,7 +100,7 @@ function updateAllProjectiles() {
         updateProjectile(projectile);
         //damage and remove projectile when it reaches the target
         if (projectile.percent >= 1) {
-            var damage = projectile.tower.baseDamage + Math.floor(Math.random() * projectile.tower.damageRange);
+            var damage = Math.max(0, projectile.tower.baseDamage - projectile.target.armor) + Math.floor(Math.random() * projectile.tower.damageRange);
             damageAnimal(projectile.target, damage);
             state.projectiles.splice(i--, 1);
         }
