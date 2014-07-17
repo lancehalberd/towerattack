@@ -99,7 +99,7 @@ function startLevel(level) {
     updatePlayButton();
 }
 
-var level1 = new Level('Onette', [1, 2, 3], 5, 2,
+var level1 = new Level('Onette', [4, 6, 10], 5, 2,
     [
         "10BBRRR0131RRR0",
         "31BWWWR1RRRR1R1",
