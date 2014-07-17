@@ -5,6 +5,7 @@ function showHelp($element, flag, text) {
     if (helpFlags[flag]) {
         return $();
     }
+    hideHelp(flag);
     var $help = $('<div class="js-popupHelp popupHelp js-help-' + flag +'"></div>').html(text);
     $element.append($help);
     return $help;
@@ -14,6 +15,11 @@ function hideHelp(flag, forever) {
     if (forever) {
         helpFlags[flag] = true;
     }
+}
+var dismissOverlayFunction;
+function showMessage(markup, onDismiss) {
+    $('.js-overlay').show().html('<p>' + markup + '</p>');
+    dismissOverlayFunction = onDismiss;
 }
 
 //this triggers when page has finished loading
@@ -29,6 +35,12 @@ $(function () {
     addTimelineInteractions(state);
     $('body').on('click', '.js-popupHelp', function () {
         $(this).remove();
+    });
+     $('.js-overlay').on('click', function () {
+        $('.js-overlay').hide();
+        if (dismissOverlayFunction) {
+            dismissOverlayFunction();
+        }
     });
     addEditEventHandlers();
 });
@@ -230,6 +242,7 @@ function updateInformation() {
     $('.js-levelName').text(state.currentLevel.name);
     $('.js-population').text('Population: ' + state.population.toFixed(1) + 'K');
     $('.js-humanGold').text('Gold: ' + state.humanGold);
+    $('.js-wavesLeft').text('Waves left: ' + (state.waveLimit - state.waveNumber));
     $('.js-myCalories').text('Calories: ' + state.calories);
     $('.js-myGold').text('Gold: ' + state.gold);
     if (state.selectedElement) {
@@ -295,8 +308,4 @@ function updateInformation() {
     } else {
         $('.js-details').hide();
     }
-}
-
-function properCase(string) {
-    return string.charAt(0).toUpperCase() + string.substring(1);
 }

@@ -1,12 +1,14 @@
 /**
  * @param {String} name
+ * @param {Array} waveLimits
  * @param {Number} startingCalories
  * @param {Number} caloriesPerWave
  * @param {Array} grid
  * @param {Array} paths
  */
-function Level(name, startingCalories, caloriesPerWave, grid, paths) {
+function Level(name, waveLimits, startingCalories, caloriesPerWave, grid, paths) {
     this.name = name;
+    this.waveLimits = waveLimits;
     this.grid = grid;
     this.paths = paths;
     this.startingCalories = startingCalories;
@@ -40,6 +42,7 @@ function startLevel(level) {
     state.mines = [];
     state.towers = [];
     state.nests = [];
+    state.cities = [];
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
             if (state.mapGrid[i][j].population > 0) {
@@ -90,10 +93,13 @@ function startLevel(level) {
             state.paths[i].slots[j] = null;
         }
     }
+    state.waveLimit = level.waveLimits[2];
+    console.log(level.waveLimits);
     selectPath(0);
+    updatePlayButton();
 }
 
-var level1 = new Level('Onette', 5, 2,
+var level1 = new Level('Onette', [1, 2, 3], 5, 2,
     [
         "10BBRRR0131RRR0",
         "31BWWWR1RRRR1R1",
@@ -111,7 +117,7 @@ var level1 = new Level('Onette', 5, 2,
         "0R31010R13100R2",
         "0NRRRRRRRRRRRM1"
     ],[
-        [[1,14],[1,13],[1,12],[2,12],[2,11],[2,10],[1,10],[0,10],[0,9],[0,8],[0,7],[0,6],[0,5],[1,5],[2,5],[2,4],[2,3],[2,2],[2,1],[2,0],[3,0],[4,0],[5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[7,4],[8,4],[8,3],[8,2],[8,1],[9,1],[10,1],[11,1],[11,0],[12,0],[13,0],[13,1],[13,2],[13,3],[13,4],[13,5],[13,6],[13,7],[14,7]],
+        [[1,14],[1,13],[1,12],[2,12],[2,11],[2,10],[3,10],[3,9],[4,9],[4,8],[4,7],[4,6],[4,5],[3,5],[2,5],[2,4],[2,3],[2,2],[2,1],[2,0],[3,0],[4,0],[5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[7,4],[8,4],[9,4],[10,4],[10,5],[10,6],[10,7],[11,7],[12,7],[13,7],[14,7]],
         [[1,14],[2,14],[3,14],[4,14],[5,14],[6,14],[7,14],[8,14],[9,14],[10,14],[11,14],[12,14],[13,14],[13,13],[13,12],[12,12],[12,11],[12,10],[13,10],[14,10],[14,9],[14,8],[14,7]],
         [[14,7],[13,7],[12,7],[11,7],[10,7],[10,6],[10,5],[10,4],[9,4],[8,4],[7,4],[6,4],[6,5],[6,6],[5,6],[4,6],[4,7],[4,8],[4,9],[5,9],[5,10],[5,11],[6,11],[7,11],[8,11],[9,11],[10,11],[11,11],[12,11],[12,10],[13,10],[14,10],[14,9],[14,8],[14,7]]
     ]);

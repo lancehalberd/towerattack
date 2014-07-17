@@ -6,6 +6,8 @@ function startNextStep() {
             return startBuildStep();
         case 'build':
             if (state.editingPath) {
+                showHelp($('.js-cardContainer'), 'stopEditingToStartWave', 'You must finish editing paths before starting the wave')
+                    .css('bottom', '40px').css('left', '0px');
                 return;
             }
             return startWaveStep();
@@ -25,14 +27,12 @@ function startCardStep() {
     }
     dealCard(state);
     showHelp($('.js-cardContainer'), 'ability', 'Click an ability on a card to use it.<br/> You can use 3 abilities a turn.').css('top', '100px').css('left', '0px');
-    updateInformation();
-    $('.js-play').text('End Turn').prop('disabled', false);
+    updatePlayButton();
 }
 
 function endCardStep() {
     hideHelp('deal');
     hideHelp('ability');
-    $('.js-play').text('Start Wave!').prop('disabled', false);
     //discard remaining dealt cards at start of build step
     while (state.dealtCards.length) {
         /** @type Card */
@@ -61,9 +61,11 @@ function startBuildStep () {
             break;
         }
     }
+    updatePlayButton();
 }
 
 function startWaveStep() {
+    state.waveNumber++;
     state.animals = getAnimals(state);
     $.each(state.animals, function (index, element) {
         /** @type Animal */
@@ -82,13 +84,10 @@ function startWaveStep() {
         }
     }
     state.step = 'wave';
-    $('.js-play').text('Running...').prop('disabled', true);
+    updatePlayButton();
 }
 
 function endWaveStep() {
-    //clear all wave modifiers at the end of the wave
-    state.waveModifiers = {};
-    state.waveNumber++;
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(state.animals, function (i, animal) {
         updateAnimal(state, animal);
@@ -139,5 +138,34 @@ function endWaveStep() {
         tower.lastTimeFired = -2000;
     }
     state.waveTime = 0;
+
+    if (state.population <= 0) {
+        showMessage('You Won!<br/><br/>Click to Restart.', restartGame);
+        state.step = "victory";
+        return;
+    }
+    if (state.waveNumber == state.waveLimit) {
+        showMessage('You lost!<br/><br/>Click to Restart.', restartGame);
+        state.step = "defeat";
+        return;
+    }
+    //clear all wave modifiers at the end of the wave
+    state.waveModifiers = {};
     startNextStep();
+}
+
+function restartGame() {
+    startLevel(level1);
+}
+
+function updatePlayButton() {
+    switch (state.step) {
+        case 'cards':
+            return $('.js-play').text('End Turn').prop('disabled', false);
+        case 'build':
+            return $('.js-play').text('Start Wave!').prop('disabled', false);
+        case 'wave':
+            return $('.js-play').text('Running...').prop('disabled', true);
+    }
+    return;
 }

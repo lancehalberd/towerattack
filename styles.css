@@ -1,8 +1,13 @@
 .body {
     background-color: black;
+    font-family: sans-serif;
 }
 .myInfo {
     float: right;
+}
+.myInfo span, .humanInfo span {
+    margin-right: 20px;
+    line-height: 20px;
 }
 .editPath {
     position: absolute;
@@ -22,6 +27,21 @@
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-user-select: none;
+}
+.overlay {
+    box-sizing: border-box;
+    position: absolute;
+    width: 400px;
+    height: 200px;
+    font-size: 40px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    border: 5px solid black;
+    left: 200px;
+    top: 200px;
+    padding: 20px;
+    cursor: pointer;
 }
 .infoBar {
     position: absolute;

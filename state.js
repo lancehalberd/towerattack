@@ -15,6 +15,7 @@ function State () {
     this.calories = 100;
     //index of the currently selected path
     this.selectedPath = 0;
+    this.waveLimit = 0;
     //array of paths
     this.paths = [
         new Path(),
@@ -45,7 +46,7 @@ function State () {
         'animal' : [new Modifier('healthPlus', 2)]
     };
     this.waveModifiers = {};
-    this.waveNumber = 1;
+    this.waveNumber = 0;
     this.gameTime = 0;
     this.waveTime = 0;
     this.waveSpeed = 1;
