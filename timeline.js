@@ -82,7 +82,7 @@ function addTimelineInteractions(state) {
         var x = event.pageX - $(this).offset().left;
         currentPath = Math.floor(y / tileSize);
 
-        state.selectedPath = currentPath;
+        selectPath(currentPath);
         currentSlot = Math.floor(x / tileSize) - 1;
         state.selectedElement = state.draggingAnimal = state.paths[currentPath].slots[currentSlot];
         state.lastAnimalMoved = null;
@@ -140,7 +140,7 @@ function addTimelineInteractions(state) {
             state.paths[2].slots = allSlots.splice(0, 25);
             currentSlot = slot;
             currentPath = path;
-            state.selectedPath = currentPath;
+            selectPath(currentPath);
         }
     });
     //releasing the dragged animal finalizes its position

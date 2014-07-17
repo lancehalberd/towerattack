@@ -39,6 +39,7 @@ function startLevel(level) {
     state.farms = [];
     state.mines = [];
     state.towers = [];
+    state.nests = [];
     for (var i = 0; i < state.mapGrid.length; i++) {
         for (var j = 0; j < state.mapGrid[i].length; j++) {
             if (state.mapGrid[i][j].population > 0) {
@@ -70,10 +71,17 @@ function startLevel(level) {
                 mine.mapY = i * defaultTileSize;
                 state.mines.push(mine);
             }
+            if (state.mapGrid[i][j].brush == 'N') {
+                /** @type Nest */
+                var nest = state.mapGrid[i][j];
+                nest.mapX = j * defaultTileSize;
+                nest.mapY = i * defaultTileSize;
+                state.nests.push(nest);
+            }
         }
     }
     for (var i = 0; i < level.paths.length; i++) {
-        state.paths[i].points = level.paths[i];
+        state.paths[i].oldPoints = state.paths[i].points = level.paths[i];
         state.paths[i].complete = true;
     }
     //erase any animals currently in the timeline
@@ -82,6 +90,7 @@ function startLevel(level) {
             state.paths[i].slots[j] = null;
         }
     }
+    selectPath(0);
 }
 
 var level1 = new Level('Onette', 5, 2,

@@ -23,21 +23,20 @@ $(function () {
     updateInformation();
     state.deck = testDeck;
     initializeCardArea(state);
-    $('.js-edit').on('click', toggleEditing);
+    $('.js-editPath').on('click', togglePathEditing);
     $('.js-play').on('click', startNextStep);
     $('.js-fastForward').on('click', changeSpeed);
     addTimelineInteractions(state);
     $('body').on('click', '.js-popupHelp', function () {
         $(this).remove();
     });
+    addEditEventHandlers();
 });
 
 function startGame() {
     drawGrid(game.backgroundContext, state.mapGrid);
-    drawPaths(state, game.pathContext);
     setInterval(mainLoop, frameLength);
-    var drawingPath = false;
-    var drawingTiles = false;
+    var draggingMouse = false;
     $('.js-mapContainer').on('mousedown', function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -45,103 +44,43 @@ function startGame() {
         var y = event.pageY - $('.js-mapContainer').offset().top - 2;
         var tileX = Math.floor(x / 30);
         var tileY = Math.floor(y / 30);
+        draggingMouse = true;
+        if (state.editingPath) {
+            handleEditPathClick(tileX, tileY);
+            return;
+        }
         if (state.editingMap) {
             setTile(state.mapGrid, tileX, tileY, state.brush);
-            drawingTiles = true;
-        } else if (state.step != 'wave') {
-            drawingPath = true;
-            //clicking on a nest restarts the path
+            return;
         }
         state.selectedElement = null;
-        if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
-            if (state.step != 'wave') {
-                state.paths[state.selectedPath].points = [[tileX, tileY]];
-                state.paths[state.selectedPath].complete = false;
-            }
-        } else if (state.mapGrid[tileY][tileX].brush) {
+        if (state.mapGrid[tileY][tileX].brush) {
             state.selectedElement = state.mapGrid[tileY][tileX];
-        } else {
-            if (state.step != 'wave') {
-                editPath(state, tileX, tileY);
-            }
         }
     });
     $(document).on('mousemove', function (event) {
+        if (!draggingMouse) {
+            return;
+        }
         var x = event.pageX - $('.js-mapContainer').offset().left;
         var y = event.pageY - $('.js-mapContainer').offset().top - 2;
         var tileX = Math.floor(x / 30);
         var tileY = Math.floor(y / 30);
-        if (drawingTiles && inGrid(state.mapGrid, tileX, tileY)) {
-            setTile(state.mapGrid, tileX, tileY, state.brush);
-        }
-        if (!drawingPath) {
-            return;
-        }
         if (tileX < 0 || tileY < 0 || tileX >= 15 || tileY >= 15) {
             return;
         }
-        if (!state.editingMap) {
-            editPath(state, tileX, tileY);
+        if (state.editingPath) {
+            handleEditPathDrag(tileX, tileY);
+            return;
+        }
+        if (state.editingMap && inGrid(state.mapGrid, tileX, tileY)) {
+            setTile(state.mapGrid, tileX, tileY, state.brush);
         }
     });
     $(document).on('mouseup', function (event) {
-        drawingPath = false;
-        drawingTiles= false;
-    });
-    $('.exportMap').on('click', function (event) {
-        var exportRows = [];
-        $.each(state.mapGrid, function (i, row) {
-            var exportRow = [];
-            $.each(row, function (j, tile) {
-                exportRow.push(tile.brush ? tile.brush : tile);
-            });
-            exportRows.push('"' + exportRow.join('') + '"');
-        });
-        var result = "[\n" + exportRows.join(",\n") + "];\n";
-        $.each(state.paths, function (i, path) {
-            result += JSON.stringify(path.points) + ";\n";
-        });
-        $('.output').val(result);
+        draggingMouse = false;
     });
     startCardStep();
-}
-function startCardStep() {
-    showHelp($('.js-cardContainer'), 'deal', 'Click this deck to deal up to 6 cards.').css('bottom', '40px').css('right', '0px');
-    state.step = 'cards';
-    state.calories += state.currentLevel.caloriesPerWave;
-    state.step = 'cards';
-    if (state.deck.length <= 0) {
-        shuffleDeck();
-    }
-    dealCard(state);
-    showHelp($('.js-cardContainer'), 'ability', 'Click an ability on a card to use it.<br/> You can use 3 abilities a turn.').css('top', '100px').css('left', '0px');
-    updateInformation();
-    $('.js-play').text('End Turn').prop('disabled', false);
-}
-function setTile(grid, x, y, brush) {
-    if (brush == 'W' && (grid[y][x] == 'R' || grid[y][x] == 'B')) {
-        grid[y][x] = 'B'
-    } else if (brush == 'R' && (grid[y][x] == 'W' || grid[y][x] == 'B')) {
-        grid[y][x] = 'B'
-    } else if (brush == 'C') {
-        grid[y][x] = new City();
-    } else if (brush == 'M') {
-        grid[y][x] = new Mine();
-    } else if (brush == 'F') {
-        grid[y][x] = new Farm();
-    } else if (brush == 'T') {
-        grid[y][x] = getRandomTower();
-    } else {
-        grid[y][x] = brush;
-    }
-    drawGrid(game.backgroundContext, grid);
-}
-
-function toggleEditing() {
-    state.editingMap = !state.editingMap;
-    $('.js-edit').text(state.editingMap ? 'Stop Editing' : 'Start Editing');
-    $('.js-mapEditor').toggle(state.editingMap);
-    $('.js-cardContainer').toggle(!state.editingMap);
 }
 
 var frameLength = 20;
@@ -205,7 +144,7 @@ function mainLoop() {
                 updateAnimalPosition(animal);
             }
             if (finished) {
-                endWave();
+                endWaveStep();
             }
         }
         for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
@@ -254,11 +193,15 @@ function mainLoop() {
         var mine = state.mines[i];
         drawBrush(game.animalContext, mine.mapX, mine.mapY, 'M');
     }
-    //humans get calories from mines that the animals failed to steal
     for (var i = 0; i < state.farms.length; i++) {
         /** @type Farm */
         var farm = state.farms[i];
         drawBrush(game.animalContext, farm.mapX, farm.mapY, 'F');
+    }
+    for (var i = 0; i < state.nests.length; i++) {
+        /** @type Nest */
+        var nest = state.nests[i];
+        drawBrush(game.animalContext, nest.mapX, nest.mapY, 'N');
     }
     if (state.step == 'wave') {
         for (var i = 0; i < state.animals.length; i++) {
@@ -273,132 +216,6 @@ function mainLoop() {
     }
     drawProjectiles(game.animalContext);
     updateInformation();
-}
-
-function startNextStep() {
-    if (state.step == 'cards') {
-        state.step = 'build';
-        hideHelp('deal');
-        hideHelp('ability');
-        $('.js-play').text('Start Wave!').prop('disabled', false);
-        //discard remaining dealt cards at start of build step
-        while (state.dealtCards.length) {
-            /** @type Card */
-            var card = state.dealtCards.pop();
-            if (card) {
-                discardCard(state, card);
-            }
-        }
-        //humans build towers for 20 gold in random locations
-        while (state.humanGold > 20) {
-            var x = Random.range(0, state.mapGrid[0].length - 1);
-            var y = Random.range(0, state.mapGrid.length - 1);
-            if (['0', '1', '2', '3'].indexOf(state.mapGrid[y][x]) >= 0) {
-                /** @type Tower */
-                var tower = getRandomTower();
-                state.mapGrid[y][x] = tower;
-                tower.mapX = x * defaultTileSize;
-                tower.mapY = y * defaultTileSize;
-                state.towers.push(tower);
-                state.humanGold -= 20;
-            } else {
-                break;
-            }
-        }
-    } else if (state.step == 'build') {
-        startWave();
-    }
-}
-function startWave() {
-    if (state.step != 'build') {
-        return;
-    }
-    state.animals = getAnimals(state);
-    var invalidPath = false;
-    $.each(state.animals, function (index, element) {
-        /** @type Animal */
-        var animal = element;
-        animal.spawned = false;
-        animal.dead = false;
-        animal.finished = false;
-        animal.distance = 0;
-        animal.lastTile = null;
-        animal.burden = 0;
-        if (!animal.path.complete) {
-            state.selectedPath = state.paths.indexOf(animal.path);
-            invalidPath = true;
-            return false;
-        }
-        return true;
-    });
-    if (invalidPath) {
-        return;
-    }
-    for (var i = 0; i < state.paths.length; i++) {
-        //if this path is incomplete but also empty, just erase it at the start of the wave
-        if (!state.paths[i].complete) {
-            state.paths[i].points = [];
-        }
-    }
-    state.step = 'wave';
-    $('.js-play').text('Running...').prop('disabled', true);
-}
-
-function endWave() {
-    //clear all wave modifiers at the end of the wave
-    state.waveModifiers = {};
-    state.waveNumber++;
-    //update animals now that wave # has changed and wave modifiers are gone
-    $.each(state.animals, function (i, animal) {
-        updateAnimal(state, animal);
-    });
-    //humans get gold from mines that the animals failed to steal
-    for (var i = 0; i < state.mines.length; i++) {
-        /** @type Mine */
-        var mine = state.mines[i];
-        state.humanGold += mine.waveGold;
-        mine.waveGold = mine.gold;
-
-    }
-    //humans get calories from mines that the animals failed to steal
-    for (var i = 0; i < state.farms.length; i++) {
-        /** @type Farm */
-        var farm = state.farms[i];
-        state.humanCalories += farm.waveCalories;
-        farm.waveCalories = farm.calories;
-    }
-    var survivingCities = [];
-    for (var i = 0; i < state.cities.length; i++) {
-        /** @type City */
-        var city = state.cities[i];
-        state.humanGold += Math.floor(city.productivity * city.population);
-        if (city.population > 0) {
-            survivingCities.push(city);
-        }
-    }
-    state.population = 0;
-    $.each(survivingCities, function (index, city) {
-        city.population += .1 * state.humanCalories / survivingCities.length;
-        state.population += city.population;
-    });
-    state.humanCalories = 0;
-    state.abilitiesUsedThisTurn = 0;
-    for (var i = 0; i < state.paths.length; i++) {
-        for (var j = 0; j < state.paths[i].slots.length; j++) {
-            /** @type Animal */
-            var animal = state.paths[i].slots[j];
-            if (animal && animal.dead) {
-                state.paths[i].slots[j] = null;
-            }
-        }
-    }
-    for (var towerIndex = 0; towerIndex < state.towers.length; towerIndex++) {
-        /** @type Tower */
-        var tower = state.towers[towerIndex];
-        tower.lastTimeFired = -2000;
-    }
-    state.waveTime = 0;
-    startCardStep();
 }
 
 function changeSpeed() {
@@ -453,6 +270,13 @@ function updateInformation() {
                 $('.js-details .js-title').html('Gold Mine');
                 $('.js-details .js-description').html('Gold ' + mine.waveGold + ' / ' + mine.gold);
                 break;
+            case 'N':
+                /** @type Nest */
+                var nest = state.selectedElement;
+                drawBrush(context, 0, 0, 'N');
+                $('.js-details .js-title').html('Nest');
+                $('.js-details .js-description').html('Animal paths must start and end on nests.');
+                break;
             case 'A':
                 /** @type Animal */
                 var animal = state.selectedElement;
@@ -469,21 +293,6 @@ function updateInformation() {
                 $('.js-details .js-description').html(details.join('<br />'));
         }
     } else {
-        /**if (state.step == 'cards') {
-            $('.js-details .js-title').html('Card Phase');
-            var details = [];
-            if (state.dealtCards.length < 6) {
-                details.push('Click deck to deal cards.');
-            }
-            details.push((3 - state.abilitiesUsedThisTurn) + ' plays left.');
-            $('.js-details .js-description').html(details.join('<br />'));
-        } else if (state.step == 'build') {
-            $('.js-details .js-title').html('City Building Phase');
-            $('.js-details .js-description').html('Click start wave once you have finalized your path');
-        } else {
-            $('.js-details .js-title').html('Wave Phase');
-            $('.js-details .js-description').html('Waiting for the wave to complete.');
-        }*/
         $('.js-details').hide();
     }
 }

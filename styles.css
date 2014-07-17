@@ -4,6 +4,12 @@
 .myInfo {
     float: right;
 }
+.editPath {
+    position: absolute;
+    font-size: 12px;
+    left: -2px;
+    padding: 2px;
+}
 .mainGame {
     position: relative;
     margin-left: auto;

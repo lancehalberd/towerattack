@@ -19,6 +19,12 @@ function Farm() {
     this.mapX = 0;
     this.mapY = 0;
 }
+function Nest() {
+    this.brush = 'N';
+    this.mapX = 0;
+    this.mapY = 0;
+}
+
 
 /**
  * Draws the cities to the context
@@ -255,6 +261,9 @@ function arrayToGrid(arrayOfStrings) {
             }
             if (string == 'M') {
                 row[j] = new Mine();
+            }
+            if (string == 'N') {
+                row[j] = new Nest();
             }
             if (string == 'T') {
                 row[j] = getRandomTower();

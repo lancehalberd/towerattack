@@ -9,17 +9,18 @@ function Path() {
     this.complete = false;
     //the list of coordinates that comprise a path
     this.points = [];
+    //list of coordinates for the last complete path
+    this.oldPoints = [];
 }
 
 /**
  * Edits the selected path, determining the shortest route (if any) between
  * the given coordinate, and the end of the current path.
  *
- * @param {State} state  state of the game
  * @param {Number} x  The x tile coordinate
  * @param {Number} y  The y tile coordinate
  */
-function editPath(state, x, y) {
+function editPath(x, y) {
     //don't do anything if this square isn't a road
     if (!isRoad(state.mapGrid, x, y)) {
         return;
@@ -159,4 +160,63 @@ function drawTravelPath(context, points){
                      lastPoint[1] * tileSize + (tileSize/2) - 6, 12, 12);
     context.fillRect(points[0][0] * tileSize + (tileSize/2) - 6,
                      points[0][1] * tileSize + (tileSize/2) - 6, 12, 12);
+}
+
+function selectPath(index) {
+    //fix the current path if it is broken
+    fixPath(state.paths[state.selectedPath]);
+    state.selectedPath = index;
+    $('.js-editPath').css('top', (index * 30 + 5) + 'px');
+    updateEditPathButton();
+}
+
+function updateEditPathButton() {
+    var text = 'Edit';
+    if (state.editingPath) {
+        /** @type Path */
+        var path = state.paths[state.selectedPath];
+        text = path.complete ? 'Done' : 'Cancel';
+    }
+    $('.js-editPath').text(text);
+}
+
+function togglePathEditing() {
+    if (state.step == 'cards' || state.step == 'build') {
+        state.editingPath = !state.editingPath;
+    } else {
+        state.editingPath = false;
+    }
+    /** @type Path */
+    var path = state.paths[state.selectedPath];
+    fixPath(path);
+    path.oldPoints = path.points.concat();
+    updateEditPathButton();
+}
+
+function handleEditPathClick(tileX, tileY) {
+    drawingPath = true;
+    if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
+        state.paths[state.selectedPath].points = [[tileX, tileY]];
+        state.paths[state.selectedPath].complete = false;
+    } else {
+        editPath(tileX, tileY);
+    }
+    updateEditPathButton();
+}
+
+/**
+ * Reverts a path to its last completed state if it is not currently completed.
+ *
+ * @param {Path} path
+ */
+function fixPath(path) {
+    if (!path.complete) {
+        path.points = path.oldPoints.concat();
+        path.complete = true;
+    }
+}
+
+function handleEditPathDrag(tileX, tileY) {
+    editPath(tileX, tileY);
+    updateEditPathButton();
 }

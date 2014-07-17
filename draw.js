@@ -95,7 +95,7 @@ function drawImageTile(context, x, y, tileSource) {
  * @param {String} tile
  */
 function drawBrush(context, x, y, tile) {
-    switch (tile.brush ? tile.brush : tile) {
+    switch (tile.brush ? null : tile) {
         case '1':
         case '2':
         case '3':
@@ -124,9 +124,7 @@ function drawBrush(context, x, y, tile) {
             drawTileRotated(context, x + 20, y + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
             break;
         case 'C':
-            if (typeof(tile) == 'string') {
-                drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 2));
-            }
+            drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 2));
             break;
         case 'N':
             drawTileRotated(context, x, y, new TileSource(game.images.background, 1, 3));
@@ -138,9 +136,7 @@ function drawBrush(context, x, y, tile) {
             drawTileRotated(context, x, y, new TileSource(game.images.background, 2, 3));
             break;
         case 'T':
-            if (typeof(tile) == 'string') {
-                drawTileRotated(context, x, y, new TileSource(game.images.towers, 0, 0));
-            }
+            drawTileRotated(context, x, y, new TileSource(game.images.towers, 0, 0));
             break;
         default:
             //temporary code for drawing letters for graphics we don't have

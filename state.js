@@ -7,6 +7,8 @@ function State () {
     this.step = "cards";
     //indicates whether the user is editing the map
     this.editingMap = false;
+    //indicates whether the user is editing a path currently
+    this.editingPath = false;
     this.mapGrid = [];
     this.brush = 'R';
     this.gold = 0;
@@ -29,6 +31,8 @@ function State () {
     this.towers = [];
     //array of all cities, set at start of level
     this.cities = [];
+    //array of all nests, set at start of level
+    this.nests = [];
     //array of projectiles
     this.projectiles = [];
     /** @type {Animal}  The animal currently being moved in the timeline */
