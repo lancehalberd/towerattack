@@ -5,6 +5,9 @@ function startNextStep() {
             endCardStep();
             return startBuildStep();
         case 'build':
+            if (state.editingPath) {
+                return;
+            }
             return startWaveStep();
         case 'wave':
             return startCardStep();
