@@ -4,6 +4,7 @@
 function State () {
     /** @type Level */
     this.currentLevel = null;
+    this.levelIndex = 0;
     this.step = "cards";
     //indicates whether the user is editing the map
     this.editingMap = false;

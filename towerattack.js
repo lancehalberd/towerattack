@@ -88,7 +88,7 @@ function startGame() {
     $(document).on('mouseup', function (event) {
         draggingMouse = false;
     });
-    startLevel(basicLevel);
+    startCurrentLevel();
 }
 
 var frameLength = 20;

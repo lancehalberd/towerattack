@@ -110,7 +110,10 @@ function initializeCardArea() {
 }
 
 function clearCardArea() {
+    //workaround to avoid deleting the details card
+    $detailsCard = $('.js-details .card').detach();
     $('.js-cardContainer .card').remove();
+    $('.js-details').append($detailsCard);
 }
 
 /**

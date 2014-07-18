@@ -140,12 +140,13 @@ function endWaveStep() {
     state.waveTime = 0;
 
     if (state.population <= 0) {
-        showMessage('You Won!<br/><br/>Click to Restart.', restartGame);
+        showMessage('You Won!<br/><br/>Click to Advance.', startCurrentLevel);
+        state.levelIndex = (state.levelIndex + 1) % levels.length;
         state.step = "victory";
         return;
     }
     if (state.waveNumber == state.waveLimit) {
-        showMessage('You lost!<br/><br/>Click to Restart.', restartGame);
+        showMessage('You lost!<br/><br/>Click to Restart.', startCurrentLevel);
         state.step = "defeat";
         return;
     }
@@ -154,7 +155,8 @@ function endWaveStep() {
     startNextStep();
 }
 
-function restartGame() {
+function startCurrentLevel() {
+    state.currentLevel = levels[state.levelIndex];
     startLevel(state.currentLevel);
 }
 

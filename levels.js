@@ -54,10 +54,11 @@ function startLevel(level) {
     state.mapGrid = arrayToGrid(level.grid);
     state.calories = level.startingCalories;
     state.gold = 0;
-    $('.js-cardContainer .card').remove();
+    clearCardArea();
     state.dealtCards = [];
     state.discardedCards = [];
     state.deck = copy(testDeck);
+    state.selectedElement = null;
     shuffleDeck();
     state.farms = level.farms.map(initializeStructure);
     state.mines = level.mines.map(initializeStructure);
@@ -85,7 +86,7 @@ function startLevel(level) {
     startCardStep();
 }
 
-var basicLevel = createLevel({"name": "River City",
+var levels = [createLevel({"name": "River City",
 "waveLimits": [2,3,5],
 "startingCalories": 10,
 "caloriesPerWave": 2,
@@ -113,8 +114,8 @@ var basicLevel = createLevel({"name": "River City",
 "nests": [{"classType":"Nest","tileX":7,"tileY":11}],
 "cities": [{"classType":"City","tileX":7,"tileY":4,"population":20,"productivity":0}],
 "classType": "Level"
-});
-var level1 = createLevel({"name": "Onette",
+}),
+createLevel({"name": "Onette",
 "waveLimits": [4,6,10],
 "startingCalories": 5,
 "caloriesPerWave": 2,
@@ -142,4 +143,4 @@ var level1 = createLevel({"name": "Onette",
 "nests": [{"classType":"Nest","tileX":14,"tileY":7},{"classType":"Nest","tileX":1,"tileY":14}],
 "cities": [{"classType":"City","tileX":8,"tileY":4,"population":100,"productivity":0.1},{"classType":"City","tileX":4,"tileY":6,"population":100,"productivity":0.1}],
 "classType": "Level"
-});
+})];
