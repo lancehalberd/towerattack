@@ -93,9 +93,11 @@ function drawImageTile(context, x, y, tileSource) {
  * @param {Number} x
  * @param {Number} y
  * @param {String} tile
+ * @param {Boolean} forPalette
  */
-function drawBrush(context, x, y, tile) {
-    switch (tile.brush ? null : tile) {
+function drawBrush(context, x, y, tile, forPalette) {
+    var brush = tile.brush ? tile.brush : tile;
+    switch (brush) {
         case '1':
         case '2':
         case '3':
@@ -104,7 +106,7 @@ function drawBrush(context, x, y, tile) {
         case '6':
         case '7':
         case '8':
-            var num = parseInt(tile) - 1;
+            var num = parseInt(brush) - 1;
             drawTileRotated(context, x, y, new TileSource(game.images.background, num % 4, Math.floor(num / 4)));
         case '0':
         case 'B':
@@ -123,25 +125,43 @@ function drawBrush(context, x, y, tile) {
             drawTileRotated(context, x + 10, y + 20, new TileSource(game.waterCanvas, 0, 2, 10), 0);
             drawTileRotated(context, x + 20, y + 20, new TileSource(game.waterCanvas, 0, 0, 10), 0);
             break;
-        case 'C':
-            drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 2));
-            break;
-        case 'N':
-            drawTileRotated(context, x, y, new TileSource(game.images.background, 1, 3));
-            break;
-        case 'M':
-            drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 3));
-            break;
-        case 'F':
-            drawTileRotated(context, x, y, new TileSource(game.images.background, 2, 3));
-            break;
-        case 'T':
-            drawTileRotated(context, x, y, new TileSource(game.images.towers, 0, 0));
-            break;
-        default:
-            //temporary code for drawing letters for graphics we don't have
-            context.fillStyle = "black";
-            context.font = "29pt Arial";
-            context.fillText(tile.brush ? tile.brush : tile, x * 30, y * 30 + 29, 30);
     }
+    //normally structures are drawn to the map as a separate process, but for
+    //the preview in the palette when editing, we draw it here
+    if (forPalette && tile.classType) {
+        switch (tile.classType ? (forPalette ? tile.classType : null) : tile) {
+            case 'City':
+                drawCity(context, x, y, tile);
+                break;
+            case 'Nest':
+                drawNest(context, x, y);
+                break;
+            case 'Mine':
+                drawMine(context, x, y);
+                break;
+            case 'Farm':
+                drawFarm(context, x, y);
+                break;
+            case 'Tower':
+                drawTower(context, x, y, 0, tile);
+                break;
+            default:
+                //temporary code for drawing letters for graphics we don't have
+                context.fillStyle = "black";
+                context.font = "29pt Arial";
+                context.fillText(tile.classType, x * 30, y * 30 + 29, 30);
+        }
+    }
+}
+
+function drawMine(context, x, y) {
+    drawTileRotated(context, x, y, new TileSource(game.images.background, 0, 3));
+}
+
+function drawNest(context, x, y) {
+    drawTileRotated(context, x, y, new TileSource(game.images.background, 1, 3));
+}
+
+function drawFarm(context, x, y) {
+    drawTileRotated(context, x, y, new TileSource(game.images.background, 2, 3));
 }

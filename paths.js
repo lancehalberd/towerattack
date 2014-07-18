@@ -64,7 +64,7 @@ function editPath(x, y) {
         finalPoint = finalPoint.next;
     }
     lastPoint = path.points[path.points.length - 1];
-    if (path.points.length > 1 && getGridValue(state.mapGrid, lastPoint[0], lastPoint[1]) == 'N') {
+    if (path.points.length > 1 && state.mapGrid[lastPoint[1]][lastPoint[0]].classType == 'Nest') {
         path.complete = true;
     } else {
         path.complete = false;
@@ -195,7 +195,7 @@ function togglePathEditing() {
 
 function handleEditPathClick(tileX, tileY) {
     drawingPath = true;
-    if (getGridValue(state.mapGrid, tileX, tileY) == 'N') {
+    if (state.mapGrid[tileY][tileX].classType == 'Nest') {
         state.paths[state.selectedPath].points = [[tileX, tileY]];
         state.paths[state.selectedPath].complete = false;
     } else {

@@ -38,8 +38,9 @@ function initializeGame() {
     game.timelineContext = $('.js-timelineCanvas')[0].getContext('2d');
     game.paletteContext = $('.js-paletteCanvas')[0].getContext('2d');
     game.brushContext = $('.js-brushCanvas')[0].getContext('2d');
-    game.paletteGrid = [['0', 'R', 'W', 'N'],
-                        ['C', 'M', 'F', 'T'],
+    game.paletteGrid = [['0', 'R', 'W', '0'],
+                        [new Nest(), new City(), new Mine(), new Farm()],
+                        [getTower(towerTypes['basic']), getTower(towerTypes['lightning']), getTower(towerTypes['artillery']), '0'],
                         ['1', '2', '3', '4'],
                         ['5', '0', '0', '0']];
     game.mapSources = {
@@ -107,23 +108,9 @@ function createMaskedPattern(maskImage, patternSource, rows, columns) {
 function drawPalette() {
     $.each(game.paletteGrid, function (y, row) {
         $.each(row, function (x, brush) {
-            drawBrush(game.paletteContext, x * defaultTileSize, y * defaultTileSize, brush);
+            drawBrush(game.paletteContext, x * defaultTileSize, y * defaultTileSize, brush, true);
         });
     })
     startGame();
-    $('.js-paletteCanvas').on('click', function (event) {
-        var x = event.pageX - $('.js-paletteCanvas').offset().left;
-        var y = event.pageY - $('.js-paletteCanvas').offset().top;
-        var tileX = Math.floor(x / 30);
-        var tileY = Math.floor(y / 30);
-        setBrush(game.paletteGrid[tileY][tileX]);
-    });
     setBrush(state.brush);
-}
-function setBrush(value) {
-    state.brush = value;
-    game.brushContext.setTransform(2, 0, 0, 2, 0, 0);
-    game.brushContext.clearRect(0, 0, 30, 30);
-    drawBrush(game.brushContext, 0, 0, state.brush);
-
 }

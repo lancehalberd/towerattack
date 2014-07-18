@@ -1,30 +1,41 @@
 function City() {
     this.population = 100;
     this.productivity = .1;
-    this.brush = 'C';
+    this.tileX = 0;
+    this.tileY = 0;
     this.mapX = 0;
     this.mapY = 0;
+    this.classType = 'City';
+    this.brush = 'R';
 }
 function Mine() {
     this.gold = 10;
     this.waveGold = 10;
-    this.brush = 'M';
+    this.tileX = 0;
+    this.tileY = 0;
     this.mapX = 0;
     this.mapY = 0;
+    this.classType = 'Mine';
+    this.brush = 'R';
 }
 function Farm() {
     this.calories = 10;
     this.waveCalories = 10;
-    this.brush = 'F';
+    this.tileX = 0;
+    this.tileY = 0;
     this.mapX = 0;
     this.mapY = 0;
+    this.classType = 'Farm';
+    this.brush = 'R';
 }
 function Nest() {
-    this.brush = 'N';
+    this.tileX = 0;
+    this.tileY = 0;
     this.mapX = 0;
     this.mapY = 0;
+    this.classType = 'Nest';
+    this.brush = 'R';
 }
-
 
 /**
  * Draws the cities to the context
@@ -70,13 +81,12 @@ function drawGrid(context, grid) {
     drawAllRoads(context, grid);
     for (var y = 0; y < grid.length; y++){
         for (var x = 0; x < grid[y].length; x++){
-            if (grid[y][x] != 'W' && grid[y][x] != 'R') {
+            if (!grid[y][x].classType && grid[y][x] != 'W' && grid[y][x] != 'R') {
                 drawBrush(context, x * defaultTileSize, y * defaultTileSize, grid[y][x]);
             }
         }
     }
 }
-
 
 /**
  * Draws the paths defined in the current state to the given context.

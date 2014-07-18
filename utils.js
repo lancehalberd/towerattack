@@ -24,6 +24,30 @@ var Random = {
     }
 };
 
+/**
+ * Makes a deep copy of an object. Note that this will not make deep copies of
+ * objects with prototypes.
+ */
+function copy(object) {
+    if (object.constructor == Array) {
+        return jQuery.extend(true, [], object);
+    }
+    return jQuery.extend(true, {}, object);
+}
+
 function properCase(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
+}
+
+/**
+ * @param {Object} data
+ */
+function objectToInstance(data) {
+    var instance = eval("new " + data.classType + "()");
+    for (var i in data) {
+        if (data.hasOwnProperty(i)) {
+            instance[i] = data[i];
+        }
+    }
+    return instance;
 }

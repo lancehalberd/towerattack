@@ -25,10 +25,7 @@ function showMessage(markup, onDismiss) {
 //this triggers when page has finished loading
 $(function () {
     initializeGame();
-    startLevel(level1);
-    updateInformation();
-    state.deck = testDeck;
-    initializeCardArea(state);
+    initializeCardArea();
     $('.js-editPath').on('click', togglePathEditing);
     $('.js-play').on('click', startNextStep);
     $('.js-fastForward').on('click', changeSpeed);
@@ -46,7 +43,6 @@ $(function () {
 });
 
 function startGame() {
-    drawGrid(game.backgroundContext, state.mapGrid);
     setInterval(mainLoop, frameLength);
     var draggingMouse = false;
     $('.js-mapContainer').on('mousedown', function (event) {
@@ -66,7 +62,7 @@ function startGame() {
             return;
         }
         state.selectedElement = null;
-        if (state.mapGrid[tileY][tileX].brush) {
+        if (state.mapGrid[tileY][tileX].classType) {
             state.selectedElement = state.mapGrid[tileY][tileX];
         }
     });
@@ -92,7 +88,7 @@ function startGame() {
     $(document).on('mouseup', function (event) {
         draggingMouse = false;
     });
-    startCardStep();
+    startLevel(basicLevel);
 }
 
 var frameLength = 20;
@@ -121,7 +117,7 @@ function mainLoop() {
                     animal.distance += 10 * animal.speed * frameLength / 1000;
                     var tileValue = state.mapGrid[animal.tileY][animal.tileX];
                     if (tileValue != animal.lastTile) {
-                        if (tileValue.brush == 'C') {
+                        if (tileValue.classType == 'City') {
                             /** @type City */
                             var city = tileValue;
                             if (city.population < animal.damage) {
@@ -132,7 +128,7 @@ function mainLoop() {
                                 state.population -= animal.damage;
                             }
                         }
-                        if (tileValue.brush == 'M') {
+                        if (tileValue.classType == 'Mine') {
                             /** @type Mine */
                             var mine = tileValue;
                             if (animal.burden < animal.carry && mine.waveGold > 0) {
@@ -141,7 +137,7 @@ function mainLoop() {
                                 animal.burden++;
                             }
                         }
-                        if (tileValue.brush == 'F') {
+                        if (tileValue.classType == 'Farm') {
                             /** @type Farm */
                             var farm = tileValue;
                             if (animal.burden < animal.carry && farm.waveCalories > 0) {
@@ -203,17 +199,17 @@ function mainLoop() {
     for (var i = 0; i < state.mines.length; i++) {
         /** @type Mine */
         var mine = state.mines[i];
-        drawBrush(game.animalContext, mine.mapX, mine.mapY, 'M');
+        drawMine(game.animalContext, mine.mapX, mine.mapY);
     }
     for (var i = 0; i < state.farms.length; i++) {
         /** @type Farm */
         var farm = state.farms[i];
-        drawBrush(game.animalContext, farm.mapX, farm.mapY, 'F');
+        drawFarm(game.animalContext, farm.mapX, farm.mapY);
     }
     for (var i = 0; i < state.nests.length; i++) {
         /** @type Nest */
         var nest = state.nests[i];
-        drawBrush(game.animalContext, nest.mapX, nest.mapY, 'N');
+        drawNest(game.animalContext, nest.mapX, nest.mapY);
     }
     if (state.step == 'wave') {
         for (var i = 0; i < state.animals.length; i++) {
@@ -250,15 +246,15 @@ function updateInformation() {
         var context = $('.js-details .js-cardCanvas')[0].getContext('2d');
         context.clearRect(0, 0, 30, 30);
         $('.js-details').show();
-        switch (state.selectedElement.brush) {
-            case 'C':
+        switch (state.selectedElement.classType) {
+            case 'City':
                 /** @type City */
                 var city = state.selectedElement;
                 drawCity(context, 0, 0, city);
                 $('.js-details .js-title').html('City');
                 $('.js-details .js-description').html('Pop. ' + city.population.toFixed(1) + 'K <br /> Prod. ' + city.productivity);
                 break;
-            case 'T':
+            case 'Tower':
                 /** @type Tower */
                 var tower = state.selectedElement;
                 drawTower(context, 0, 0, 0, tower);
@@ -269,28 +265,28 @@ function updateInformation() {
                 ]
                 $('.js-details .js-description').html(details.join('<br />'));
                 break;
-            case 'F':
+            case 'Farm':
                 /** @type Farm */
                 var farm = state.selectedElement;
-                drawBrush(context, 0, 0, 'F');
+                drawFarm(context, 0, 0);
                 $('.js-details .js-title').html('Calorie Farm');
                 $('.js-details .js-description').html('Cal. ' + farm.waveCalories + ' / ' + farm.calories);
                 break;
-            case 'M':
+            case 'Mine':
                 /** @type Mine */
                 var mine = state.selectedElement;
-                drawBrush(context, 0, 0, 'M');
+                drawMine(context, 0, 0);
                 $('.js-details .js-title').html('Gold Mine');
                 $('.js-details .js-description').html('Gold ' + mine.waveGold + ' / ' + mine.gold);
                 break;
-            case 'N':
+            case 'Nest':
                 /** @type Nest */
                 var nest = state.selectedElement;
-                drawBrush(context, 0, 0, 'N');
+                drawNest(context, 0, 0);
                 $('.js-details .js-title').html('Nest');
                 $('.js-details .js-description').html('Animal paths must start and end on nests.');
                 break;
-            case 'A':
+            case 'Animal':
                 /** @type Animal */
                 var animal = state.selectedElement;
                 if (animal.dead && state.step != 'wave') {

@@ -61,12 +61,3 @@ function State () {
     this.humanCalories = 0;
     this.population = 0;
 }
-
-
-/**
- * Makes a deep copy of an object. Note that this will not make deep copies of
- * objects with prototypes.
- */
-function copy(object) {
-    return jQuery.extend(true, {}, object);
-}

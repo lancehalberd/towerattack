@@ -25,7 +25,7 @@ function startCardStep() {
     if (state.deck.length <= 0) {
         shuffleDeck();
     }
-    dealCard(state);
+    dealCard();
     showHelp($('.js-cardContainer'), 'ability', 'Click an ability on a card to use it.<br/> You can use 3 abilities a turn.').css('top', '100px').css('left', '0px');
     updatePlayButton();
 }
@@ -155,7 +155,7 @@ function endWaveStep() {
 }
 
 function restartGame() {
-    startLevel(level1);
+    startLevel(state.currentLevel);
 }
 
 function updatePlayButton() {

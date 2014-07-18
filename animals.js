@@ -32,7 +32,7 @@ function Animal() {
     //marks that the animal is being displaced in the timeline by the current
     //drag operation
     this.moved = false;
-    this.brush = 'A';
+    this.classType = 'Animal';
 }
 
 /**

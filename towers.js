@@ -6,7 +6,8 @@ function Tower() {
     this.damageRange = 5;
     this.range = 90;
     this.attacksPerSecond = 1;
-    this.brush = 'T';
+    this.tileX = 0;
+    this.tileY = 0;
     this.mapX = 0;
     this.mapY = 0;
     this.angle = Math.random() * 2 * Math.PI;
@@ -14,9 +15,12 @@ function Tower() {
     /** @type Animal */
     this.currentTarget = null;
     this.lastTimeFired = -2000;
+    this.classType = 'Tower';
+    this.brush = '0';
 }
 
 function TowerType() {
+    this.key = '';
     this.baseDamage = 5;
     this.damageRange = 5;
     this.range = 90;
@@ -27,18 +31,13 @@ function TowerType() {
  * @param {Object} data
  */
 function createTowerType(data) {
-    var type = new TowerType();
-    for (var i in data) {
-        if (data.hasOwnProperty(i)) {
-            type[i] = data[i];
-        }
-    }
-    return type;
+    data.classType = 'TowerType';
+    return objectToInstance(data);
 }
 
-function getRandomTower() {
+function getTower(towerType) {
     var tower = new Tower();
-    tower.type = Random.element(towerTypes);
+    tower.type = towerType;
     tower.baseDamage = tower.type.baseDamage;
     tower.damageRange = tower.type.damageRange;
     tower.range = tower.type.range;
@@ -46,10 +45,14 @@ function getRandomTower() {
     return tower;
 }
 
+function getRandomTower() {
+    return getTower(Random.element(towerTypes));
+}
+
 var towerTypes = {
-    'basic': createTowerType({'name': 'Turret', 'baseDamage': 5, 'damageRange': 5, 'range': 90, 'attacksPerSecond': 1, 'spriteIndex': 1}),
-    'lightning': createTowerType({'name': 'Laser', 'baseDamage': 2, 'damageRange': 4, 'range': 80, 'attacksPerSecond': 3, 'spriteIndex': 2}),
-    'artillery': createTowerType({'name': 'Artillery', 'baseDamage': 12, 'damageRange': 6, 'range': 150, 'attacksPerSecond': .5, 'spriteIndex': 0}),
+    'basic': createTowerType({'key': 'basic', 'name': 'Turret', 'baseDamage': 5, 'damageRange': 5, 'range': 90, 'attacksPerSecond': 1, 'spriteIndex': 1}),
+    'lightning': createTowerType({'key': 'lightning', 'name': 'Laser', 'baseDamage': 2, 'damageRange': 4, 'range': 80, 'attacksPerSecond': 3, 'spriteIndex': 2}),
+    'artillery': createTowerType({'key': 'artillery', 'name': 'Artillery', 'baseDamage': 12, 'damageRange': 6, 'range': 150, 'attacksPerSecond': .5, 'spriteIndex': 0}),
 };
 
 function readyToFire(tower) {
