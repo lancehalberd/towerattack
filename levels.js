@@ -50,6 +50,7 @@ function startLevel(level) {
     state.waveNumber = 0;
     state.abilitiesUsedThisTurn = 0;
     state.step = 'cards';
+    state.levelModifiers = {};
     state.waveModifiers = {};
     state.mapGrid = arrayToGrid(level.grid);
     state.calories = level.startingCalories;
