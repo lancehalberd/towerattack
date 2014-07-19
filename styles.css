@@ -1,6 +1,7 @@
 .body {
-    background-color: black;
-    font-family: sans-serif;
+    background-color: #ddd;
+    font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
+    font-size: 24px;
 }
 .myInfo {
     float: right;
@@ -21,8 +22,9 @@
     margin-right: auto;
     width: 800px;
     height: 600px;
+    border-radius: 7px;
     background-color: #804000;
-    top: 20px;
+    top: 0px;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -91,7 +93,7 @@
     left: 5px;
 }
 .mapEditor {
-    background-color: peach;
+    background-color: peachpuff;
 }
 .paletteCanvas {
     cursor: pointer;
@@ -152,7 +154,8 @@
     left: 10px;
     background-color: gold;
     line-height: 16px;
-    font-size: 14px;
+    font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
+    font-size: 16px;
     padding: 2px;
     overflow: hidden;
 }
@@ -184,8 +187,8 @@
 
 .popupHelp {
     padding: 5px;
-    font-size: 12px;
-    font-family: sans-serif;
+    font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
+    font-size: 16px;
     position: absolute;
     background-color: white;
     border: 1px solid black;
@@ -193,4 +196,9 @@
     width: 100px;
     text-align: center;
     cursor: pointer;
+}
+
+button {
+    font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
+    font-size: 16px;
 }

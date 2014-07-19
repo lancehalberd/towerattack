@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48+devel r10192"
-   sodipodi:docname="worldmap.svg">
+   sodipodi:docname="worldmap.svg"
+   inkscape:export-filename="/Users/Hillary/games/towerattack/graphics/worldMap.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -2921,7 +2924,7 @@
      inkscape:cx="325.23697"
      inkscape:cy="214.68434"
      inkscape:document-units="px"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
      inkscape:window-height="701"
