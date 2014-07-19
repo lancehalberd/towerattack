@@ -40,6 +40,11 @@ $(function () {
         }
     });
     addEditEventHandlers();
+    $('body').on('keydown', function (event) {
+        if (String.fromCharCode(event.which) == 'E') {
+            $('.js-editingControls').show();
+        }
+    });
 });
 
 function startGame() {
