@@ -1,4 +1,4 @@
-function performAction() {
+function performAction(event) {
     if (state.step == 'cards') {
         if (isValidAbilitySelected()) {
             playCard(state.selectedElement);

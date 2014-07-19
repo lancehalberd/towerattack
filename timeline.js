@@ -78,13 +78,15 @@ function addTimelineInteractions(state) {
     var currentSlot = 0;
     //clicking the timeline allows you to select a path
     $('.js-timeline').on('mousedown', function (event) {
+        event.stopPropagation();
         var y = event.pageY - $(this).offset().top;
         var x = event.pageX - $(this).offset().left;
         currentPath = Math.floor(y / tileSize);
 
         selectPath(currentPath);
         currentSlot = Math.floor(x / tileSize) - 1;
-        state.selectedElement = state.draggingAnimal = state.paths[currentPath].slots[currentSlot];
+        state.draggingAnimal = state.paths[currentPath].slots[currentSlot];
+        selectElement(state.draggingAnimal);
         state.lastAnimalMoved = null;
     });
     //clicking on an animal and dragging allows you to move it on the timeline

@@ -140,6 +140,7 @@ function displayDeck() {
 function addCardHandlers() {
     $('.js-cardContainer').on('click', '.card.back', function () {
         if (state.step == 'cards') {
+            state.unselectElement = false;
             dealCard();
             hideHelp('deal', true);
         }
@@ -153,7 +154,7 @@ function addCardHandlers() {
         hideHelp('useAbility');
         hideHelp('insufficientCalories');
         hideHelp('calories');
-        state.selectedElement = card.slots[abilityIndex];
+        selectElement(card.slots[abilityIndex]);
         if (state.selectedElement.cost <= state.calories) {
             showHelp($('.js-cardContainer'), 'useAbility', 'Click "Use Ability" to activate this ability.').css('bottom', '20px').css('left', '0px');
         } else {
@@ -163,6 +164,7 @@ function addCardHandlers() {
     });
     $('.js-cardContainer').on('click', '.card.discarded', function () {
         if (state.step == 'cards') {
+            state.unselectElement = false;
             hideHelp('shuffle', true);
             shuffleDeck();
         }

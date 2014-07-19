@@ -25,26 +25,6 @@ function showMessage(markup, onDismiss) {
 //this triggers when page has finished loading
 $(function () {
     initializeGame();
-    initializeCardArea();
-    $('.js-editPath').on('click', togglePathEditing);
-    $('.js-actionButton').on('click', performAction);
-    $('.js-fastForward').on('click', changeSpeed);
-    addTimelineInteractions(state);
-    $('body').on('click', '.js-popupHelp', function () {
-        $(this).remove();
-    });
-     $('.js-overlay').on('click', function () {
-        $('.js-overlay').hide();
-        if (dismissOverlayFunction) {
-            dismissOverlayFunction();
-        }
-    });
-    addEditEventHandlers();
-    $('body').on('keydown', function (event) {
-        if (String.fromCharCode(event.which) == 'E') {
-            $('.js-editingControls').show();
-        }
-    });
 });
 
 function getTileX(pageX) {
@@ -62,11 +42,19 @@ function startGame() {
     setInterval(mainLoop, frameLength);
     var draggingMouse = false;
     $(document).on('mousedown', function (event) {
+        //don't apply generic mouse down handler to button clicks
+        if ($(event.target).is('button')) {
+            return;
+        }
         event.preventDefault();
         event.stopPropagation();
         var tileX = getTileX(event.pageX);
         var tileY = getTileY(event.pageY);
-        state.selectedElement = null;
+        //set that we should unselect when the next click event fires.
+        //elements that should not trigger unselect either need to set this
+        //to false if they happen after this even, or call stopPropogation
+        //to prevent this logic from getting called
+        state.unselectElement = true;
         if (tileX < 0 || tileY < 0 || tileX >= 17 || tileY >= 17) {
             return;
         }
@@ -80,7 +68,7 @@ function startGame() {
             return;
         }
         if (state.mapGrid[tileY][tileX].classType) {
-            state.selectedElement = state.mapGrid[tileY][tileX];
+            selectElement(state.mapGrid[tileY][tileX]);
         }
     });
     $(document).on('mousemove', function (event) {
@@ -106,7 +94,41 @@ function startGame() {
             togglePathEditing();
         }
     });
+    $('.js-editPath').on('click', togglePathEditing);
+    $('.js-actionButton').on('click', performAction);
+    $('.js-fastForward').on('click', changeSpeed);
+    addTimelineInteractions(state);
+    $('body').on('click', '.js-popupHelp', function () {
+        $(this).remove();
+        state.unselectElement = false;
+    });
+    $('body').on('click', '.details', function () {
+        state.unselectElement = false;
+    });
+     $('.js-overlay').on('click', function () {
+        $('.js-overlay').hide();
+        if (dismissOverlayFunction) {
+            dismissOverlayFunction();
+        }
+    });
+    addEditEventHandlers();
+    $('body').on('keydown', function (event) {
+        if (String.fromCharCode(event.which) == 'E') {
+            $('.js-editingControls').show();
+        }
+    });
+    initializeCardArea();
+    $(document).on('click', function (event) {
+        if (state.unselectElement) {
+            state.selectedElement = null;
+        }
+    });
     startCurrentLevel();
+}
+
+function selectElement(element) {
+    state.unselectElement = false;
+    state.selectedElement = element;
 }
 
 var frameLength = 20;

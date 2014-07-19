@@ -41,6 +41,8 @@ function State () {
     this.draggingAnimal = null;
     this.selectedElement = null;
     this.lastSelectedElement = null;
+    /** Set to true if we should unselect on mouse up. Set on mouse down and unset by any logic that determines selected element should stay set. */
+    this.unselectElement = false;
     /** @type {Animal}  The last animal that was displaced by the current drag operation */
     this.lastAnimalMoved = null;
     this.levelModifiers = {
