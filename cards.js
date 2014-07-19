@@ -259,8 +259,8 @@ function makeCard(card) {
         var $ability = $('<div class="ability"></div>');
         $ability.data('ability', ability);
         ability.element = $ability;
-        $ability.append('<span class="name">' + ability.name + '</span>');
-        $ability.append('<span class="cost">' + ability.cost + '</span>');
+        $ability.append('<div class="name">' + ability.name + '</div>');
+        $ability.append('<div class="cost">' + ability.cost + '</div>');
         $card.append($ability);
     })
     $card.data('card', card);

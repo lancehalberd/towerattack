@@ -159,15 +159,33 @@
     border-radius: 3px;
     border: 1px solid #008;
     line-height: 16px;
-    font-size: 12px;
-    padding: 0px 2px;
+    font-size: 14px;
     font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
+}
+.ability .name {
+    height: 40px;
+    line-height: 13px;
+    margin: 2px;
     overflow: hidden;
 }
-.ability .cost {
+.cost {
     position: absolute;
-    bottom: 2;
-    right: 2;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 14px;
+    height: 14px;
+    line-height: 10px;
+    text-align: center;
+    font-size:18px;
+}
+.details .cost {
+    top: 3px;
+    right: 3px;
+}
+.ability .cost {
+    bottom: -3px;
+    right: -3px;
 }
 .card.a3 .ability {
     height: 30px;

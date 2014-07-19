@@ -255,6 +255,7 @@ function updateInformation() {
         var context = $('.js-details .js-cardCanvas')[0].getContext('2d');
         context.clearRect(0, 0, 30, 30);
         $('.js-details').show();
+        $('.js-details .js-cost').text('');
         switch (state.selectedElement.classType) {
             case 'City':
                 /** @type City */
@@ -314,6 +315,7 @@ function updateInformation() {
                 /** @type Ability */
                 var ability = state.selectedElement;
                 $('.js-details .js-title').html(ability.name);
+                $('.js-details .js-cost').text(ability.cost);
                 context.clearRect(0, 0, 30, 30);
                 var details = [];
                 if (ability.effectFunction == spawnAnimals) {
