@@ -116,7 +116,7 @@ function arrayToGrid(arrayOfStrings) {
 
 var levels = [createLevel({"name": "River City",
 "waveLimits": [2,3,5],
-"startingCalories": 3,
+"startingCalories": 10,
 "caloriesPerWave": 2,
 "grid": [
   "WWWWWWWWWWWWW0000",
