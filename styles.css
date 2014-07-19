@@ -3,6 +3,9 @@
     font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
     font-size: 20px;
 }
+.levelName {
+    margin-right: 20px;
+}
 .myInfo {
     float: right;
 }
