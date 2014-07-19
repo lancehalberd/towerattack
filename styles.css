@@ -69,11 +69,12 @@
     width: 450px;
     height: 450px;
     background-color: black;
+    overflow: hidden;
 }
 .mapCanvas {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: -30px;
+    top: -30px;
 }
 .cardContainer, .mapEditor {
     position:absolute;

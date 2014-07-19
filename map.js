@@ -252,33 +252,3 @@ function drawWater(context, grid) {
         }
     }
 }
-
-function arrayToGrid(arrayOfStrings) {
-    var grid = [];
-    //for (var i = 0; i < arrayOfStrings.length; i++) {
-    //    var string = arrayOfStrings[i]
-    //    [code]
-    //}
-    $.each(arrayOfStrings, function (i, string) {
-        var row = string.split('');
-        grid.push(row);
-        $.each(row, function (j, string) {
-            if (string == 'C') {
-                row[j] = new City();
-            }
-            if (string == 'F') {
-                row[j] = new Farm();
-            }
-            if (string == 'M') {
-                row[j] = new Mine();
-            }
-            if (string == 'N') {
-                row[j] = new Nest();
-            }
-            if (string == 'T') {
-                row[j] = getRandomTower();
-            }
-        });
-    });
-    return grid;
-}

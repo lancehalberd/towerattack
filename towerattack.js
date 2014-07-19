@@ -47,16 +47,21 @@ $(function () {
     });
 });
 
+function getTileX(pageX) {
+    return Math.floor((pageX - $('.js-mapContainer').offset().left) / 30) + 1;
+}
+function getTileY(pageY) {
+    return Math.floor((pageY - $('.js-mapContainer').offset().top - 2) / 30) + 1;
+}
+
 function startGame() {
     setInterval(mainLoop, frameLength);
     var draggingMouse = false;
     $('.js-mapContainer').on('mousedown', function (event) {
         event.preventDefault();
         event.stopPropagation();
-        var x = event.pageX - $('.js-mapContainer').offset().left;
-        var y = event.pageY - $('.js-mapContainer').offset().top - 2;
-        var tileX = Math.floor(x / 30);
-        var tileY = Math.floor(y / 30);
+        var tileX = getTileX(event.pageX);
+        var tileY = getTileY(event.pageY);
         draggingMouse = true;
         if (state.editingPath) {
             handleEditPathClick(tileX, tileY);
@@ -75,11 +80,9 @@ function startGame() {
         if (!draggingMouse) {
             return;
         }
-        var x = event.pageX - $('.js-mapContainer').offset().left;
-        var y = event.pageY - $('.js-mapContainer').offset().top - 2;
-        var tileX = Math.floor(x / 30);
-        var tileY = Math.floor(y / 30);
-        if (tileX < 0 || tileY < 0 || tileX >= 15 || tileY >= 15) {
+        var tileX = getTileX(event.pageX);
+        var tileY = getTileY(event.pageY);
+        if (tileX < 0 || tileY < 0 || tileX >= 17 || tileY >= 17) {
             return;
         }
         if (state.editingPath) {
