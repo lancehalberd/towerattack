@@ -29,11 +29,11 @@
          id="stop889" />
       <stop
          id="stop899"
-         offset="0.17871094"
+         offset="0.1422531"
          style="stop-color:#f0f0f0;stop-opacity:1;" />
       <stop
          id="stop897"
-         offset="0.22851562"
+         offset="0.1422531"
          style="stop-color:#00b5dc;stop-opacity:1;" />
       <stop
          id="stop895"
@@ -66,7 +66,7 @@
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(73.928568,-71.250002)"
        x1="159.82143"
-       y1="-54.910717"
+       y1="-50.40773"
        x2="159.82143"
        y2="-9.1964312" />
     <clipPath
@@ -133,11 +133,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9899495"
-     inkscape:cx="185.66858"
-     inkscape:cy="98.300303"
+     inkscape:zoom="3.959798"
+     inkscape:cx="219.95638"
+     inkscape:cy="77.609669"
      inkscape:document-units="px"
-     inkscape:current-layer="layer47"
+     inkscape:current-layer="g905"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
