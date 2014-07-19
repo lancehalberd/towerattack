@@ -8,6 +8,7 @@
 function Card(slots) {
     this.slots = slots;
     this.element = null;
+    this.classType = 'Card';
 }
 
 /**
@@ -15,16 +16,19 @@ function Card(slots) {
  * dealt. A card may have multiple ablities, but typically only 1 ability can
  * be used from that card at a time.
  *
+ * @param {String} name  The name of the card
  * @param {Number} cost  The cost in calories to play this. Negative values give calories for using the ability.
  * @param {Function} effectFunction  The function called when this ability is used.
  * @param {Object} data  Object to store additional fields which the effect function
  *     might use, such as number and type of animals to spawn.
  */
-function Ability(cost, effectFunction, data) {
+function Ability(name, cost, effectFunction, data) {
+    this.name = name;
     this.cost = cost;
     this.effectFunction = effectFunction;
     this.data = data;
     this.element = null;
+    this.classType = 'Ability';
 }
 
 /**
@@ -34,6 +38,7 @@ function Ability(cost, effectFunction, data) {
 function Modifier(name, value) {
     this.name = name;
     this.value = value;
+    this.classType = 'Modifier';
 }
 
 /**
@@ -64,7 +69,7 @@ function useAbility(state, ability) {
 function spawnAnimals(state, ability) {
     for (var i = 0; i < ability.data.amount; i++) {
         var slotInfo = getNextTimelineSlot(state, state.selectedPath, 0);
-        var animal = createAnimal(state, ability.data.animal);
+        var animal = createAnimal(ability.data.animal);
         var pathIndex = slotInfo[0];
         var pathSlot = slotInfo[1];
         state.paths[pathIndex].slots[pathSlot] = animal;
@@ -139,14 +144,26 @@ function addCardHandlers() {
             hideHelp('deal', true);
         }
     });
-    $('.js-cardContainer').on('click', '.card.dealt .ability', function () {
-        if (state.step == 'cards') {
-            playCard(state, $(this).data('ability'), $(this).closest('.card').data('card'));
-            hideHelp('ability', true);
+    $('.js-cardContainer').on('click', '.card.dealt', function (event) {
+        /** @type Card */
+        var card = $(this).data('card');
+        var yOffset = event.pageY - $(this).offset().top;
+        var abilityIndex = Math.floor(yOffset / (120 / card.slots.length));
+        hideHelp('selectAbility', true);
+        hideHelp('useAbility');
+        hideHelp('insufficientCalories');
+        hideHelp('calories');
+        state.selectedElement = card.slots[abilityIndex];
+        if (state.selectedElement.cost <= state.calories) {
+            showHelp($('.js-cardContainer'), 'useAbility', 'Click "Use Ability" to activate this ability.').css('bottom', '20px').css('left', '0px');
+        } else {
+            showHelp($('.js-cardContainer'), 'insufficientCalories', 'You need more calories to use this ability.').css('bottom', '20px').css('left', '0px');
+            showHelp($('.js-cardContainer'), 'calories', 'You gain calories every wave or from sending animals to attack a farm.').css('left', '150px').css('top', '-10px');
         }
     });
     $('.js-cardContainer').on('click', '.card.discarded', function () {
         if (state.step == 'cards') {
+            hideHelp('shuffle', true);
             shuffleDeck();
         }
     });
@@ -169,11 +186,12 @@ function dealCard() {
 }
 
 /**
- * @param {State} state
  * @param {Ability} ability
- * @param {Card} card
  */
-function playCard(state, ability, card) {
+function playCard(ability) {
+    hideHelp('useAbility');
+    /** @type Card */
+    var card = ability.element.closest('.card').data('card');
     //can only use 3 abilities a turn
     if (state.abilitiesUsedThisTurn > 2) {
         return;
@@ -240,14 +258,9 @@ function makeCard(card) {
     $.each(card.slots, function (index, ability) {
         var $ability = $('<div class="ability"></div>');
         $ability.data('ability', ability);
-        if (ability.data.animal) {
-            $ability.text(ability.cost + ":" + ability.data.animal);
-        } else if (ability.data.effects) {
-            var effect = ability.data.effects[0];
-            $ability.text(ability.cost + ":"+ effect.name + ' ' + effect.value);
-        } else if (ability.data.calories) {
-            $ability.text('+' + ability.data.calories + ' Cal');
-        }
+        ability.element = $ability;
+        $ability.append('<span class="name">' + ability.name + '</span>');
+        $ability.append('<span class="cost">' + ability.cost + '</span>');
         $card.append($ability);
     })
     $card.data('card', card);

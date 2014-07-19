@@ -53,7 +53,7 @@ function AnimalType() {
     this.damageGrowth = 0;
     //these tags are used for matching modifier abilities like
     //"increase the armor of all 'birds'"
-    this.tags = ['animal'];
+    this.tags = [];
     this.spriteIndex = 0;
     this.numberOfFrames = 6;
 }
@@ -67,7 +67,6 @@ function createAnimalType(data) {
             type[i] = data[i];
         }
     }
-    type.tags.push('animal');
     return type;
 }
 
@@ -75,31 +74,30 @@ var animalTypes = {
     'cardinal': createAnimalType({'single': 'cardinal', 'plural': 'cardinals',
                                     'health': 10, 'healthGrowth': 1, 'speed': 20, 'speedGrowth': 1,
                                     'armor': 0, 'armorGrowth': 0, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'air'],
+                                    'damage': 1, 'damageGrowth': .1, tags: ['flying', 'bird'],
                                     'spriteIndex': 0, 'numberOfFrames': 5}),
     'snake': createAnimalType({'single': 'snake', 'plural': 'snakes',
                                     'health': 10, 'healthGrowth': 1, 'speed': 15, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 2, 'damageGrowth': .5, tags: ['reptile', 'ground'], 'spriteIndex': 2}),
+                                    'damage': 2, 'damageGrowth': .5, tags: ['reptile'], 'spriteIndex': 2}),
     'penguin': createAnimalType({'single': 'penguin', 'plural': 'penguins',
                                     'health': 20, 'healthGrowth': 2, 'speed': 10, 'speedGrowth': 0,
                                     'armor': 0, 'armorGrowth': .2, 'carry': 2, 'carryGrowth': 0,
-                                    'damage': 1, 'damageGrowth': .1, tags: ['bird', 'ground'], 'spriteIndex': 1}),
+                                    'damage': 1, 'damageGrowth': .1, tags: ['bird'], 'spriteIndex': 1}),
     'zebra': createAnimalType({'single': 'zebra', 'plural': 'zebras',
                                     'health': 30, 'healthGrowth': 3, 'speed': 20, 'speedGrowth': 0,
                                     'armor': 1, 'armorGrowth': .1, 'carry': 1, 'carryGrowth': 0,
-                                    'damage': 2, 'damageGrowth': .1, tags: ['mammal', 'ground'],
+                                    'damage': 2, 'damageGrowth': .1, tags: ['mammal'],
                                     'spriteIndex': 3, 'numberOfFrames': 4}),
 }
 
 /**
  * Creates an animal for the given type string.
  *
- * @param {State} state  state of the game
  * @param {String} typeString  id of the type to use
  * @return {Animal}  The instantiated animatl
  */
-function createAnimal(state, typeString) {
+function createAnimal(typeString) {
     var animal = new Animal();
     animal.type = animalTypes[typeString];
     updateAnimal(state, animal);
@@ -117,7 +115,7 @@ function createAnimal(state, typeString) {
 function updateAnimal(state, animal) {
     //This code should be like:
     var modifiers = [];
-    $.each(animal.type.tags, function (index, tag) {
+    $.each(animal.type.tags.concat('animal'), function (index, tag) {
         if (state.levelModifiers[tag]) {
             modifiers = modifiers.concat(state.levelModifiers[tag]);
         }

@@ -40,6 +40,7 @@ function State () {
     /** @type {Animal}  The animal currently being moved in the timeline */
     this.draggingAnimal = null;
     this.selectedElement = null;
+    this.lastSelectedElement = null;
     /** @type {Animal}  The last animal that was displaced by the current drag operation */
     this.lastAnimalMoved = null;
     this.levelModifiers = {

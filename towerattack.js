@@ -27,7 +27,7 @@ $(function () {
     initializeGame();
     initializeCardArea();
     $('.js-editPath').on('click', togglePathEditing);
-    $('.js-play').on('click', startNextStep);
+    $('.js-actionButton').on('click', performAction);
     $('.js-fastForward').on('click', changeSpeed);
     addTimelineInteractions(state);
     $('body').on('click', '.js-popupHelp', function () {
@@ -224,6 +224,15 @@ function mainLoop() {
     }
     drawProjectiles(game.animalContext);
     updateInformation();
+    if (state.lastSelectedElement != state.selectedElement) {
+        state.lastSelectedElement = state.selectedElement;
+        updateActionButton();
+        if (!state.selectedElement || state.selectedElement.classType != 'Ability') {
+            hideHelp('useAbility');
+            hideHelp('insufficientCalories');
+            hideHelp('calories');
+        }
+    }
 }
 
 function changeSpeed() {
@@ -299,6 +308,25 @@ function updateInformation() {
                     'S: ' + animal.speed + ' C: ' + animal.carry,
                     'D: ' + animal.damage + ' A: ' + animal.armor,
                 ]
+                $('.js-details .js-description').html(details.join('<br />'));
+                break;
+            case 'Ability':
+                /** @type Ability */
+                var ability = state.selectedElement;
+                $('.js-details .js-title').html(ability.name);
+                context.clearRect(0, 0, 30, 30);
+                var details = [];
+                if (ability.effectFunction == spawnAnimals) {
+                    /** @type Animal */
+                    var animal = createAnimal(ability.data.animal);
+                    details.push(animal.type.tags.join(' '));
+                    details.push('H: ' + animal.currentHealth + '/' + animal.health);
+                    details.push('S: ' + animal.speed + ' C: ' + animal.carry);
+                    details.push('D: ' + animal.damage + ' A: ' + animal.armor);
+                }
+                if (ability.effectFunction == gainCalories) {
+                    details.push('Gain ' + ability.data.calories + ' calories.');
+                }
                 $('.js-details .js-description').html(details.join('<br />'));
         }
     } else {

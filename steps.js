@@ -1,4 +1,14 @@
-
+function performAction() {
+    if (state.step == 'cards') {
+        if (isValidAbilitySelected()) {
+            playCard(state.selectedElement);
+            state.selectedElement = null;
+            hideHelp('useAbility', true);
+            return;
+        }
+    }
+    startNextStep();
+}
 function startNextStep() {
     switch (state.step) {
         case 'cards':
@@ -19,6 +29,9 @@ function startNextStep() {
 
 function startCardStep() {
     showHelp($('.js-cardContainer'), 'deal', 'Click this deck to deal up to 6 cards.').css('bottom', '40px').css('right', '0px');
+    if (state.discardedCards.length > 0) {
+        showHelp($('.js-cardContainer'), 'shuffle', 'Click the discard pile to shuffle used cards back into the deck.').css('bottom', '40px').css('right', '95px');
+    }
     state.step = 'cards';
     state.calories += state.currentLevel.caloriesPerWave;
     state.step = 'cards';
@@ -26,13 +39,14 @@ function startCardStep() {
         shuffleDeck();
     }
     dealCard();
-    showHelp($('.js-cardContainer'), 'ability', 'Click an ability on a card to use it.<br/> You can use 3 abilities a turn.').css('top', '100px').css('left', '0px');
-    updatePlayButton();
+    showHelp($('.js-cardContainer'), 'selectAbility', 'Click an ability on a card to select it.').css('top', '100px').css('left', '0px');
+    updateActionButton();
 }
 
 function endCardStep() {
     hideHelp('deal');
     hideHelp('ability');
+    hideHelp('shuffle');
     //discard remaining dealt cards at start of build step
     while (state.dealtCards.length) {
         /** @type Card */
@@ -61,7 +75,7 @@ function startBuildStep () {
             break;
         }
     }
-    updatePlayButton();
+    updateActionButton();
 }
 
 function startWaveStep() {
@@ -84,7 +98,7 @@ function startWaveStep() {
         }
     }
     state.step = 'wave';
-    updatePlayButton();
+    updateActionButton();
 }
 
 function endWaveStep() {
@@ -160,14 +174,23 @@ function startCurrentLevel() {
     startLevel(state.currentLevel);
 }
 
-function updatePlayButton() {
+function isValidAbilitySelected() {
+    return (state.selectedElement && state.selectedElement.classType == 'Ability');
+}
+
+function updateActionButton() {
     switch (state.step) {
         case 'cards':
-            return $('.js-play').text('End Turn').prop('disabled', false);
+            if (isValidAbilitySelected()) {
+                /** @type Ability */
+                var ability = state.selectedElement;
+                return $('.js-actionButton').text('Use Ability').prop('disabled', ability.cost > state.calories);
+            }
+            return $('.js-actionButton').text('End Turn').prop('disabled', false);
         case 'build':
-            return $('.js-play').text('Start Wave!').prop('disabled', false);
+            return $('.js-actionButton').text('Start Wave!').prop('disabled', false);
         case 'wave':
-            return $('.js-play').text('Running...').prop('disabled', true);
+            return $('.js-actionButton').text('Running...').prop('disabled', true);
     }
     return;
 }

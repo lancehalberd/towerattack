@@ -83,13 +83,13 @@ function startLevel(level) {
     state.waveLimit = level.waveLimits[2];
     drawGrid(game.backgroundContext, state.mapGrid);
     selectPath(0);
-    updatePlayButton();
+    updateActionButton();
     startCardStep();
 }
 
 var levels = [createLevel({"name": "River City",
 "waveLimits": [2,3,5],
-"startingCalories": 10,
+"startingCalories": 3,
 "caloriesPerWave": 2,
 "grid": [
   "WWWWWWWWWWWWW11",
