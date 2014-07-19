@@ -220,7 +220,7 @@ function discardCard(state, card) {
     card.element.css('top', '');
     card.element.css('left', '');
     card.element.css('bottom', (5 + (state.discardedCards.length) * 2) + 'px');
-    card.element.css('right', '105px');
+    card.element.css('right', '103px');
     state.discardedCards.push(card);
     card.element.removeClass('dealt');
     card.element.removeClass('back');

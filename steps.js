@@ -31,10 +31,6 @@ function startNextStep() {
 }
 
 function startCardStep() {
-    showHelp($('.js-cardContainer'), 'deal', 'Click this deck to deal up to 6 cards.').css('bottom', '40px').css('right', '0px');
-    if (state.discardedCards.length > 0) {
-        showHelp($('.js-cardContainer'), 'shuffle', 'Click the discard pile to shuffle used cards back into the deck.').css('bottom', '40px').css('right', '95px');
-    }
     state.step = 'cards';
     state.calories += state.currentLevel.caloriesPerWave;
     state.step = 'cards';
@@ -42,13 +38,17 @@ function startCardStep() {
         shuffleDeck();
     }
     dealCard();
+    if (state.discardedCards.length > 0) {
+        showHelp($('.js-cardContainer'), 'shuffle', 'Click the discard pile to shuffle used cards back into the deck.').css('bottom', '40px').css('right', '95px');
+    }
+    showHelp($('.js-cardContainer'), 'deal', 'Click this deck to deal up to 6 cards.').css('bottom', '40px').css('right', '0px');
     showHelp($('.js-cardContainer'), 'selectAbility', 'Click an ability on a card to select it.').css('top', '100px').css('left', '0px');
     updateActionButton();
 }
 
 function endCardStep() {
     hideHelp('deal');
-    hideHelp('ability');
+    hideHelp('selectAbility');
     hideHelp('shuffle');
     //discard remaining dealt cards at start of build step
     while (state.dealtCards.length) {

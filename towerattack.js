@@ -61,11 +61,15 @@ function startGame() {
     }, 200);
     setInterval(mainLoop, frameLength);
     var draggingMouse = false;
-    $('.js-mapContainer').on('mousedown', function (event) {
+    $(document).on('mousedown', function (event) {
         event.preventDefault();
         event.stopPropagation();
         var tileX = getTileX(event.pageX);
         var tileY = getTileY(event.pageY);
+        state.selectedElement = null;
+        if (tileX < 0 || tileY < 0 || tileX >= 17 || tileY >= 17) {
+            return;
+        }
         draggingMouse = true;
         if (state.editingPath) {
             handleEditPathClick(tileX, tileY);
@@ -75,7 +79,6 @@ function startGame() {
             setTile(state.mapGrid, tileX, tileY, state.brush);
             return;
         }
-        state.selectedElement = null;
         if (state.mapGrid[tileY][tileX].classType) {
             state.selectedElement = state.mapGrid[tileY][tileX];
         }
@@ -270,7 +273,7 @@ function updateInformation() {
         var context = $('.js-details .js-cardCanvas')[0].getContext('2d');
         context.clearRect(0, 0, 30, 30);
         $('.js-details').show();
-        $('.js-details .js-cost').text('');
+        $('.js-details .js-cost').hide();
         switch (state.selectedElement.classType) {
             case 'City':
                 /** @type City */
@@ -330,7 +333,7 @@ function updateInformation() {
                 /** @type Ability */
                 var ability = state.selectedElement;
                 $('.js-details .js-title').html(ability.name);
-                $('.js-details .js-cost').text(ability.cost);
+                $('.js-details .js-cost').text(ability.cost).show();
                 context.clearRect(0, 0, 30, 30);
                 var details = [];
                 if (ability.effectFunction == spawnAnimals) {
