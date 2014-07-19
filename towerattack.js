@@ -55,6 +55,8 @@ function getTileY(pageY) {
 }
 
 function startGame() {
+    $('.js-mainGame').show();
+    $('.js-loading').hide();
     setInterval(mainLoop, frameLength);
     var draggingMouse = false;
     $('.js-mapContainer').on('mousedown', function (event) {
