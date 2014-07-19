@@ -112,7 +112,7 @@ function drawPaths(state, context) {
     var path = state.paths[state.selectedPath];
     context.lineWidth = 6;
     if (path.complete) {
-        context.strokeStyle = '#66F';
+        context.strokeStyle = state.editingPath ? '#6F6' : '#66F';
     } else {
         context.strokeStyle = '#F66';
     }
@@ -191,6 +191,7 @@ function togglePathEditing() {
     fixPath(path);
     path.oldPoints = path.points.concat();
     updateEditPathButton();
+    hideHelp('stopEditingToStartWave');
 }
 
 function handleEditPathClick(tileX, tileY) {

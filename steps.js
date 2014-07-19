@@ -16,9 +16,12 @@ function startNextStep() {
             return startBuildStep();
         case 'build':
             if (state.editingPath) {
-                showHelp($('.js-cardContainer'), 'stopEditingToStartWave', 'You must finish editing paths before starting the wave')
-                    .css('bottom', '40px').css('left', '0px');
-                return;
+                if (!state.paths[state.selectedPath].complete) {
+                    showHelp($('.js-cardContainer'), 'stopEditingToStartWave', 'You must finish editing paths before starting the wave')
+                        .css('bottom', '40px').css('left', '0px');
+                    return;
+                }
+                togglePathEditing();
             }
             return startWaveStep();
         case 'wave':

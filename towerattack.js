@@ -95,6 +95,9 @@ function startGame() {
     });
     $(document).on('mouseup', function (event) {
         draggingMouse = false;
+        if (state.editingPath && state.paths[state.selectedPath].complete) {
+            togglePathEditing();
+        }
     });
     startCurrentLevel();
 }
