@@ -1,12 +1,28 @@
 <html>
 <head>
+    <style type="text/css" >
+        .mainGame {
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            width: 800px;
+            height: 600px;
+            border-radius: 7px;
+            background-color: #804000;
+            top: 0px;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -o-user-user-select: none;
+        }
+    </style>
     <script src="jquery.min.js"></script>
     <script src="utils.js"></script>
     <script src="edit.js"></script>
     <script src="game.js"></script>
     <script src="draw.js"></script>
     <script src="state.js"></script>
-    <script src="map.js"></script>
+    <script src="levelMap.js"></script>
     <script src="towers.js"></script>
     <script src="animals.js"></script>
     <script src="levels.js"></script>
@@ -15,6 +31,9 @@
     <script src="cards.js"></script>
     <script src="testDeck.js"></script>
     <script src="steps.js"></script>
+    <script src="levelScene.js"></script>
+    <script src="mapScene.js"></script>
+    <script src="deckScene.js"></script>
     <script src="towerattack.js"></script>
 
     <link rel="stylesheet" type="text/css" href="cssReset.css"/>
@@ -30,51 +49,56 @@
 <div class="js-editingControls editingControls" style="display: none;">
     <button class="js-edit">Start Editing</button>
 </div>
-<div class="js-loading" style="text-align: center; margin:20px; font-size: 50px;">Loading...</div>
-<div class="js-mainGame mainGame" style="display: none;">
-    <div class="infoBar">
-        <span class="js-levelName levelName"></span>
-        <span class="humanInfo">
-            <span class="js-population"></span>
-            <span class="js-humanGold"></span>
-        </span>
-        <span class="myInfo">
-            <span class="js-wavesLeft"></span>
-            <span class="js-myCalories"></span>
-            <span class="js-myGold"></span>
-        </span>
+<div class="js-mainGame mainGame">
+    <div class="js-loadingScene" style="text-align: center; padding:20px; font-size: 50px;">Loading...</div>
+    <div class="js-mapScene" style="display: none;">
     </div>
-    <div class="js-mapContainer mapContainer">
-        <canvas class="js-backgroundCanvas mapCanvas" width="510" height="510"></canvas>
-        <canvas class="js-pathCanvas mapCanvas" width="510" height="510"></canvas>
-        <canvas class="js-animalCanvas mapCanvas" width="510" height="510"></canvas>
-    </div>
-    <div class="js-cardContainer cardContainer">
-        <div class="js-details details">
-            <div class="card">
-                <p class="js-title"></p>
-                <p class="js-cost cost"></p>
-                <canvas class="cardCanvas js-cardCanvas" width="70" height="40"></canvas>
-                <p class="js-description"></p>
+    <div class="js-levelScene" style="display: none;">
+        <div class="infoBar">
+            <span class="js-levelName levelName"></span>
+            <span class="humanInfo">
+                <span class="js-population"></span>
+                <span class="js-humanGold"></span>
+            </span>
+            <span class="myInfo">
+                <span class="js-wavesLeft"></span>
+                <span class="js-myCalories"></span>
+                <span class="js-myGold"></span>
+                <button class="js-exitLevel">Exit Level</button>
+            </span>
+        </div>
+        <div class="js-mapContainer mapContainer">
+            <canvas class="js-backgroundCanvas mapCanvas" width="510" height="510"></canvas>
+            <canvas class="js-pathCanvas mapCanvas" width="510" height="510"></canvas>
+            <canvas class="js-animalCanvas mapCanvas" width="510" height="510"></canvas>
+        </div>
+        <div class="js-cardContainer cardContainer">
+            <div class="js-details details" style="display: none;">
+                <div class="card">
+                    <p class="js-title"></p>
+                    <p class="js-cost cost"></p>
+                    <canvas class="cardCanvas js-cardCanvas" width="70" height="40"></canvas>
+                    <p class="js-description"></p>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="js-actionButton">End Turn</button>
+                <button class="js-fastForward">x 1</button>
             </div>
         </div>
-        <div class="controls">
-            <button class="js-actionButton">End Turn</button>
-            <button class="js-fastForward">x 1</button>
+        <div class="js-mapEditor mapEditor" style="display: none;">
+            <canvas class="js-paletteCanvas paletteCanvas" width="120" height="150"></canvas>
+            <canvas class="js-brushCanvas brushCanvas" width="60" height="60"></canvas>
+            <textarea class="output" placeholder="Output" style="width: 100%; height: 200px;"></textarea>
+            <button class="exportMap">Export</button>
         </div>
-    </div>
-    <div class="js-mapEditor mapEditor" style="display: none;">
-        <canvas class="js-paletteCanvas paletteCanvas" width="120" height="150"></canvas>
-        <canvas class="js-brushCanvas brushCanvas" width="60" height="60"></canvas>
-        <textarea class="output" placeholder="Output" style="width: 100%; height: 200px;"></textarea>
-        <button class="exportMap">Export</button>
-    </div>
-    <div class="timeline js-timeline">
-        <canvas class="js-timelineCanvas timelineCanvas" width="750" height="90"></canvas>
-        <button class="js-editPath editPath">Edit</button>
-        <div class="pathLabel">A</div>
-        <div class="pathLabel">B</div>
-        <div class="pathLabel">C</div>
+        <div class="timeline js-timeline">
+            <canvas class="js-timelineCanvas timelineCanvas" width="750" height="90"></canvas>
+            <button class="js-editPath editPath">Edit</button>
+            <div class="pathLabel">A</div>
+            <div class="pathLabel">B</div>
+            <div class="pathLabel">C</div>
+        </div>
     </div>
     <div class="overlay js-overlay" style="display:none;">
     </div>

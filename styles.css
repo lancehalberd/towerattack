@@ -19,20 +19,6 @@
     left: 0px;
     padding: 2px;
 }
-.mainGame {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 800px;
-    height: 600px;
-    border-radius: 7px;
-    background-color: #804000;
-    top: 0px;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-user-select: none;
-}
 .overlay {
     box-sizing: border-box;
     position: absolute;
@@ -234,4 +220,10 @@ button {
     font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
     font-size: 16px;
     margin: 0;
+}
+
+.level {
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
 }

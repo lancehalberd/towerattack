@@ -157,13 +157,12 @@ function endWaveStep() {
     state.waveTime = 0;
 
     if (state.population <= 0) {
-        showMessage('You Won!<br/><br/>Click to Advance.', startCurrentLevel);
-        state.levelIndex = (state.levelIndex + 1) % levels.length;
+        showMessage('You Won!<br/><br/>Click to continue.', returnToMap);
         state.step = "victory";
         return;
     }
     if (state.waveNumber == state.waveLimit) {
-        showMessage('You lost!<br/><br/>Click to Restart.', startCurrentLevel);
+        showMessage('You lost!<br/><br/>Click to continue.', returnToMap);
         state.step = "defeat";
         return;
     }
@@ -172,9 +171,8 @@ function endWaveStep() {
     startNextStep();
 }
 
-function startCurrentLevel() {
-    state.currentLevel = levels[state.levelIndex];
-    startLevel(state.currentLevel);
+function returnToMap() {
+    setScene('map');
 }
 
 function isValidAbilitySelected() {

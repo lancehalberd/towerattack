@@ -1,5 +1,6 @@
 function Level() {
     this.name = "";
+    this.location = [0, 0];
     this.waveLimits = [4, 6, 10];
     this.startingCalories = 0;
     this.caloriesPerWave = 2;
@@ -81,10 +82,10 @@ function startLevel(level) {
         }
     }
     state.waveLimit = level.waveLimits[2];
-    drawGrid(game.backgroundContext, state.mapGrid);
     selectPath(0);
     updateActionButton();
     startCardStep();
+    drawLevelScene(true);
 }
 
 function arrayToGrid(arrayOfStrings) {
@@ -115,6 +116,7 @@ function arrayToGrid(arrayOfStrings) {
 
 
 var levels = [createLevel({"name": "River City",
+"location": [220, 130],
 "waveLimits": [2,3,5],
 "startingCalories": 10,
 "caloriesPerWave": 2,
@@ -146,6 +148,7 @@ var levels = [createLevel({"name": "River City",
 "classType": "Level"
 }),
 createLevel({"name": "Dead Treeville",
+"location": [100, 100],
 "waveLimits": [3,5,8],
 "startingCalories": 10,
 "caloriesPerWave": 2,
@@ -177,6 +180,7 @@ createLevel({"name": "Dead Treeville",
 "classType": "Level"
 }),
 createLevel({"name": "Onette",
+"location": [150, 150],
 "waveLimits": [4,6,10],
 "startingCalories": 5,
 "caloriesPerWave": 2,

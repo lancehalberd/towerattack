@@ -2,9 +2,10 @@
  * Stores the current state of the game
  */
 function State () {
+    //indicates the current scene: loading, level, map, or deck
+    this.scene = 'loading';
     /** @type Level */
     this.currentLevel = null;
-    this.levelIndex = 0;
     this.step = "cards";
     //indicates whether the user is editing the map
     this.editingMap = false;

@@ -47,12 +47,13 @@ function initializeGame() {
         'R' : new TileSource(game.paletteCanvas)
     }
     game.images = {
-        'animals' : 'graphics/creatureSprites.png',
-        'water' : 'graphics/water.png',
-        'roadMask' : 'graphics/roadSpriteSheet.png',
-        'background' : 'graphics/meadowsBackgroundSprites.png',
-        'towers' : 'graphics/turretSprites.png',
-        'cards' : 'graphics/cardGraphics.png'
+        'animals': 'graphics/creatureSprites.png',
+        'water': 'graphics/water.png',
+        'roadMask': 'graphics/roadSpriteSheet.png',
+        'background': 'graphics/meadowsBackgroundSprites.png',
+        'towers': 'graphics/turretSprites.png',
+        'cards': 'graphics/cardGraphics.png',
+        'worldMap': 'graphics/worldMap.png'
     };
     loadImages();
 }
