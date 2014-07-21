@@ -1,5 +1,7 @@
 .body {
     background-color: #ddd;
+    background-image: url(graphics/siteBackgrounds/subtle_white_feathers.png);
+    background-repeat: repeat;
     font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
     font-size: 20px;
 }
