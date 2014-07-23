@@ -21,6 +21,7 @@ function Game() {
     //* @type canvas  Stores the masked water image */
     this.waterCanvas = null;
     this.images = {};
+    this.version = 0.1;
 }
 
 function Level(name, gridData, structures) {
@@ -112,6 +113,6 @@ function drawPalette() {
             drawBrush(game.paletteContext, x * defaultTileSize, y * defaultTileSize, brush, true);
         });
     })
-    startGame();
     setBrush(state.brush);
+    startGame();
 }

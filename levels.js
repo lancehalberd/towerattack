@@ -115,8 +115,8 @@ function arrayToGrid(arrayOfStrings) {
 }
 
 
-var levels = [createLevel({"name": "River City",
-"location": [220, 130],
+var levels = [createLevel({"name": "Onette",
+"location": [150, 100],
 "waveLimits": [2,3,5],
 "startingCalories": 10,
 "caloriesPerWave": 2,
@@ -148,7 +148,7 @@ var levels = [createLevel({"name": "River City",
 "classType": "Level"
 }),
 createLevel({"name": "Dead Treeville",
-"location": [100, 100],
+"location": [300, 150],
 "waveLimits": [3,5,8],
 "startingCalories": 10,
 "caloriesPerWave": 2,
@@ -179,8 +179,8 @@ createLevel({"name": "Dead Treeville",
 "cities": [{"classType":"City","tileX":2,"tileY":2,"population":30,"productivity":0.2},{"classType":"City","tileX":10,"tileY":5,"population":30,"productivity":0.2}],
 "classType": "Level"
 }),
-createLevel({"name": "Onette",
-"location": [150, 150],
+createLevel({"name": "River City",
+"location": [250, 100],
 "waveLimits": [4,6,10],
 "startingCalories": 5,
 "caloriesPerWave": 2,

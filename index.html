@@ -17,6 +17,7 @@
         }
     </style>
     <script src="jquery.min.js"></script>
+    <script src="jstorage.min.js"></script>
     <script src="utils.js"></script>
     <script src="edit.js"></script>
     <script src="game.js"></script>
@@ -31,6 +32,7 @@
     <script src="cards.js"></script>
     <script src="testDeck.js"></script>
     <script src="steps.js"></script>
+    <script src="titleScene.js"></script>
     <script src="levelScene.js"></script>
     <script src="mapScene.js"></script>
     <script src="deckScene.js"></script>
@@ -51,6 +53,18 @@
 </div>
 <div class="js-mainGame mainGame">
     <div class="js-loadingScene" style="text-align: center; padding:20px; font-size: 50px;">Loading...</div>
+    <div class="js-titleScene" style="display: none;">
+        <div class="js-savedGames savedGames">
+            <div class="js-savedGame savedGame" style="display: none;">
+                <span class="js-gameName gameName">Save 1</span>
+                <button class="js-deleteGame deleteGame">Delete</button>
+            </div>
+            <div class="js-newGame newGame">
+                <input class="js-newGameName" placeholder="New Save File Name" />
+                <button class="js-startNewGame" disabled="disabled">Create</button>
+            </div>
+        </div>
+    </div>
     <div class="js-mapScene" style="display: none;">
     </div>
     <div class="js-levelScene" style="display: none;">

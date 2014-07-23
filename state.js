@@ -4,6 +4,13 @@
 function State () {
     //indicates the current scene: loading, level, map, or deck
     this.scene = 'loading';
+
+    this.savedGames = {
+    };
+
+    /** @type SavedGame */
+    this.currentGame = null;
+
     /** @type Level */
     this.currentLevel = null;
     this.step = "cards";
@@ -65,4 +72,18 @@ function State () {
     this.humanGold = 0;
     this.humanCalories = 0;
     this.population = 0;
+}
+
+function SavedGame() {
+    this.name = ''
+    //stores '$levelName' => $leastNumberOfWavesToComplete
+    this.records = {};
+    this.gold = 0;
+    this.cards = [];
+    this.abilities = [];
+    this.decks = [];
+    //game.version is updated whenever we change the game so that existing save
+    //files are invalid. When this happens, we either need to create a migration
+    //step, or we just delete existing save files
+    this.version = game.version;
 }
