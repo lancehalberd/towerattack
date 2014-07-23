@@ -12,6 +12,7 @@ function Level() {
     this.nests = [];
     this.cities = [];
     this.classType = 'Level';
+    this.$mapMarker = null;
 }
 /**
  * Casts an object with levelData into an instance of Level

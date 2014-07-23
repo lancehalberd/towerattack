@@ -158,6 +158,7 @@ function endWaveStep() {
 
     if (state.population <= 0) {
         showMessage('You Won!<br/><br/>Click to continue.', returnToMap);
+        updateRecord(state.currentLevel, state.waveNumber);
         state.step = "victory";
         return;
     }

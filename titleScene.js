@@ -24,6 +24,7 @@ function initializeTitleScene() {
     $('.js-titleScene').on('click', '.js-gameName', function (event) {
         var $game = $(this).closest('.js-savedGame');
         state.currentGame = $game.data('game');
+        updateMapeScene();
         setScene('map');
     });
     //Delete a saved game

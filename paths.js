@@ -106,7 +106,7 @@ function editPathSimple(state, x, y) {
  * @param {context} context  The context to draw to
  */
 function drawPaths(state, context) {
-    context.clearRect(0, 0, 450, 450);
+    context.clearRect(0, 0, 510, 510);
     //draw selected path first since it is thicker and can be seen underneath
     //the unselected paths
     var path = state.paths[state.selectedPath];

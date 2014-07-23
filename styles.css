@@ -224,12 +224,6 @@ button {
     margin: 0;
 }
 
-.level {
-    background-color: white;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
 .savedGames {
     position: relative;
     padding: 10px;
@@ -254,4 +248,27 @@ button {
 
 .deleteGame {
     float: right;
+}
+
+.level {
+    padding: 3px;
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    line-height: 20px;
+    vertical-align: top;
+    height: 20px;
+}
+.medal {
+    display: inline-block;
+    background-image: url('graphics/iconsTwentyByTwenty.png');
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+.medal.silver {
+    background-position: -20px 0;
+}
+.medal.gold {
+    background-position: -40px 0;
 }
