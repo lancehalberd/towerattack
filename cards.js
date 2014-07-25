@@ -42,6 +42,8 @@ function Ability(name, cost, effectFunction, data) {
     this.data = data;
     this.element = null;
     this.classType = 'Ability';
+    this.imageColumn = 0;
+    this.imageRow = 0;
 }
 
 /**
@@ -276,8 +278,40 @@ function makeCard(card) {
         ability.element = $ability;
         $ability.append('<div class="name">' + ability.name + '</div>');
         $ability.append('<div class="cost">' + ability.cost + '</div>');
+        $ability.css('background-position', -(180 + 70 * ability.imageColumn)+'px '+ -(40 * ability.imageRow) + 'px');
         $card.append($ability);
-    })
+    });
+    if (card.slots.length == 1) {
+        /** @type Ability */
+        var ability = card.slots[0];
+        $card.prepend('<p class="js-title title">' + ability.name + '</p>');
+        $card.prepend('<p class="js-cost cost">' + ability.cost + '</p>');
+        $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability) + '</p>');
+    }
     $card.data('card', card);
     return $card;
+}
+
+
+function getAbilityDetailsMarkup(ability) {
+    var details = [];
+    if (ability.effectFunction == spawnAnimals) {
+        /** @type Animal */
+        var animal = createAnimal(ability.data.animal);
+        details.push(animal.type.tags.join(' '));
+        details.push('H: ' + animal.currentHealth + '/' + animal.health);
+        details.push('S: ' + animal.speed + ' C: ' + animal.carry);
+        details.push('D: ' + animal.damage + ' A: ' + animal.armor);
+    }
+    if (ability.effectFunction == gainCalories) {
+        details.push('Gain ' + ability.data.calories + ' calories.');
+    }
+    if (ability.effectFunction == powerUp) {
+        var effectName = ability.data.effects[0].name;
+        if (effectName.indexOf('Plus') >= 0) {
+            effectName = effectName.substring(0, effectName.indexOf('Plus'));
+            details.push(ability.data.tag + 's gain ' + ability.data.effects[0].value + ' ' + effectName);
+        }
+    }
+    return details.join('<br />');
 }

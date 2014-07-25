@@ -15,9 +15,9 @@ function displayDeckToEdit(cards) {
         /** @type Card */
         var card = cards[i];
         var $card = makeCard(card).removeClass('back');
-        var row = Math.floor(i / 6);
-        var col = i % 6;
-        $card.css('left', col * 95 + 'px').css('top', row * 125 + 'px');
+        var row = Math.floor(i / 8);
+        var col = i % 8;
+        $card.css('left', 10 + col * 95 + 'px').css('top', 25 + row * 125 + 'px');
         $('.js-cardArea').append($card);
     }
 }

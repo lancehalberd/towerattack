@@ -270,6 +270,8 @@ function updateInformation() {
         context.clearRect(0, 0, 30, 30);
         $('.js-details').show();
         $('.js-details .js-cost').hide();
+        $('.js-details .js-ability').hide();
+        $('.js-details .js-cardCanvas').show();
         switch (state.selectedElement.classType) {
             case 'City':
                 /** @type City */
@@ -328,22 +330,12 @@ function updateInformation() {
             case 'Ability':
                 /** @type Ability */
                 var ability = state.selectedElement;
+                $('.js-details .js-ability').show().css('background-position', -(180 + 70 * ability.imageColumn)+'px '+ -(40 * ability.imageRow) + 'px');
+                $('.js-details .js-cardCanvas').hide();
                 $('.js-details .js-title').html(ability.name);
                 $('.js-details .js-cost').text(ability.cost).show();
                 context.clearRect(0, 0, 30, 30);
-                var details = [];
-                if (ability.effectFunction == spawnAnimals) {
-                    /** @type Animal */
-                    var animal = createAnimal(ability.data.animal);
-                    details.push(animal.type.tags.join(' '));
-                    details.push('H: ' + animal.currentHealth + '/' + animal.health);
-                    details.push('S: ' + animal.speed + ' C: ' + animal.carry);
-                    details.push('D: ' + animal.damage + ' A: ' + animal.armor);
-                }
-                if (ability.effectFunction == gainCalories) {
-                    details.push('Gain ' + ability.data.calories + ' calories.');
-                }
-                $('.js-details .js-description').html(details.join('<br />'));
+                $('.js-details .js-description').html(getAbilityDetailsMarkup(ability));
         }
     } else {
         $('.js-details').hide();

@@ -78,11 +78,9 @@
     left: 5px;
 }
 .details {
-    font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
-    font-size: 12px;
     position:absolute;
-    bottom: 160px;
     left: 5px;
+    bottom: 160px;
 }
 .mapEditor {
     background-color: peachpuff;
@@ -130,6 +128,8 @@
     padding: 8px;
     background-image: url("graphics/cardGraphics.png");
     background-position: 0 0;
+    font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
+    font-size: 12px;
 }
 .cardCanvas{
     margin: 2px 0;
@@ -150,12 +150,15 @@
     line-height: 16px;
     font-size: 14px;
     font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
+    display: inline-block;
+    background-image: url('graphics/cardGraphics.png');
 }
 .ability .name {
-    height: 40px;
+    height: 0px;
     line-height: 13px;
     margin: 2px;
     overflow: hidden;
+    background-color: white;
 }
 .cost {
     position: absolute;
@@ -168,24 +171,32 @@
     text-align: center;
     font-size:18px;
 }
-.details .cost {
-    top: 3px;
-    right: 3px;
+.card .cost {
+    top: 1px;
+    right: 1px;
 }
-.ability .cost {
+.card .ability .cost {
+    top: auto;
+    left: auto;
     bottom: -3px;
     right: -3px;
+}
+/** Single ability cards show the cost on the card */
+.card.a1 .ability .cost {
+    display: none;
 }
 .card.a3 .ability {
     height: 30px;
 }
 /* hide abilities when cards are flipped */
-.card.back .ability {
+.card.back .ability, .card.back .title, .card.back .cost, .card.back .description {
     display: none;
 }
 /* Cards with 1 ability */
 .card.a1 .ability {
-    top: 40px;
+    position: relative;
+    left: 2px;
+    margin-bottom: 3px;
 }
 /* Cards with 2 abilities */
 .card.a2 .ability:nth-of-type(1) {
@@ -222,6 +233,7 @@ button {
     font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
     font-size: 16px;
     margin: 0;
+    cursor: pointer;
 }
 
 .savedGames {
