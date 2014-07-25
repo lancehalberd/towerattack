@@ -7,6 +7,8 @@ function Animal() {
     this.type = null;
     this.health = 10;
     this.currentHealth = 10;
+    //used to update currentHealth proportionally when health changes
+    this.healthPercent = 1;
     this.speed = 10;
     this.armor = 0;
     this.carry = 1;
@@ -136,6 +138,7 @@ function updateAnimal(state, animal) {
         });
         animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
     });
+    animal.currentHealth = animal.health * animal.healthPercent;
 }
 
 /**
@@ -223,7 +226,10 @@ function getAnimals(state) {
     return animals;
 }
 
-
+/**
+ * @param {Animal} animal
+ * @param {Number} damage
+ */
 function damageAnimal(animal, damage) {
     animal.currentHealth -= damage;
     if (animal.currentHealth <= 0) {
@@ -231,4 +237,5 @@ function damageAnimal(animal, damage) {
         animal.finished = true;
         animal.dead = true;
     }
+    animal.healthPercent = animal.currentHealth / animal.health;
 }
