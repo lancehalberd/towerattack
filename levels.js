@@ -2,6 +2,7 @@ function Level() {
     this.name = "";
     this.location = [0, 0];
     this.waveLimits = [4, 6, 10];
+    this.rewards = [cards['single'], cards['single'], cards['single']];
     this.startingCalories = 0;
     this.caloriesPerWave = 2;
     this.grid = [[]];
@@ -60,7 +61,7 @@ function startLevel(level) {
     clearCardArea();
     state.dealtCards = [];
     state.discardedCards = [];
-    state.deck = copy(testDeck);
+    state.deck = createConcreteDeck(state.currentGame.decks[0]);
     state.selectedElement = null;
     shuffleDeck();
     state.farms = level.farms.map(initializeStructure);
@@ -119,6 +120,7 @@ function arrayToGrid(arrayOfStrings) {
 var levels = [createLevel({"name": "Onette",
 "location": [150, 100],
 "waveLimits": [2,3,5],
+"rewards": [abilities['cardinalFlock'], abilities['penguins'], abilities['birdFeed']],
 "startingCalories": 10,
 "caloriesPerWave": 2,
 "grid": [
@@ -151,6 +153,7 @@ var levels = [createLevel({"name": "Onette",
 createLevel({"name": "Dead Treeville",
 "location": [300, 150],
 "waveLimits": [3,5,8],
+"rewards": [abilities['twinSnakes'], cards['double'], abilities['snakeArmy']],
 "startingCalories": 10,
 "caloriesPerWave": 2,
 "grid": [
@@ -183,6 +186,7 @@ createLevel({"name": "Dead Treeville",
 createLevel({"name": "River City",
 "location": [250, 100],
 "waveLimits": [4,6,10],
+"rewards": [abilities['fangs'], abilities['quickWings'], abilities['zebraPack']],
 "startingCalories": 5,
 "caloriesPerWave": 2,
 "grid": [
@@ -209,6 +213,6 @@ createLevel({"name": "River City",
 "mines": [{"classType":"Mine","tileX":14,"tileY":14,"gold":10}],
 "farms": [{"classType":"Farm","tileX":3,"tileY":3,"calories":10}],
 "nests": [{"classType":"Nest","tileX":15,"tileY":8},{"classType":"Nest","tileX":2,"tileY":15}],
-"cities": [{"classType":"City","tileX":9,"tileY":5,"population":100,"productivity":0.1},{"classType":"City","tileX":5,"tileY":7,"population":100,"productivity":0.1}],
+"cities": [{"classType":"City","tileX":9,"tileY":5,"population":40,"productivity":0.1},{"classType":"City","tileX":5,"tileY":7,"population":40,"productivity":0.1}],
 "classType": "Level"
 })];

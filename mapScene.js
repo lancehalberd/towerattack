@@ -1,5 +1,7 @@
 function initializeMapScene() {
-    $('.js-mapScene').append(game.images.worldMap);
+    var $worldMap = $(game.images.worldMap);
+    $worldMap.css('position', 'absolute');
+    $('.js-mapScene').prepend($worldMap);
     for (var i = 0; i < levels.length; i++) {
         /** @type Level */
         var level = levels[i];
@@ -16,6 +18,13 @@ function initializeMapScene() {
         var level = $(this).data('level');
         startLevel(level);
         setScene('level');
+    });
+    $('.js-editDeck').on('click', function () {
+        displayDeckToEdit(createConcreteDeck(state.currentGame.decks[0]));
+        setScene('deck');
+    });
+    $('.js-loadGame').on('click', function () {
+        setScene('title');
     });
 }
 

@@ -12,6 +12,18 @@ function Card(slots) {
 }
 
 /**
+ * Defines a type of card. Right now this is just a number of slots 1-3, but
+ * eventually there will also be ability modifiers on the card.
+ *
+ * @param {Number} numberOfSlots  Number of slots on this card type
+ */
+function CardType(key, numberOfSlots) {
+    this.key = '';
+    this.numberOfSlots = numberOfSlots;
+    this.classType = 'CardType';
+}
+
+/**
  * An ability that can be assigned to a card and used when that card has been
  * dealt. A card may have multiple ablities, but typically only 1 ability can
  * be used from that card at a time.
@@ -23,6 +35,7 @@ function Card(slots) {
  *     might use, such as number and type of animals to spawn.
  */
 function Ability(name, cost, effectFunction, data) {
+    this.key = '';
     this.name = name;
     this.cost = cost;
     this.effectFunction = effectFunction;

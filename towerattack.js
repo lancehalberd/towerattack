@@ -36,9 +36,10 @@ function startGame() {
     setTimeout(function () {
         setScene('title');
     }, 200);
-    initializeLevelScene();
-    initializeMapScene();
     initializeTitleScene();
+    initializeMapScene();
+    initializeDeckScene();
+    initializeLevelScene();
     setInterval(mainLoop, frameLength);
 }
 

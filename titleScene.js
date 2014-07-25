@@ -13,6 +13,7 @@ function initializeTitleScene() {
     //Create a new save file
     $('.js-startNewGame').on('click', function (event) {
         var newGame = new SavedGame();
+        initializeCardsForGame(newGame);
         newGame.name = $.trim($('.js-newGameName').val());
         $('.js-newGameName').val('');
         $('.js-startNewGame').attr('disabled', 'disabled');
