@@ -176,9 +176,9 @@ function addCardHandlers() {
         var ability = card.slots[abilityIndex];
         selectElement(ability);
         if (!ability) {
-            showHelp($('.js-cardContainer'), 'emptyAbility', 'This ability slot is empty and cannot be used.').css('bottom', '20px').css('left', '0px');
+            showHelp($('.js-cardContainer'), 'emptyAbility', 'This ability slot is empty and cannot be used.').css('bottom', '30px').css('left', '0px');
         } else if (state.selectedElement.cost <= state.calories) {
-            showHelp($('.js-cardContainer'), 'useAbility', 'Click "Use Ability" to activate this ability.').css('bottom', '20px').css('left', '0px');
+            showHelp($('.js-cardContainer'), 'useAbility', 'Click "Use Ability" to activate this ability.').css('bottom', '30px').css('left', '0px');
         } else {
             showHelp($('.js-cardContainer'), 'insufficientCalories', 'You need more calories to use this ability.').css('bottom', '20px').css('left', '0px');
             showHelp($('.js-cardContainer'), 'calories', 'You gain calories every wave or from sending animals to attack a farm.').css('left', '150px').css('top', '-10px');

@@ -1,14 +1,23 @@
 <html>
 <head>
     <style type="text/css" >
+        .body {
+            background-color: #ddd;
+            background-image: url(graphics/siteBackgrounds/subtle_white_feathers.png);
+            background-repeat: repeat;
+            font-family: 'kingthings_calligraphica_2Rg', Georgia, serif;
+            font-size: 20px;
+        }
         .mainGame {
             position: relative;
             margin-left: auto;
             margin-right: auto;
             width: 800px;
             height: 600px;
-            border-radius: 7px;
             background-color: #804000;
+            background-image: url(graphics/siteBackgrounds/seamless-wood-texture-free-5.jpg);
+            /*background-image: url(graphics/siteBackgrounds/retina_wood.png);*/
+            background-repeat: repeat;
             top: 0px;
             -moz-user-select: none;
             -khtml-user-select: none;
@@ -52,7 +61,7 @@
     <button class="js-edit">Start Editing</button>
 </div>
 <div class="js-mainGame mainGame">
-    <div class="js-loadingScene" style="text-align: center; padding:20px; font-size: 50px;">Loading...</div>
+    <div class="js-loadingScene loadingScene" style="text-align: center; padding:20px; font-size: 50px;">Loading...</div>
     <div class="js-titleScene" style="display: none;">
         <div class="js-savedGames savedGames">
             <div class="js-savedGame savedGame" style="display: none;">

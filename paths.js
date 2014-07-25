@@ -183,6 +183,8 @@ function updateEditPathButton() {
 function togglePathEditing() {
     if (state.step == 'cards' || state.step == 'build') {
         state.editingPath = !state.editingPath;
+        hideHelp('editPath', true);
+        showHelp($('.mapContainer'), 'editPathDetails', 'Click and drag from a Nest to begin a new path. Paths must end at a Nest to be complete.');
     } else {
         state.editingPath = false;
     }
@@ -192,6 +194,9 @@ function togglePathEditing() {
     path.oldPoints = path.points.concat();
     updateEditPathButton();
     hideHelp('stopEditingToStartWave');
+    if (!state.editingPath) {
+        hideHelp('editPathDetails');
+    }
 }
 
 function handleEditPathClick(tileX, tileY) {
