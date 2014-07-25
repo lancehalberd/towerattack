@@ -42,6 +42,22 @@ function updateMapeScene() {
  */
 function updateRecord(level, wavesCompleted) {
     var record = state.currentGame.records[level.name];
+    var lastPrizeLevel = getPrizeLevel(level, record);
+    var currentPrizeLevel = getPrizeLevel(level, wavesCompleted);
+    state.rewardCards = [];
+    for (var newPrize = lastPrizeLevel + 1; newPrize <= currentPrizeLevel; newPrize++) {
+        var prize = level.rewards[newPrize];
+        if (prize.classType == 'CardType') {
+            state.currentGame.cards.push(prize.key);
+            state.rewardCards.push(makeCardFromType(prize.key));
+        }
+        if (prize.classType == 'Ability') {
+            state.currentGame.abilities.push(prize.key);
+            var card = makeCardFromType('single');
+            card.slots[0] = copy(abilities[prize.key]);
+            state.rewardCards.push(card);
+        }
+    }
     if (!record || wavesCompleted < record) {
         state.currentGame.records[level.name] = wavesCompleted;
         saveData();
@@ -64,4 +80,21 @@ function updateMedalMarker($levelMarker) {
         medalType = 'silver';
     }
     $levelMarker.prepend('<div class="medal '+ medalType + '"></div>');
+}
+
+/**
+ * @param {Level} level
+ * @param {Number} wavesCompleted
+ */
+function getPrizeLevel(level, wavesCompleted) {
+    if (!wavesCompleted) {
+        return  -1;
+    }
+    if (wavesCompleted <= level.waveLimits[0]) {
+        return 2;
+    }
+    if (wavesCompleted <= level.waveLimits[1]) {
+        return 1;
+    }
+    return 0; //assumes the level was actually completed
 }

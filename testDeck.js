@@ -49,9 +49,9 @@ $.each(abilities, function (key, ability) {
     ability.key = key;
 });
 var cards = {
-    'single': new CardType(1),
-    'double': new CardType(2),
-    'triple': new CardType(3)
+    'single': new CardType("Plain Card", 1),
+    'double': new CardType("Double Card", 2),
+    'triple': new CardType("Triple Card", 3)
 };
 $.each(cards, function (key, card) {
     card.key = key;
@@ -68,7 +68,7 @@ function initializeCardsForGame(savedGame) {
     function addCardToDeck(abilityType) {
         savedGame.cards.push('single');
         savedGame.abilities.push(abilityType);
-        cards.push(new Card([abilityType]));
+        cards.push(['single', abilityType]);
     }
     for (var i = 0; i < 4; i++) {
         addCardToDeck('cardinal');
@@ -84,14 +84,32 @@ function initializeCardsForGame(savedGame) {
     savedGame.decks.push(new Deck('Starter Deck', cards));
 }
 
+/**
+ * @param {String} key
+ * @return {Card}
+ */
+function makeCardFromType(key) {
+    /** @type CardType */
+    var cardType = cards[key];
+    var slots = [];
+    for (var i = 0; i < cardType.numberOfSlots; i++) {
+        slots.push(null);
+    }
+    return new Card(key, slots);
+}
+
 function createConcreteDeck(deck) {
     var concreteCards = [];
     for (var i = 0; i < deck.cards.length; i++) {
         var concreteAbilities = [];
-        for (var j = 0; j < deck.cards[i].slots.length; j++) {
-            concreteAbilities.push(copy(abilities[deck.cards[i].slots[j]]));
+        var cardTypeKey = deck.cards[i][0];
+        //the other elements are the ability type keys
+        for (var j = 1; j < deck.cards[i].length; j++) {
+            concreteAbilities.push(copy(abilities[deck.cards[i][j]]));
         }
-        concreteCards.push(new Card(concreteAbilities));
+        var card = makeCardFromType(cardTypeKey);
+        card.slots = concreteAbilities;
+        concreteCards.push(card);
     }
     return concreteCards;
 }

@@ -68,15 +68,24 @@
     <div class="js-mapScene" style="display: none;">
         <div style="position: absolute; width: 200px; right: 0; top: 0;">
             <button class="js-editDeck">Edit Deck</button>
-            <button class="js-loadGame">Load Game</button>
+            <button class="js-loadGame">Exit Game</button>
         </div>
     </div>
-    <div class="js-deckScene" style="display: none;">
-        <div style="position: absolute; width: 100px; right: 0; top: 0;">
-            <button class="js-exitDeck">Exit</button>
+    <div class="js-deckScene deckScene" style="display: none;">
+        <div>
+            <button class="js-saveDeck">Save</button>
+            <button class="js-cancelDeck">Cancel</button>
         </div>
         <div class="js-cardArea">
 
+        </div>
+        <div class="js-changeCard" style="position: absolute; left: 300px; top: 200px; display: none; background-color: white; border: 1px solid black; text-align: center; padding: 20px;">
+            <select class="js-cardTypes"> </select><br/>
+            <button class="js-cancel">Cancel</button>
+        </div>
+        <div class="js-changeAbility" style="position: absolute; left: 300px; top: 200px; display: none; background-color: white; border: 1px solid black; text-align: center; padding: 20px;">
+            <select class="js-abilityTypes"> </select><br/>
+            <button class="js-cancel">Cancel</button>
         </div>
     </div>
     <div class="js-levelScene" style="display: none;">

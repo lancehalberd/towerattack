@@ -16,8 +16,8 @@ function hideHelp(flag, forever) {
     }
 }
 var dismissOverlayFunction;
-function showMessage(markup, onDismiss) {
-    $('.js-overlay').show().html('<p>' + markup + '</p>');
+function showMessage($content, onDismiss) {
+    $('.js-overlay').show().empty().append($content);
     dismissOverlayFunction = onDismiss;
 }
 
@@ -30,6 +30,13 @@ function setScene(newScene) {
     $('.js-' + state.scene + 'Scene').hide();
     state.scene = newScene;
     $('.js-' + state.scene + 'Scene').show();
+    //make sure level editing controls are not seen outside of the level scene
+    if (newScene != 'level') {
+        if (state.editingMap) {
+            toggleEditing();
+        }
+        $('.js-editingControls').hide();
+    }
 }
 
 function startGame() {

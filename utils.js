@@ -29,6 +29,9 @@ var Random = {
  * objects with prototypes.
  */
 function copy(object) {
+    if (typeof(object) == 'undefined' || object === null) {
+        return null;
+    }
     if (object.constructor == Array) {
         return jQuery.extend(true, [], object);
     }

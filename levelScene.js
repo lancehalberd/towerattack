@@ -82,6 +82,9 @@ function initializeLevelScene() {
     });
     addEditEventHandlers();
     $('body').on('keydown', function (event) {
+        if (state.scene != 'level') {
+            return;
+        }
         if (String.fromCharCode(event.which) == 'E') {
             $('.js-editingControls').show();
         }

@@ -2,10 +2,12 @@
 /**
  * A card with 1 or more slots to hold abilities that can be used during play.
  *
+ * @param {String} cardTypeKey  Key indicating what type of card this is
  * @param {Array} slots  The array of slots, which can either be null for empty,
  *     or set to Ability instances.
  */
-function Card(slots) {
+function Card(cardTypeKey, slots) {
+    this.cardTypeKey = cardTypeKey;
     this.slots = slots;
     this.element = null;
     this.classType = 'Card';
@@ -15,10 +17,12 @@ function Card(slots) {
  * Defines a type of card. Right now this is just a number of slots 1-3, but
  * eventually there will also be ability modifiers on the card.
  *
+ * @param {String} name  Name to call this card type to players
  * @param {Number} numberOfSlots  Number of slots on this card type
  */
-function CardType(key, numberOfSlots) {
+function CardType(name, numberOfSlots) {
     this.key = '';
+    this.name = name;
     this.numberOfSlots = numberOfSlots;
     this.classType = 'CardType';
 }
@@ -143,8 +147,7 @@ function displayDeck() {
     $('.js-cardContainer .card.back:not(.dealt)').remove();
     var top = 5;
     $.each(state.deck, function (index, card) {
-        var $card = makeCard(card);
-        card.element = $card;
+        var $card = makeCard(card).addClass('back');
         $card.css('bottom', top + 'px');
         $card.css('right', '5px');
         $('.js-cardContainer').append($card);
@@ -166,11 +169,15 @@ function addCardHandlers() {
         var yOffset = event.pageY - $(this).offset().top;
         var abilityIndex = Math.floor(yOffset / (120 / card.slots.length));
         hideHelp('selectAbility', true);
+        hideHelp('emptyAbility');
         hideHelp('useAbility');
         hideHelp('insufficientCalories');
         hideHelp('calories');
-        selectElement(card.slots[abilityIndex]);
-        if (state.selectedElement.cost <= state.calories) {
+        var ability = card.slots[abilityIndex];
+        selectElement(ability);
+        if (!ability) {
+            showHelp($('.js-cardContainer'), 'emptyAbility', 'This ability slot is empty and cannot be used.').css('bottom', '20px').css('left', '0px');
+        } else if (state.selectedElement.cost <= state.calories) {
             showHelp($('.js-cardContainer'), 'useAbility', 'Click "Use Ability" to activate this ability.').css('bottom', '20px').css('left', '0px');
         } else {
             showHelp($('.js-cardContainer'), 'insufficientCalories', 'You need more calories to use this ability.').css('bottom', '20px').css('left', '0px');
@@ -270,18 +277,23 @@ function shuffleDeck() {
  * @param {Card} card  The card to make the dom element for
  */
 function makeCard(card) {
-    var $card = $('<div class="card back"></div>');
+    var $card = $('<div class="card"></div>');
     $card.addClass('a' + card.slots.length);
     $.each(card.slots, function (index, ability) {
         var $ability = $('<div class="ability"></div>');
+        $ability.data('abilitySlot', index);
         $ability.data('ability', ability);
-        ability.element = $ability;
-        $ability.append('<div class="name">' + ability.name + '</div>');
-        $ability.append('<div class="cost">' + ability.cost + '</div>');
-        $ability.css('background-position', -(180 + 70 * ability.imageColumn)+'px '+ -(40 * ability.imageRow) + 'px');
+        if (ability) {
+            ability.element = $ability;
+        }
+        $ability.append('<div class="name">' + (ability ? ability.name : 'empty') + '</div>');
+        $ability.append('<div class="cost">' + (ability ? ability.cost : '-') + '</div>');
+        var column = (ability ? ability.imageColumn : 2.2);
+        var row = (ability ? ability.imageRow : 0.2);
+        $ability.css('background-position', -(180 + 70 * column)+'px '+ -(40 * row) + 'px');
         $card.append($ability);
     });
-    if (card.slots.length == 1) {
+    if (card.slots.length == 1 && card.slots[0]) {
         /** @type Ability */
         var ability = card.slots[0];
         $card.prepend('<p class="js-title title">' + ability.name + '</p>');
@@ -289,11 +301,20 @@ function makeCard(card) {
         $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability) + '</p>');
     }
     $card.data('card', card);
+    card.element = $card;
     return $card;
 }
 
+function destructCard($card) {
+    var card = $card.data('card');
+    card.element = null;
+    $card.data('card', null).remove();
+}
 
 function getAbilityDetailsMarkup(ability) {
+    if (!ability) {
+        return 'This ability slot is empty';
+    }
     var details = [];
     if (ability.effectFunction == spawnAnimals) {
         /** @type Animal */

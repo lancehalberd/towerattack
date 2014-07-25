@@ -50,6 +50,7 @@ function endCardStep() {
     hideHelp('deal');
     hideHelp('selectAbility');
     hideHelp('shuffle');
+    hideHelp('emptyAbility');
     //discard remaining dealt cards at start of build step
     while (state.dealtCards.length) {
         /** @type Card */
@@ -157,13 +158,19 @@ function endWaveStep() {
     state.waveTime = 0;
 
     if (state.population <= 0) {
-        showMessage('You Won!<br/><br/>Click to continue.', returnToMap);
         updateRecord(state.currentLevel, state.waveNumber);
+        $content = $('<div><p>You Won!</p></div>');
+        $.each(state.rewardCards, function (index, card) {
+            var $card = makeCard(card).css('position', 'relative');
+            $content.append($card);
+        });
+        $content.append('<p>Click to continue.</p>');
+        showMessage($content, returnToMap);
         state.step = "victory";
         return;
     }
     if (state.waveNumber == state.waveLimit) {
-        showMessage('You lost!<br/><br/>Click to continue.', returnToMap);
+        showMessage('<p>You lost!</p><p>Click to continue.</p>', returnToMap);
         state.step = "defeat";
         return;
     }

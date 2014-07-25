@@ -24,8 +24,6 @@
 .overlay {
     box-sizing: border-box;
     position: absolute;
-    width: 400px;
-    height: 200px;
     font-size: 40px;
     text-align: center;
     background-color: white;
@@ -119,9 +117,17 @@
     box-sizing: border-box;
 }
 
+
+.deckScene {
+    padding: 5px;
+}
+
 .card {
     box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
     position: absolute;
+    margin: 3px;
     width: 90px;
     height: 120px;
     cursor: pointer;
