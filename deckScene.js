@@ -27,6 +27,7 @@ function initializeDeckScene() {
     $('.js-deckScene').on('click', '.card', function () {
         selectedCard = $(this).data('card');
         $('.js-changeCard').show();
+        $('.js-changeAbility').hide();
         $('.js-changeCard .js-cardTypes').empty();
         if (availableCards.length) {
             $('.js-changeCard .js-cardTypes').append('<option>Choose new card type</option>');
@@ -66,6 +67,7 @@ function initializeDeckScene() {
         event.stopPropagation();
         selectedAbilitySlot = $(this).data('abilitySlot');
         selectedCard = $(this).closest('.card').data('card');
+        $('.js-changeCard').hide();
         $('.js-changeAbility').show();
         $('.js-changeAbility .js-abilityTypes').empty();
         if (availableAbilities.length) {
@@ -128,6 +130,8 @@ function cleanUpDeckEditor() {
     $('.js-deckScene .js-cardArea').children().each(function (index, element) {
         destructCard($(element));
     });
+    $('.js-changeCard').hide();
+    $('.js-changeAbility').hide();
 }
 
 /**

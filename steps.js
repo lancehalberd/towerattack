@@ -180,6 +180,7 @@ function endWaveStep() {
 }
 
 function returnToMap() {
+    state.waveNumber = 0;
     setScene('map');
 }
 
