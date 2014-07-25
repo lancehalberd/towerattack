@@ -74,6 +74,14 @@ function useAbility(state, ability) {
     state.calories -= ability.cost;
     //call the particular effect associated with this ability
     ability.effectFunction(state, ability);
+    for (var i = 0; i < state.dealtCards.length; i++) {
+        updateCardElement(state.dealtCards[i]);
+    }
+    var numDiscarded = state.discardedCards.length
+    if (numDiscarded > 0) {
+        //only update the last discarded card since it is the only one visible
+        updateCardElement(state.discardedCards[numDiscarded - 1]);
+    }
     updateInformation();
     return null;
 }
@@ -203,6 +211,7 @@ function dealCard() {
     state.dealtCards[nextSpace] = dealtCard;
     var top = 10 + Math.floor(nextSpace / 3) * 130;
     var left = 10 + (nextSpace % 3) * 100;
+    updateCardElement(dealtCard);
     dealtCard.element.css('top', top + 'px');
     dealtCard.element.css('left', left + 'px');
     dealtCard.element.removeClass('back');
@@ -278,6 +287,21 @@ function shuffleDeck() {
  */
 function makeCard(card) {
     var $card = $('<div class="card"></div>');
+    $card.data('card', card);
+    card.element = $card;
+    updateCardElement(card);
+    return $card;
+}
+
+/**
+ * Updates the display of a card to reflect the changes in the model
+ * @param {Card} card
+ */
+function updateCardElement(card) {
+    var $card = card.element;
+    destructAbilities($card);
+    $card.empty();
+    $card.removeClass('a1 a2 a3');
     $card.addClass('a' + card.slots.length);
     $.each(card.slots, function (index, ability) {
         var $ability = $('<div class="ability"></div>');
@@ -300,15 +324,23 @@ function makeCard(card) {
         $card.prepend('<p class="js-cost cost">' + ability.cost + '</p>');
         $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability) + '</p>');
     }
-    $card.data('card', card);
-    card.element = $card;
-    return $card;
 }
 
 function destructCard($card) {
+    destructAbilities($card);
     var card = $card.data('card');
     card.element = null;
     $card.data('card', null).remove();
+}
+
+function destructAbilities($card) {
+    $card.find('.ability').each(function (index, element) {
+        var ability = $(element).data('ability');
+        if (ability) {
+            ability.element = null;
+        }
+        $(element).data('ability', null).remove();
+    });
 }
 
 function getAbilityDetailsMarkup(ability) {

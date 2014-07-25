@@ -103,7 +103,6 @@ function createAnimal(typeString) {
     var animal = new Animal();
     animal.type = animalTypes[typeString];
     updateAnimal(state, animal);
-    animal.currentHealth = animal.health;
     return animal;
 }
 
@@ -138,7 +137,9 @@ function updateAnimal(state, animal) {
         });
         animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
     });
-    animal.currentHealth = animal.health * animal.healthPercent;
+    if (animal.currentHealth > 0) {
+        animal.currentHealth = Math.max(1, Math.round(animal.health * animal.healthPercent));
+    }
 }
 
 /**

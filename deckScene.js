@@ -50,10 +50,18 @@ function initializeDeckScene() {
         /** @type CardType */
         var cardType = cards[newCardTypeKey];
         for (var i = 0; i < cardType.numberOfSlots; i++) {
-            newSlots[i] = selectedCard.slots[i] ? selectedCard.slots[i] : null;
+            newSlots[i] = selectedCard.slots.length ? selectedCard.slots.shift() : null;
+        }
+        //some abilities will be left if the new card type has fewer slots than
+        //the current card type. Add these abilities back to the pool of available abilities
+        while (selectedCard.slots.length) {
+            var ability = selectedCard.slots.pop();
+            if (ability) {
+                availableAbilities.push(ability.key);
+            }
         }
         selectedCard.slots = newSlots;
-        updateCardInEditor(selectedCard);
+        updateCardElement(selectedCard);
         selectedCard = null;
         $('.js-changeCard').hide();
     });
@@ -93,7 +101,7 @@ function initializeDeckScene() {
         }
         //set current ability to the selected ability
         selectedCard.slots[selectedAbilitySlot] = copy(abilities[newAbilityKey]);
-        updateCardInEditor(selectedCard);
+        updateCardElement(selectedCard);
         selectedCard = null;
         $('.js-changeAbility').hide();
     });
@@ -132,20 +140,4 @@ function cleanUpDeckEditor() {
     });
     $('.js-changeCard').hide();
     $('.js-changeAbility').hide();
-}
-
-/**
- * Updates the card element in the dom to match changes in the card model.
- * Deletes the existing dom element and creates a new one in the same place.
- * @param {Card}
- */
-function updateCardInEditor(card) {
-    var $card = card.element;
-    var left = $card.css('left');
-    var top = $card.css('top');
-    var $temp = $('<div></div>');
-    $card.after($temp);
-    destructCard($card);
-    $card = makeCard(card).css('position', 'relative');
-    $temp.after($card).remove();
 }
