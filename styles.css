@@ -114,6 +114,10 @@
 
 
 .deckScene {
+    padding: 10px;
+}
+
+.deckScene .cardArea {
     padding: 5px;
 }
 
