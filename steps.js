@@ -79,9 +79,11 @@ function startBuildStep () {
         }
     }
     updateActionButton();
+    showHelp($('.mapContainer'), 'editPath', 'Click "Edit" to change the paths that the animals will use.').css('bottom', '0px');
 }
 
 function startWaveStep() {
+    hideHelp('editPath');
     state.waveNumber++;
     state.animals = getAnimals(state);
     $.each(state.animals, function (index, element) {

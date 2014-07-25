@@ -57,10 +57,11 @@ function initializeLevelScene() {
         if (state.scene != 'level') {
             return;
         }
-        draggingMouse = false;
-        if (state.editingPath && state.paths[state.selectedPath].complete) {
+        if (draggingMouse && state.editingPath && state.paths[state.selectedPath].complete) {
             togglePathEditing();
+            hideHelp('editPathDetails', true);
         }
+        draggingMouse = false;
     });
     $('.js-editPath').on('click', togglePathEditing);
     $('.js-actionButton').on('click', performAction);

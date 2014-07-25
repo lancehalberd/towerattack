@@ -214,9 +214,10 @@
 .popupHelp {
     padding: 5px;
     font-family: 'kingthings_calligraphica_liLt', Georgia, serif;
-    font-size: 16px;
+    font-size: 20px;
     position: absolute;
     background-color: white;
+    opacity: .8;
     border: 1px solid black;
     border-radius: 4px;
     width: 100px;
