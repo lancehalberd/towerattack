@@ -165,7 +165,7 @@
     overflow: hidden;
     background-color: white;
 }
-.cost {
+.cost, .amount {
     position: absolute;
     background-color: white;
     border: 1px solid black;
@@ -176,8 +176,15 @@
     text-align: center;
     font-size:18px;
 }
+.amount {
+    width: 20px;
+}
 .card .cost {
     top: 1px;
+    right: 1px;
+}
+.card .amount {
+    bottom: 1px;
     right: 1px;
 }
 .card .ability .cost {

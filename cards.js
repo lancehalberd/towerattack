@@ -322,6 +322,9 @@ function updateCardElement(card) {
         var ability = card.slots[0];
         $card.prepend('<p class="js-title title">' + ability.name + '</p>');
         $card.prepend('<p class="js-cost cost">' + ability.cost + '</p>');
+        if (ability.data.amount) {
+            $card.prepend('<p class="js-amount amount">&#215;' + ability.data.amount + '</p>')
+        }
         $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability) + '</p>');
     }
 }

@@ -274,6 +274,7 @@ function updateInformation() {
         context.clearRect(0, 0, 30, 30);
         $('.js-details').show();
         $('.js-details .js-cost').hide();
+        $('.js-details .js-amount').hide();
         $('.js-details .js-ability').hide();
         $('.js-details .js-cardCanvas').show();
         switch (state.selectedElement.classType) {
@@ -338,6 +339,9 @@ function updateInformation() {
                 $('.js-details .js-cardCanvas').hide();
                 $('.js-details .js-title').html(ability.name);
                 $('.js-details .js-cost').text(ability.cost).show();
+                if (ability.data.amount) {
+                    $('.js-details .js-amount').html('&#215;' + ability.data.amount).show();
+                }
                 context.clearRect(0, 0, 30, 30);
                 $('.js-details .js-description').html(getAbilityDetailsMarkup(ability));
         }
