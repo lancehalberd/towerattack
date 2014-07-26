@@ -31,3 +31,23 @@ ART:
         numerals (or maybe just use text...?),
         "calories" (pizza?)
     -"world" map to choose levels
+
+Card Ideas:
+
+Abilities:
+gain small # of calories and use an extra ability this turn
+other abilities cost 3 calories less this turn
+soilent green: 3: reduce the population of all cities by 1k, gain 1 calorie for each city
+
+Timed abilities? Display on timeline and trigger for durations: EMP disable all towers for 1 second
+
+Cards:
+double combo - use both abilities on this card spending 3 extra calories
+triple combo - use all abilities on this card spending 8 extra calories
+extra turn - use an extra ability this turn for 5 extra calories
+extra card - deal a card to replace this card for 1 extra calorie
+efficient - abilities on this card cost up to 1 calorie less
+fecund - spend 3 extra calories to spawn 1 extra animal
+potent - double cost to double effect of power ups
+unstable - half cost of level power ups, reduce duration to the current wave
+double cast - use the ability twice for twice the cost + 5 extra calories
