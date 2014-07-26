@@ -297,3 +297,33 @@ button {
 .medal.gold {
     background-position: -40px 0;
 }
+
+.statusDetail {
+    display: inline-block;
+    margin: 2px;
+    font-size: 16px;
+    line-height: 10px;
+}
+
+.icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-image: url('graphics/iconsTenByTen.png');
+    vertical-align: top;
+}
+.icon.health {
+    background-position: 0px 0px;
+}
+.icon.armor {
+    background-position: -10px 0px;
+}
+.icon.damage {
+    background-position: -20px 0px;
+}
+.icon.speed {
+    background-position: -30px 0px;
+}
+.icon.carry {
+    background-position: -40px 0px;
+}

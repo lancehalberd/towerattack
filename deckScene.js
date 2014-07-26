@@ -115,8 +115,6 @@ function displayDeckToEdit(cards) {
     editedDeck = cards;
     availableCards = copy(state.currentGame.cards);
     availableAbilities = copy(state.currentGame.abilities);
-    availableCards.push('double');
-    availableCards.push('triple');
     for (var i = 0; i < cards.length; i++) {
         /** @type Card */
         var card = cards[i];

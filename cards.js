@@ -346,18 +346,20 @@ function destructAbilities($card) {
     });
 }
 
-function getAbilityDetailsMarkup(ability) {
+function iconSpan(cssClass, markup) {
+    return '<span class="statusDetail"><span class="icon ' + cssClass + '"></span> '+ markup + '</span>';
+}
+function getAbilityDetailsMarkup(ability, waveNumber) {
     if (!ability) {
         return 'This ability slot is empty';
     }
     var details = [];
     if (ability.effectFunction == spawnAnimals) {
         /** @type Animal */
-        var animal = createAnimal(ability.data.animal);
+        var animal = createAnimal(ability.data.animal, waveNumber);
         details.push(animal.type.tags.join(' '));
-        details.push('H: ' + animal.currentHealth + '/' + animal.health);
-        details.push('S: ' + animal.speed + ' C: ' + animal.carry);
-        details.push('D: ' + animal.damage + ' A: ' + animal.armor);
+        details.push(iconSpan('health', animal.currentHealth + '/' + animal.health) + ' ' + iconSpan('armor', animal.armor));
+        details.push(iconSpan('damage', animal.damage) + ' ' + iconSpan('speed', animal.speed) + ' ' + iconSpan('carry',  animal.carry));
     }
     if (ability.effectFunction == gainCalories) {
         details.push('Gain ' + ability.data.calories + ' calories.');
