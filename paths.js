@@ -177,7 +177,11 @@ function updateEditPathButton() {
         var path = state.paths[state.selectedPath];
         text = path.complete ? 'Done' : 'Cancel';
     }
-    $('.js-editPath').text(text);
+    //only change text if it is different. Safari won't let you click on text
+    //if it changes during the click event
+    if ($('.js-editPath').text() != text) {
+        $('.js-editPath').text(text);
+    }
 }
 
 function togglePathEditing() {

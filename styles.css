@@ -201,7 +201,7 @@
     height: 30px;
 }
 /* hide abilities when cards are flipped */
-.card.back .ability, .card.back .title, .card.back .cost, .card.back .description {
+.card.back .ability, .card.back .title, .card.back .cost, .card.back .description, .card.back .amount {
     display: none;
 }
 /* Cards with 1 ability */
