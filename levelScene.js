@@ -1,11 +1,14 @@
 function initializeLevelScene() {
     var draggingMouse = false;
-    $(document).on('mousedown', function (event) {
+    $('.js-levelScene').on('mousedown', function (event) {
         if (state.scene != 'level') {
             return;
         }
         //don't apply generic mouse down handler to button clicks
         if ($(event.target).is('button')) {
+            return;
+        }
+        if ($(event.target).is('input') || $(event.target).is('textarea')) {
             return;
         }
         event.preventDefault();
@@ -17,7 +20,7 @@ function initializeLevelScene() {
         //to false if they happen after this even, or call stopPropogation
         //to prevent this logic from getting called
         state.unselectElement = true;
-        if (tileX < 0 || tileY < 0 || tileX >= 17 || tileY >= 17) {
+        if (tileX < 1 || tileY < 1 || tileX >= 16 || tileY >= 16) {
             return;
         }
         draggingMouse = true;
