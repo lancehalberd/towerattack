@@ -354,6 +354,9 @@ function getAbilityDetailsMarkup(ability, waveNumber) {
         return 'This ability slot is empty';
     }
     var details = [];
+    if (ability.data.description) {
+        return ability.data.description;
+    }
     if (ability.effectFunction == spawnAnimals) {
         /** @type Animal */
         var animal = createAnimal(ability.data.animal, waveNumber);

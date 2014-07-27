@@ -16,6 +16,9 @@ function powerUpAbility(scope, tag, effectName, value) {
 function calorieAbility(calories) {
     return copy(new Ability('', 0, gainCalories, {calories: calories}));
 }
+function genericAbility(effectFunction, description) {
+    return copy(new Ability('', 0, effectFunction, {description: description}));
+}
 function basicAbility(name, cost, imagePosition, ability) {
     ability.name = name;
     ability.cost = cost;
@@ -29,13 +32,14 @@ var abilities = {
     'cardinalFlock': basicAbility('Cardinal Flock', 4, [1, 0], spawnAbility('cardinal', 3)),
     'penguin': basicAbility('Penguin', 2, [0, 0], spawnAbility('penguin', 1)),
     'penguins': basicAbility('Penguins', 5, [0, 0], spawnAbility('penguin', 2)),
+    'emperorPenguin': basicAbility('Emperor Penguin', 5, [0, 0], spawnAbility('emperorPenguin', 1)),
     'snake': basicAbility('Snake', 2, [0, 2], spawnAbility('snake', 1)),
     'twinSnakes': basicAbility('Twin Snakes', 5, [0, 2], spawnAbility('snake', 2)),
     'snakeArmy': basicAbility('Snake Army', 10, [0, 2], spawnAbility('snake', 4)),
     'zebra': basicAbility('Zebra', 4, [0, 1], spawnAbility('zebra', 1)),
     'zebraPack': basicAbility('Zebra Pack', 14, [0, 1], spawnAbility('zebra', 3)),
     //power ups
-    'quickWings': basicAbility('Quick Wings', 2, [2.2, .2], powerUpAbility('level', 'bird', 'speedPlus', 2)),
+    'quickWings': basicAbility('Quick Wings', 4, [2.2, .2], powerUpAbility('level', 'bird', 'speedPlus', 5)),
     'birdFeed': basicAbility('Bird Seed', 3, [1, 2], powerUpAbility('level', 'bird', 'healthPlus', 10)),
     'tailWind': basicAbility('Tail Wind', 4, [2.2, .2], powerUpAbility('level', 'animal', 'speedPlus', 2)),
     'growthHormones': basicAbility('Growth Hormones', 5, [1, 2], powerUpAbility('level', 'animal', 'healthPlus', 10)),
@@ -43,7 +47,11 @@ var abilities = {
     'scales': basicAbility('Scales', 5, [2.2, .2], powerUpAbility('level', 'animal', 'armorPlus', 1)),
     'spareLuggage': basicAbility('Spare Luggage', 2, [1, 1], powerUpAbility('level', 'animal', 'carryPlus', 1)),
     //etc
-    'goodHarvest': basicAbility('Good Harvest', 0, [2.2, .2], calorieAbility(3))
+    'goodHarvest': basicAbility('Good Harvest', 0, [2.2, .2], calorieAbility(3)),
+    'goodFortune': basicAbility('Good Fortune', 0, [2.2, .2], genericAbility(function (state, ability) {
+        state.calories += 2;
+        state.abilitiesUsedThisTurn--;
+    }, 'Gain 2 calories and use an extra ability.')),
 };
 $.each(abilities, function (key, ability) {
     ability.key = key;

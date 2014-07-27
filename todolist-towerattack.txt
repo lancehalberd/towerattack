@@ -38,6 +38,7 @@ Abilities:
 gain small # of calories and use an extra ability this turn
 other abilities cost 3 calories less this turn
 soilent green: 3: reduce the population of all cities by 1k, gain 1 calorie for each city
+gamble: 5: play the top card of your deck for no cost
 
 Timed abilities? Display on timeline and trigger for durations: EMP disable all towers for 1 second
 

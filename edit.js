@@ -10,6 +10,13 @@ function addEditEventHandlers() {
             if (state.currentLevel.hasOwnProperty(i)) {
                 if (i == 'grid') {
                     string += '"' + i + '": ' + JSON.stringify(state.currentLevel[i], undefined, 2) + ",\n";
+                } else if (['$mapMarker', 'rewards'].indexOf(i) >= 0) {
+                    /*var rewards = state.currentLevel.rewards.map(function (element) {
+                        if (element.classType == 'CardType') {
+                            return 'cards[' + element.key +']';
+                        }
+                        return 'abilities[' + element.key +']';
+                    });*/
                 } else {
                     string += '"' + i + '": ' + JSON.stringify(state.currentLevel[i]) + ",\n";
                 }

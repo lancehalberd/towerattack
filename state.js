@@ -73,6 +73,7 @@ function State () {
     this.humanCalories = 0;
     this.population = 0;
     this.rewardCards = [];
+    this.calories = 0;
 }
 
 function SavedGame() {
