@@ -26,13 +26,28 @@ function initializeMapScene() {
     $('.js-loadGame').on('click', function () {
         setScene('title');
     });
+    $('body').on('keydown', function (event) {
+        if (state.scene != 'map') {
+            return;
+        }
+        if (String.fromCharCode(event.which) == 'E') {
+            for (var i =0; i < levels.length; i++) {
+                /** @type Level */
+                var level = levels[i];
+                if (!state.currentGame.records[level.name]) {
+                    state.currentGame.records[level.name] = 1000;
+                }
+            }
+            updateMapeScene();
+        }
+    });
 }
 
 function updateMapeScene() {
     for (var i = 0; i < levels.length; i++) {
         /** @type Level */
         var level = levels[i];
-        updateMedalMarker(level.$mapMarker);
+        updateMapMarker(level.$mapMarker);
     }
 }
 
@@ -62,24 +77,36 @@ function updateRecord(level, wavesCompleted) {
         state.currentGame.records[level.name] = wavesCompleted;
         saveData();
     }
-    updateMedalMarker(level.$mapMarker);
+    updateMapMarker(level.$mapMarker);
 }
 
-function updateMedalMarker($levelMarker) {
+function updateMapMarker($levelMarker) {
     $levelMarker.find('.medal').remove();
     /** @type Level */
     var level = $levelMarker.data('level');
+    //hide the level marker if the
+    for (var i = 0; i < level.requirements.length; i++) {
+        if (!state.currentGame.records[level.requirements[i]]) {
+            $levelMarker.hide();
+            return;
+        }
+    }
+    $levelMarker.show();
     var record = state.currentGame.records[level.name];
     if (!record) {
         return;
     }
-    var medalType = 'bronze';
+    var medalType = null;
     if (record <= level.waveLimits[0]) {
         medalType = 'gold';
     } else if (record <= level.waveLimits[1]) {
         medalType = 'silver';
+    } else if (record <= level.waveLimits[2]) {
+        medalType = 'bronze';
     }
-    $levelMarker.prepend('<div class="medal '+ medalType + '"></div>');
+    if (medalType) {
+        $levelMarker.prepend('<div class="medal '+ medalType + '"></div>');
+    }
 }
 
 /**
