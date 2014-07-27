@@ -356,3 +356,40 @@ createLevel({"name": "Cannon Alley",
 "cities": [{"classType":"City","tileX":8,"tileY":4,"population":40,"productivity":0.1}],
 "classType": "Level"
 })];
+
+function getEmptyLevel() {
+    return createLevel({"name": "New Level",
+    "location": [250,300],
+    "requirements": ["Onette"],
+    "waveLimits": [4,6,10],
+    "rewards": [abilities['twinSnakes'], cards['double'], abilities['snakeArmy']],
+    "startingCalories": 10,
+    "caloriesPerWave": 2,
+    "grid": [
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000"
+    ],
+    "paths": [[],[],[]],
+    "towers": [],
+    "mines": [],
+    "farms": [],
+    "nests": [],
+    "cities": [],
+    "classType": "Level"
+    });
+}

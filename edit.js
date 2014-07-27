@@ -3,7 +3,11 @@
  */
 function addEditEventHandlers() {
     $('.js-edit').on('click', toggleEditing);
-    $('.exportMap').on('click', function (event) {
+    $('.js-clearLevel').on('click', function () {
+        state.currentLevel = getEmptyLevel();
+        startLevel(state.currentLevel);
+    });
+    $('.js-exportMap').on('click', function (event) {
         copyStateToCurrentLevel();
         var string = '{'
         for (var i in state.currentLevel) {
