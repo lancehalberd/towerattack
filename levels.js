@@ -44,6 +44,15 @@ function initializeTower(towerData) {
     tower.attacksPerSecond = tower.type.attacksPerSecond;
     return tower;
 }
+function initializeCity(cityData) {
+    /** @type City */
+    var city = initializeStructure(cityData);
+    //default base population to starting population if it isn't set
+    if (!city.basePopulation) {
+        city.basePopulation = city.population;
+    }
+    return city;
+}
 
 /**
  * @param {Level} level
@@ -69,7 +78,7 @@ function startLevel(level) {
     state.mines = level.mines.map(initializeStructure);
     state.towers = level.towers.map(initializeTower);
     state.nests = level.nests.map(initializeStructure);
-    state.cities = level.cities.map(initializeStructure);
+    state.cities = level.cities.map(initializeCity);
     state.population = 0;
     for (var i = 0; i < state.cities.length; i++) {
         state.population += state.cities[i].population;

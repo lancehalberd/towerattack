@@ -1,4 +1,5 @@
 function City() {
+    this.basePopulation = 0;
     this.population = 100;
     this.productivity = .1;
     this.tileX = 0;
@@ -60,9 +61,9 @@ function drawCity(context, x, y, city) {
     var frame = 0;
     if (city.population == 0) {
         frame = 3;
-    } else if (city.population <= 30) {
+    } else if (city.population <= city.basePopulation / 3) {
         frame = 2;
-    } else if (city.population <= 60) {
+    } else if (city.population <= 2 * city.basePopulation / 3) {
         frame = 1;
     }
     drawTileRotated(context, x, y, new TileSource(game.images.background, frame, 2), 0);
