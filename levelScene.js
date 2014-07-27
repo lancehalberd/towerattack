@@ -325,12 +325,7 @@ function updateInformation() {
                 }
                 drawAnimalSprite(context, 0, 0, animal, 0, 0);
                 $('.js-details .js-title').html(properCase(animal.type.single));
-                var details = [
-                    'H: ' + animal.currentHealth + '/' + animal.health,
-                    'S: ' + animal.speed + ' C: ' + animal.carry,
-                    'D: ' + animal.damage + ' A: ' + animal.armor,
-                ]
-                $('.js-details .js-description').html(details.join('<br />'));
+                $('.js-details .js-description').html(getAnimalDetailsMarkup(animal));
                 break;
             case 'Ability':
                 /** @type Ability */
@@ -343,7 +338,7 @@ function updateInformation() {
                     $('.js-details .js-amount').html('&#215;' + ability.data.amount).show();
                 }
                 context.clearRect(0, 0, 30, 30);
-                $('.js-details .js-description').html(getAbilityDetailsMarkup(ability));
+                $('.js-details .js-description').html(getAbilityDetailsMarkup(ability, state.waveNumber));
         }
     } else {
         $('.js-details').hide();

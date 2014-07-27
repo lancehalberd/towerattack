@@ -96,7 +96,7 @@ function useAbility(state, ability) {
 function spawnAnimals(state, ability) {
     for (var i = 0; i < ability.data.amount; i++) {
         var slotInfo = getNextTimelineSlot(state, state.selectedPath, 0);
-        var animal = createAnimal(ability.data.animal);
+        var animal = createAnimal(ability.data.animal, state.waveNumber);
         var pathIndex = slotInfo[0];
         var pathSlot = slotInfo[1];
         state.paths[pathIndex].slots[pathSlot] = animal;
@@ -240,7 +240,7 @@ function playCard(ability) {
     }
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(getAnimals(state), function (i, animal) {
-        updateAnimal(state, animal);
+        updateAnimal(state, animal, state.waveNumber);
     });
     updateInformation();
 }
@@ -284,12 +284,13 @@ function shuffleDeck() {
  * Creates a new DOM element for a card representing the given card
  *
  * @param {Card} card  The card to make the dom element for
+ * @param {Boolean} ignoreWaveNumber  Whether to show stats based on wave number
  */
-function makeCard(card) {
+function makeCard(card, ignoreWaveNumber) {
     var $card = $('<div class="card"></div>');
     $card.data('card', card);
     card.element = $card;
-    updateCardElement(card);
+    updateCardElement(card, ignoreWaveNumber);
     return $card;
 }
 
@@ -297,7 +298,7 @@ function makeCard(card) {
  * Updates the display of a card to reflect the changes in the model
  * @param {Card} card
  */
-function updateCardElement(card) {
+function updateCardElement(card, ignoreWaveNumber) {
     var $card = card.element;
     destructAbilities($card);
     $card.empty();
@@ -325,7 +326,7 @@ function updateCardElement(card) {
         if (ability.data.amount) {
             $card.prepend('<p class="js-amount amount">&#215;' + ability.data.amount + '</p>')
         }
-        $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability) + '</p>');
+        $card.append('<p class="js-description description">' + getAbilityDetailsMarkup(ability, (ignoreWaveNumber ? 0 : state.waveNumber)) + '</p>');
     }
 }
 
@@ -360,19 +361,26 @@ function getAbilityDetailsMarkup(ability, waveNumber) {
     if (ability.effectFunction == spawnAnimals) {
         /** @type Animal */
         var animal = createAnimal(ability.data.animal, waveNumber);
-        details.push(animal.type.tags.join(' '));
-        details.push(iconSpan('health', animal.currentHealth + '/' + animal.health) + ' ' + iconSpan('armor', animal.armor));
-        details.push(iconSpan('damage', animal.damage) + ' ' + iconSpan('speed', animal.speed) + ' ' + iconSpan('carry',  animal.carry));
+        return getAnimalDetailsMarkup(animal);
     }
     if (ability.effectFunction == gainCalories) {
-        details.push('Gain ' + ability.data.calories + ' calories.');
+        return 'Gain ' + ability.data.calories + ' calories.';
     }
     if (ability.effectFunction == powerUp) {
         var effectName = ability.data.effects[0].name;
         if (effectName.indexOf('Plus') >= 0) {
             effectName = effectName.substring(0, effectName.indexOf('Plus'));
-            details.push(ability.data.tag + 's gain ' + ability.data.effects[0].value + ' ' + effectName);
+            return ability.data.tag + 's gain ' + ability.data.effects[0].value + ' ' + effectName;
         }
     }
-    return details.join('<br />');
+    return '';
+}
+
+/**
+ * @param {Animal} animal
+ */
+function getAnimalDetailsMarkup(animal) {
+    return [animal.type.tags.join(' '),
+        iconSpan('health', animal.currentHealth + '/' + animal.health) + ' ' + iconSpan('armor', animal.armor),
+        iconSpan('damage', animal.damage) + ' ' + iconSpan('speed', animal.speed) + ' ' + iconSpan('carry',  animal.carry)].join('<br />');
 }

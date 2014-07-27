@@ -118,7 +118,7 @@ function displayDeckToEdit(cards) {
     for (var i = 0; i < cards.length; i++) {
         /** @type Card */
         var card = cards[i];
-        var $card = makeCard(card).css('position', 'relative');
+        var $card = makeCard(card, true).css('position', 'relative');
         $('.js-cardArea').append($card);
         availableCards.splice(availableCards.indexOf(card.cardTypeKey), 1);
         for (var j = 0; j < card.slots.length; j++) {

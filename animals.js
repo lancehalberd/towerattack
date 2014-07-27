@@ -101,12 +101,13 @@ var animalTypes = {
  * Creates an animal for the given type string.
  *
  * @param {String} typeString  id of the type to use
+ * @param {Number} waveNumber  wave number to use when calculating current stats
  * @return {Animal}  The instantiated animatl
  */
-function createAnimal(typeString) {
+function createAnimal(typeString, waveNumber) {
     var animal = new Animal();
     animal.type = animalTypes[typeString];
-    updateAnimal(state, animal);
+    updateAnimal(state, animal, waveNumber);
     return animal;
 }
 
@@ -116,8 +117,9 @@ function createAnimal(typeString) {
  *
  * @param {State} state  state of the game
  * @param {Animal} animal  the animal to update
+ * @param {Number} waveNumber  wave number to use when calculating current stats
  */
-function updateAnimal(state, animal) {
+function updateAnimal(state, animal, waveNumber) {
     //This code should be like:
     var modifiers = [];
     $.each(animal.type.tags.concat('animal'), function (index, tag) {
@@ -139,7 +141,7 @@ function updateAnimal(state, animal) {
                 multiplier *= modifier.value;
             }
         });
-        animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * state.waveNumber + plusModifier) * multiplier);
+        animal[stat] = Math.floor((animal.type[stat] + animal.type[stat + 'Growth'] * waveNumber + plusModifier) * multiplier);
     });
     if (animal.currentHealth > 0) {
         animal.currentHealth = Math.max(1, Math.round(animal.health * animal.healthPercent));

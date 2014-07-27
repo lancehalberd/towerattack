@@ -110,7 +110,7 @@ function startWaveStep() {
 function endWaveStep() {
     //update animals now that wave # has changed and wave modifiers are gone
     $.each(state.animals, function (i, animal) {
-        updateAnimal(state, animal);
+        updateAnimal(state, animal, state.waveNumber);
     });
     //humans get gold from mines that the animals failed to steal
     for (var i = 0; i < state.mines.length; i++) {
@@ -163,7 +163,7 @@ function endWaveStep() {
         updateRecord(state.currentLevel, state.waveNumber);
         $content = $('<div><p>You Won!</p></div>');
         $.each(state.rewardCards, function (index, card) {
-            var $card = makeCard(card).css('position', 'relative');
+            var $card = makeCard(card, true).css('position', 'relative');
             $content.append($card);
         });
         $content.append('<p>Click to continue.</p>');
