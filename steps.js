@@ -65,8 +65,8 @@ function startBuildStep () {
     state.step = 'build';
     //humans build towers for 20 gold in random locations
     while (state.humanGold > 20) {
-        var x = Random.range(0, state.mapGrid[0].length - 1);
-        var y = Random.range(0, state.mapGrid.length - 1);
+        var x = Random.range(1, state.mapGrid[0].length - 2);
+        var y = Random.range(1, state.mapGrid.length - 2);
         if (['0', '1', '2', '3'].indexOf(state.mapGrid[y][x]) >= 0) {
             /** @type Tower */
             var tower = getRandomTower();
