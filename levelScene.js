@@ -291,7 +291,7 @@ function updateInformation() {
                 drawTower(context, 0, 0, 0, tower);
                 $('.js-details .js-title').html(tower.type.name);
                 var details = [
-                    'Attack ' + tower.baseDamage + '-' + (tower.baseDamage +  tower.damageRange),
+                    iconSpan('damage', tower.baseDamage + '-' + (tower.baseDamage +  tower.damageRange)),
                     'Speed ' + tower.attacksPerSecond.toFixed(1)
                 ]
                 $('.js-details .js-description').html(details.join('<br />'));
