@@ -22,6 +22,23 @@ function initializeDeckScene() {
         cleanUpDeckEditor();
         setScene('map');
     });
+    $('body').on('keydown', function (event) {
+        if (state.scene != 'deck') {
+            return;
+        }
+        if (String.fromCharCode(event.which) == 'E') {
+            for (var i in abilities) {
+                if (abilities.hasOwnProperty(i)) {
+                    availableAbilities.push(i);
+                }
+            }
+            for (var i in cards) {
+                if (cards.hasOwnProperty(i)) {
+                    availableCards.push(i);
+                }
+            }
+        }
+    });
 
     //Change card type handlers
     $('.js-deckScene').on('click', '.card', function () {
