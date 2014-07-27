@@ -77,7 +77,7 @@ function updateRecord(level, wavesCompleted) {
         state.currentGame.records[level.name] = wavesCompleted;
         saveData();
     }
-    updateMapMarker(level.$mapMarker);
+    updateMapeScene();
 }
 
 function updateMapMarker($levelMarker) {
